@@ -1,0 +1,17 @@
+{
+  "name": "Forage \u2014 Hunt \u2022 Choose \u2022 Collect",
+  "short_name": "Forage",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f3ec",
+  "theme_color": "#294d3b",
+  "description": "A fictional marketplace for the thrill of discovery, choosing, collecting, and anticipation.",
+  "icons": [
+    {
+      "src": "forage-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

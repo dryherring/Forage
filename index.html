@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#294d3b" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Forage" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="forage-icon.svg" />
+<title>Forage</title>
+<style>
+  :root{
+    --bg:#f6f3ec;
+    --paper:#fffdf8;
+    --ink:#1f2a24;
+    --muted:#6c766f;
+    --line:#ddd8ce;
+    --accent:#2f6a4f;
+    --accent2:#b57a43;
+    --danger:#9d3e3e;
+    --shadow:0 10px 30px rgba(50,50,40,.08);
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  button,input,select{font:inherit}
+  .app{max-width:1180px;margin:0 auto;min-height:100vh;padding-bottom:84px}
+  header{
+    position:sticky;top:0;z-index:20;background:rgba(246,243,236,.92);
+    backdrop-filter:blur(14px);border-bottom:1px solid rgba(221,216,206,.7)
+  }
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;gap:14px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
+  .mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#315f49,#a77645);display:grid;place-items:center;color:white;font-size:20px;box-shadow:var(--shadow)}
+  .brand small{display:block;font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.8px;text-transform:uppercase}
+  .balance{background:var(--paper);border:1px solid var(--line);padding:10px 14px;border-radius:14px;box-shadow:var(--shadow);font-weight:700;white-space:nowrap}
+  .nav{display:flex;gap:8px;padding:0 20px 14px;overflow:auto}
+  .nav button{border:1px solid var(--line);background:var(--paper);padding:10px 14px;border-radius:999px;color:var(--ink)}
+  .nav button.active{background:var(--ink);color:white;border-color:var(--ink)}
+  main{padding:20px}
+  .hero{background:linear-gradient(135deg,#294d3b 0%,#496d57 48%,#b47f4a 100%);color:white;border-radius:28px;padding:28px;display:grid;grid-template-columns:1.4fr .8fr;gap:22px;box-shadow:var(--shadow)}
+  .hero h1{font-size:clamp(34px,6vw,70px);line-height:.95;margin:0 0 16px}
+  .hero p{max-width:650px;font-size:18px;line-height:1.5;opacity:.92}
+  .hero-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:22px;padding:20px;align-self:end}
+  .section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:28px 0 14px}
+  .section-head h2{margin:0;font-size:24px}
+  .section-head p{margin:4px 0 0;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .art{aspect-ratio:4/3;display:grid;place-items:center;font-size:64px;background:linear-gradient(145deg,#e9e1d5,#dfe9e2)}
+  .card-body{padding:15px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.9px;color:var(--muted);font-weight:800}
+  .title{font-weight:800;font-size:18px;line-height:1.2}
+  .desc{color:var(--muted);font-size:14px;line-height:1.4;min-height:40px}
+  .price-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto}
+  .price{font-weight:900}
+  .pill{font-size:11px;padding:6px 9px;border-radius:999px;background:#ece7df;color:#5a5147}
+  .actions{display:flex;gap:8px}
+  .actions button,.primary,.secondary,.danger{
+    border:0;border-radius:12px;padding:10px 12px;cursor:pointer
+  }
+  .primary{background:var(--ink);color:white}
+  .secondary{background:#ece7df;color:var(--ink)}
+  .danger{background:#f6dcdc;color:var(--danger)}
+  .empty{background:var(--paper);border:1px dashed var(--line);border-radius:var(--radius);padding:28px;color:var(--muted)}
+  .detail{display:grid;grid-template-columns:1fr 1.1fr;gap:24px;background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:var(--shadow)}
+  .detail .art{border-radius:20px;min-height:360px}
+  .detail h1{font-size:38px;margin:8px 0}
+  .detail p{color:var(--muted);line-height:1.6}
+  .specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+  .spec{border:1px solid var(--line);border-radius:14px;padding:12px}
+  .cartline,.order{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+  .miniart{width:70px;height:70px;border-radius:14px;background:linear-gradient(145deg,#e9e1d5,#dfe9e2);display:grid;place-items:center;font-size:36px}
+  .summary{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:16px}
+  .summary-row{display:flex;justify-content:space-between;margin:9px 0}
+  .summary-row.total{font-size:20px;font-weight:900;border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+  .toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:#1f2a24;color:white;padding:12px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:.2s;z-index:50}
+  .toast.show{opacity:1}
+  .badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#b57a43;color:white;font-size:12px;margin-left:4px}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 20px}
+  .filters button{border:1px solid var(--line);background:var(--paper);padding:8px 12px;border-radius:999px}
+  .filters button.active{background:var(--accent);color:white;border-color:var(--accent)}
+  .checkout-box{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+  .checkout-box label{display:block;font-size:13px;color:var(--muted)}
+  .checkout-box select,.checkout-box input{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:12px;padding:11px;background:white}
+  .statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .stat{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px}
+  .stat strong{font-size:28px;display:block}
+  footer{padding:30px 20px;color:var(--muted);text-align:center}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}.detail{grid-template-columns:1fr}.statgrid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){main{padding:14px}.topbar{padding:12px 14px}.nav{padding:0 14px 12px}.grid{grid-template-columns:1fr 1fr;gap:10px}.art{font-size:46px}.card-body{padding:12px}.title{font-size:16px}.hero{padding:22px;border-radius:22px}.hero p{font-size:16px}.checkout-box{grid-template-columns:1fr}.detail h1{font-size:30px}.statgrid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="topbar">
+    <div class="brand"><div class="mark">✦</div><div>Forage<small>hunt • choose • collect</small></div></div>
+    <div class="balance" id="balanceBox">Ƶ 2,000</div>
+  </div>
+  <div class="nav" id="nav"></div>
+</header>
+<main id="main"></main>
+<footer>Forage is play money only. Nothing here can charge a real card.</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const PRODUCTS = [
+ {id:'adv-pants',cat:'Moto',emoji:'🥾',name:'Trailwise Short ADV Pant',price:84,rarity:'Excellent find',desc:'AA-rated textile pants with a true 29" inseam, venting, removable thermal liner, and low-profile hip armor.',specs:{Fit:'Women’s petite',Inseam:'29 in',Rating:'AA',Armor:'CE Level 2 knees + hips'}},
+ {id:'moto-bag',cat:'Moto',emoji:'🏍️',name:'Mini Alpine Tank Satchel',price:49,rarity:'New',desc:'Compact waterproof tank bag sized for smaller ADV bikes. Magnetic-free mounting, map window, glove-friendly zips.',specs:{Capacity:'5 L',Waterproof:'Yes',Mount:'Strap system',Weight:'0.8 lb'}},
+ {id:'iridescent-thread',cat:'Craft',emoji:'🧵',name:'Northern Lights Iridescent Thread Set',price:18,rarity:'Tiny treasure',desc:'Six shifting colors for hidden details, constellations, outlines, and embroidery accents.',specs:{Spools:'6',Fiber:'Poly blend',Finish:'Iridescent',Use:'Hand + machine'}},
+ {id:'pottery-tool',cat:'Pottery',emoji:'🏺',name:'Cloudline Trimming Tool',price:32,rarity:'Maker pick',desc:'Fine trimming tool for yunomi feet, tea ware, and delicate detail work.',specs:{Steel:'Hardened',Handle:'Beech',Length:'6.5 in',Best for:'Fine trimming'}},
+ {id:'glaze',cat:'Pottery',emoji:'🫖',name:'Rain-on-Stone Glaze Pair',price:27,rarity:'Studio find',desc:'Two small-batch glazes: celadon grey-green and warm iron speckle. Layering-friendly.',specs:{Jars:'2 × 4 oz',Cone:'5–6',Finish:'Gloss / satin',Food safe:'Yes'}},
+ {id:'stationery',cat:'Korea',emoji:'✒️',name:'Seoul Morning Field Notes',price:16,rarity:'New drop',desc:'Pocket notebooks with dot-grid paper, transit-inspired tabs, and soft-touch covers.',specs:{Books:'3',Pages:'96 each',Paper:'100 gsm',Binding:'Lay-flat'}},
+ {id:'concert-pouch',cat:'Music',emoji:'💜',name:'Concert Night Utility Pouch',price:24,rarity:'Limited',desc:'Hands-free mini pouch for light stick batteries, freebies, earplugs, cards, and emergency hair ties.',specs:{Strap:'Adjustable',Pockets:'5',Water resistant:'Yes',Weight:'4.7 oz'}},
+ {id:'watch',cat:'Style',emoji:'⌚',name:'Petite Observatory Watch',price:92,rarity:'Excellent find',desc:'25 mm analog watch with a slim leather strap and a tiny constellation detail at six o’clock.',specs:{Case:'25 mm',Water resistance:'5 ATM',Crystal:'Mineral',Strap:'Leather'}},
+ {id:'cat-window',cat:'Home',emoji:'🐈',name:'Double-Decker Window Perch',price:39,rarity:'Boba/Mochi approved',desc:'Two-level suction-mounted perch with washable sling beds and a shared lookout ledge.',specs:{Levels:'2',Capacity:'55 lb total',Washable:'Yes',Install:'No tools'}},
+ {id:'ramen-pot',cat:'Kitchen',emoji:'🍜',name:'Little Ramen Night Pot',price:34,rarity:'Cozy find',desc:'Compact lidded pot for ramen, fish balls, congee, eggs, and one-person comfort cooking.',specs:{Capacity:'1.3 L',Material:'Enameled steel',Induction:'Yes',Dishwasher:'Yes'}},
+ {id:'travel-case',cat:'Travel',emoji:'🧳',name:'One-Night Adventure Cube',price:28,rarity:'Useful',desc:'A tiny structured packing cube designed for one change of clothes, chargers, meds, and toiletries.',specs:{Volume:'8 L',Compression:'Yes',Carry handle:'Yes',Weight:'6 oz'}},
+ {id:'karst-pin',cat:'Travel',emoji:'⛰️',name:'Karst Mountain Enamel Pin',price:12,rarity:'Tiny treasure',desc:'A misty mountain pin inspired by southern Chinese karst landscapes.',specs:{Width:'1.2 in',Finish:'Soft enamel',Backs:'2',Edition:'Open'}},
+ {id:'moto-gloves',cat:'Moto',emoji:'🧤',name:'Wanderlight Summer Gloves',price:58,rarity:'New drop',desc:'Short-cuff motorcycle gloves with goatskin palms, flexible knuckle protection, and touchscreen fingertips.',specs:{Rating:'CE 1 KP',Palm:'Goatskin',Touchscreen:'Yes',Season:'Warm weather'}},
+ {id:'tea-cup',cat:'Pottery',emoji:'🍵',name:'Tiny Shiboridashi Companion Cup',price:41,rarity:'Handmade',desc:'A quiet little porcelain cup with a satin white glaze and thumb-rest contour.',specs:{Capacity:'90 ml',Material:'Porcelain',Made:'Small batch',Microwave:'Yes'}},
+ {id:'mystery-map',cat:'Adventure',emoji:'🗺️',name:'Mystery Backroad Day Trip',price:67,rarity:'Rare find',desc:'A sealed fictional route pack: scenic roads, a tiny museum, one excellent lunch stop, and a surprise overlook.',specs:{Distance:'120–180 mi',Difficulty:'Easy',Stops:'4',Season:'Year-round'}},
+ {id:'hat-kit',cat:'Craft',emoji:'🤠',name:'Hidden Constellation Hat Kit',price:26,rarity:'Project bait',desc:'Tiny rhinestones, iridescent thread, stencil film, and a discreet Big Dipper template for a concert hat.',specs:{Crystals:'3 sizes',Thread:'Iridescent',Stencil:'Reusable',Difficulty:'Delightfully fiddly'}},
+];
+
+const CATS = ['All', ...new Set(PRODUCTS.map(p=>p.cat))];
+
+let state = JSON.parse(localStorage.getItem('forageState')||'null') || {
+  balance:2000, cart:[], wishlist:[], orders:[], purchases:0, spent:0, filter:'All'
+};
+let page='shop';
+let selected=null;
+
+function save(){ localStorage.setItem('forageState', JSON.stringify(state)); renderHeader(); }
+function money(n){ return 'Ƶ ' + n.toLocaleString(); }
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
+function deliveryDate(days=3){ const d=new Date(); d.setDate(d.getDate()+days); return d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'}); }
+function renderHeader(){
+  document.getElementById('balanceBox').textContent = money(state.balance);
+  const items=[['shop','Discover'],['wishlist','Wishlist'],['cart','Cart'],['orders','Orders'],['stats','Stats']];
+  document.getElementById('nav').innerHTML=items.map(([id,label])=>`<button class="${page===id?'active':''}" onclick="go('${id}')">${label}${id==='cart'&&state.cart.length?`<span class="badge">${state.cart.length}</span>`:''}</button>`).join('');
+}
+function go(p){ page=p; selected=null; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+function productCard(p){
+  const wished=state.wishlist.includes(p.id);
+  return `<div class="card">
+    <div class="art">${p.emoji}</div>
+    <div class="card-body">
+      <div class="eyebrow">${p.cat}</div>
+      <div class="title">${p.name}</div>
+      <div class="desc">${p.desc}</div>
+      <div><span class="pill">${p.rarity}</span></div>
+      <div class="price-row"><div class="price">${money(p.price)}</div>
+        <div class="actions">
+          <button class="secondary" onclick="toggleWish('${p.id}')">${wished?'♥':'♡'}</button>
+          <button class="primary" onclick="viewProduct('${p.id}')">Inspect</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function toggleWish(id){ const i=state.wishlist.indexOf(id); if(i>=0){state.wishlist.splice(i,1);toast('Removed from wishlist');}else{state.wishlist.push(id);toast('Saved for later');} save(); render(); }
+function addCart(id){ state.cart.push(id); save(); toast('Added to basket'); render(); }
+function viewProduct(id){ selected=PRODUCTS.find(p=>p.id===id); page='detail'; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+function removeCart(i){ state.cart.splice(i,1); save(); render(); }
+function checkout(){
+  const total=state.cart.reduce((s,id)=>s+PRODUCTS.find(p=>p.id===id).price,0);
+  if(!state.cart.length) return;
+  if(total>state.balance){ toast('Not enough forage funds'); return; }
+  const ship=document.getElementById('ship').value;
+  const days=ship==='express'?1:ship==='slow'?5:3;
+  const order={
+    id:'FG-'+Math.random().toString(36).slice(2,8).toUpperCase(),
+    items:[...state.cart],
+    total, placed:new Date().toISOString(), delivery:deliveryDate(days), status:'Processing'
+  };
+  state.balance-=total; state.spent+=total; state.purchases+=state.cart.length; state.orders.unshift(order); state.cart=[];
+  save(); page='orders'; render(); toast('Order placed ✦');
+}
+function resetFunds(){ state.balance=2000; save(); render(); toast('Monthly forage funds refreshed'); }
+function renderShop(){
+  const filtered=state.filter==='All'?PRODUCTS:PRODUCTS.filter(p=>p.cat===state.filter);
+  return `<section class="hero">
+    <div><div class="eyebrow" style="color:#e7efe9">Morning expedition</div><h1>Find something worth hunting for.</h1>
+    <p>Browse slowly. Inspect details. Save contenders. Build a basket. Buy only what wins.</p></div>
+    <div class="hero-card"><strong>Today’s forage fund</strong><div style="font-size:38px;font-weight:900;margin:8px 0">${money(state.balance)}</div><div style="opacity:.85">Inventory is fictional. Satisfaction is real.</div></div>
+  </section>
+  <div class="section-head"><div><h2>Today’s finds</h2><p>A mixed market of moto gear, craft supplies, small pleasures, and odd little discoveries.</p></div></div>
+  <div class="filters">${CATS.map(c=>`<button class="${state.filter===c?'active':''}" onclick="state.filter='${c}';save();render()">${c}</button>`).join('')}</div>
+  <div class="grid">${filtered.map(productCard).join('')}</div>`;
+}
+function renderDetail(){
+  const p=selected;
+  if(!p) return '';
+  return `<button class="secondary" onclick="go('shop')" style="margin-bottom:14px">← Back to hunting</button>
+  <div class="detail">
+    <div class="art">${p.emoji}</div>
+    <div>
+      <div class="eyebrow">${p.cat} · ${p.rarity}</div>
+      <h1>${p.name}</h1>
+      <div style="font-size:26px;font-weight:900">${money(p.price)}</div>
+      <p>${p.desc}</p>
+      <div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div class="spec"><div class="eyebrow">${k}</div><strong>${v}</strong></div>`).join('')}</div>
+      <p><strong>Field note:</strong> This is the kind of item that rewards a second look. Compare the details, imagine where it fits, then decide whether it earns basket space.</p>
+      <div class="actions">
+        <button class="secondary" onclick="toggleWish('${p.id}')">${state.wishlist.includes(p.id)?'♥ Saved':'♡ Save'}</button>
+        <button class="primary" onclick="addCart('${p.id}')">Add to basket</button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderWishlist(){
+ const items=state.wishlist.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);
+ return `<div class="section-head"><div><h2>Wishlist</h2><p>The promising ones you weren’t ready to commit to.</p></div></div>
+ ${items.length?`<div class="grid">${items.map(productCard).join('')}</div>`:`<div class="empty">Nothing saved yet. Hunt around and keep a few contenders.</div>`}`;
+}
+function renderCart(){
+ const items=state.cart.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);
+ const total=items.reduce((s,p)=>s+p.price,0);
+ return `<div class="section-head"><div><h2>Your basket</h2><p>The point where “interesting” becomes “mine.”</p></div></div>
+ ${items.length?items.map((p,i)=>`<div class="cartline"><div class="miniart">${p.emoji}</div><div><strong>${p.name}</strong><div class="eyebrow">${p.cat}</div></div><div style="text-align:right"><strong>${money(p.price)}</strong><br><button class="danger" onclick="removeCart(${i})">Remove</button></div></div>`).join(''):`<div class="empty">Your basket is empty.</div>`}
+ ${items.length?`<div class="summary"><div class="summary-row"><span>Merchandise</span><strong>${money(total)}</strong></div><div class="summary-row"><span>Shipping</span><strong>Ƶ 0</strong></div><div class="summary-row total"><span>Total</span><span>${money(total)}</span></div>
+ <div class="checkout-box"><div><label>Delivery speed<select id="ship"><option value="standard">Standard · arrives ${deliveryDate(3)}</option><option value="express">Express · arrives ${deliveryDate(1)}</option><option value="slow">Slow & scenic · arrives ${deliveryDate(5)}</option></select></label></div><div><label>Deliver to<input value="Home base" readonly></label></div></div>
+ <button class="primary" style="width:100%;padding:14px" onclick="checkout()">Place order</button>
+ </div>`:''}`;
+}
+function renderOrders(){
+ return `<div class="section-head"><div><h2>Orders</h2><p>The anticipation shelf.</p></div></div>
+ ${state.orders.length?state.orders.map(o=>`<div class="order"><div class="miniart">📦</div><div><strong>${o.id}</strong><div style="color:var(--muted);margin-top:4px">${o.items.map(id=>PRODUCTS.find(p=>p.id===id)?.name).filter(Boolean).join(', ')}</div><div class="eyebrow" style="margin-top:7px">${o.status} · Estimated ${o.delivery}</div></div><strong>${money(o.total)}</strong></div>`).join(''):`<div class="empty">No orders yet. Your future parcels are waiting to be invented.</div>`}`;
+}
+function renderStats(){
+ return `<div class="section-head"><div><h2>Forage stats</h2><p>Quietly tracking your fictional collecting habits.</p></div></div>
+ <div class="statgrid">
+  <div class="stat"><span class="eyebrow">Available</span><strong>${money(state.balance)}</strong>Current forage fund</div>
+  <div class="stat"><span class="eyebrow">Acquired</span><strong>${state.purchases}</strong>Items purchased</div>
+  <div class="stat"><span class="eyebrow">Spent</span><strong>${money(state.spent)}</strong>Fictional currency</div>
+  <div class="stat"><span class="eyebrow">Orders</span><strong>${state.orders.length}</strong>Parcels created</div>
+ </div>
+ <div class="summary" style="margin-top:18px">
+   <h3 style="margin-top:0">Monthly reset</h3>
+   <p style="color:var(--muted)">Need a fresh hunt? Refill your imaginary account without touching anything real.</p>
+   <button class="secondary" onclick="resetFunds()">Refresh to Ƶ 2,000</button>
+ </div>`;
+}
+function render(){
+ renderHeader();
+ const m=document.getElementById('main');
+ if(page==='shop') m.innerHTML=renderShop();
+ else if(page==='detail') m.innerHTML=renderDetail();
+ else if(page==='wishlist') m.innerHTML=renderWishlist();
+ else if(page==='cart') m.innerHTML=renderCart();
+ else if(page==='orders') m.innerHTML=renderOrders();
+ else if(page==='stats') m.innerHTML=renderStats();
+}
+render();
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
