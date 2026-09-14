@@ -32,6 +32,15 @@ header{position:sticky;top:0;z-index:20;background:rgba(246,243,236,.94);backdro
 @media(max-width:900px){.profile-grid{grid-template-columns:1fr}}
 @media(max-width:560px){.form-grid{grid-template-columns:1fr}.full{grid-column:auto}}
 
+
+.market-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+.market-note{border:1px solid var(--line);border-radius:15px;padding:12px;background:var(--paper)}
+.market-note strong{display:block;font-size:14px}.market-note span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.discovery-badge{display:inline-block;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;border:1px solid var(--line);border-radius:999px;padding:5px 8px;background:white;margin:0 5px 5px 0}
+.stockline{font-size:12px;font-weight:800;margin-top:7px}
+.review-card{border-top:1px solid var(--line);padding:14px 0}.review-head{display:flex;justify-content:space-between;gap:10px}
+.verified{font-size:11px;font-weight:800;color:var(--accent)}
+@media(max-width:760px){.market-strip{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -78,6 +87,35 @@ function buildProducts(){
   return out;
 }
 const PRODUCTS=buildProducts(), CATS=['All',...Object.keys(CATDATA)];
+
+const FORAGE_REVIEW_BANK=[
+ ['Mina R.','Thoughtful little find','I came back to this three times before choosing it. The details won me over.'],
+ ['Theo K.','Better in use','The practical bits are better than the listing suggests. One tiny quibble, but I keep reaching for it.'],
+ ['Nora J.','Good, with one caveat','The finish is more understated than I expected, which I ended up liking.'],
+ ['Sam P.','My kind of unnecessary','Did I need this? No. Did I enjoy comparing six versions and waiting for it to arrive? Completely.'],
+ ['Ari L.','Well thought out','The proportions and little design choices feel considered rather than gimmicky.'],
+ ['June W.','Almost perfect','I wish there were one more option, but I am still very glad I picked this one.'],
+ ['Casey T.','Quiet favorite','Not the flashiest thing in my order, somehow the one I keep noticing.'],
+ ['Ren S.','Read the details','Once I picked the right option it was exactly what I hoped for.']
+];
+const FORAGE_BADGES=['Field favorite','Quiet gem','New arrival','Forager pick','Small-batch','Worth a look'];
+function forageSeed(id,salt=0){let h=2166136261,s=id+'|'+salt;for(let c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return(h>>>0)/4294967295}
+function deepenProduct(p){
+ const a=forageSeed(p.id,11),b=forageSeed(p.id,22),c=forageSeed(p.id,33);
+ p.rating=Math.round((3.65+a*1.3)*10)/10;
+ p.reviews=Math.max(3,Math.floor(7+b*b*1700));
+ p.stock=Math.max(1,Math.floor(2+c*30));
+ p.marketBadge=FORAGE_BADGES[Math.floor(forageSeed(p.id,44)*FORAGE_BADGES.length)];
+ p.limited=forageSeed(p.id,55)>.88;
+ p.markdown=forageSeed(p.id,66)>.91;
+ if(p.markdown&&!p.oldPrice)p.oldPrice=Math.ceil(p.price*(1.12+forageSeed(p.id,77)*.2));
+ let base=Math.floor(forageSeed(p.id,88)*FORAGE_REVIEW_BANK.length);
+ p.deepReviews=[0,1,2].map(n=>{let v=FORAGE_REVIEW_BANK[(base+n*3)%FORAGE_REVIEW_BANK.length];return{name:v[0],title:v[1],text:v[2],stars:Math.max(3,Math.min(5,Math.round(p.rating+(forageSeed(p.id,90+n)-.5))))}});
+}
+PRODUCTS.forEach(deepenProduct);
+function forageStars(n){return'★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n))}
+function forageStock(p){if(p.stock<=3)return`Only ${p.stock} left today`;if(p.limited)return`Limited batch · ${p.stock} available`;if(p.stock<=8)return`${p.stock} available`;return'In stock'}
+
 let state=JSON.parse(localStorage.getItem('forageV2State')||'null')||{balance:2000,cart:[],wishlist:[],orders:[],purchases:0,spent:0,filter:'All',query:'',sort:'daily',pageNo:1};
 state.profile=state.profile||{
   displayName:'Julz',
@@ -102,7 +140,7 @@ function renderHeader(){
 }
 function go(p){page=p;selected=null;render();window.scrollTo({top:0,behavior:'smooth'})}
 function photo(p,big=false){const r=((p.seed%9)-4)*1.7;return `<div class="photo" style="--r:${r}deg"><div class="product-object" style="font-size:${big?110:66}px">${p.emoji}</div><div class="photo-label">AI photo-ready · ${p.cat}</div></div>`}
-function productCard(p){const wished=state.wishlist.includes(p.id);return `<div class="card">${photo(p)}<div class="card-body"><div class="eyebrow">${p.cat}</div><div class="title">${p.name}</div><div class="rating">★ ${p.rating} · ${p.reviews.toLocaleString()} ratings</div><div class="desc">${p.desc}</div><div><span class="pill">${p.rarity}</span>${p.stock<=4?` <span class="pill">Only ${p.stock} left</span>`:''}</div><div class="price-row"><div class="price">${money(p.price)}${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div><div class="actions"><button class="secondary" onclick="toggleWish('${p.id}')">${wished?'♥':'♡'}</button><button class="primary" onclick="viewProduct('${p.id}')">Inspect</button></div></div></div></div>`}
+function productCard(p){const wished=state.wishlist.includes(p.id);return `<article class="card" onclick="openProduct('${p.id}')"><div class="art"><div class="art-label">${p.cat}</div><div class="emoji">${p.emoji}</div><button class="heart ${wished?'on':''}" onclick="event.stopPropagation();toggleWish('${p.id}')">${wished?'♥':'♡'}</button></div><div class="cardbody"><div><span class="discovery-badge">${p.marketBadge}</span>${p.limited?'<span class="discovery-badge">Limited</span>':''}</div><h3>${p.name}</h3><div class="rating">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} reviews</div><p>${p.desc}</p><div class="stockline">${forageStock(p)}</div><div class="price">${money(p.price)} ${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div></div></article>`}
 function toggleWish(id){const i=state.wishlist.indexOf(id);if(i>=0){state.wishlist.splice(i,1);toast('Removed from wishlist')}else{state.wishlist.push(id);toast('Saved for later')}save();render()}
 function viewProduct(id){selected=PRODUCTS.find(p=>p.id===id);page='detail';render();window.scrollTo({top:0,behavior:'smooth'})}
 function selectedOption(p){if(p.sizes?.length)return document.getElementById('sizeSelect')?.value||p.sizes[0];if(p.variants?.length)return document.getElementById('variantSelect')?.value||p.variants[0];return null}
@@ -150,7 +188,12 @@ function renderShopInto(){
     </select>
   </div>
   <div class="filters" id="filterBar">${CATS.map(c=>`<button class="chip ${state.filter===c?'active':''}" data-filter="${c.replace(/"/g,'&quot;')}">${c}</button>`).join('')}</div>
-  <div id="productResults"></div>`;
+  <div class="market-strip">
+<div class="market-note"><strong>✦ Rare finds</strong><span>Some things surface less often.</span></div>
+<div class="market-note"><strong>▣ Small batches</strong><span>Stock varies across the market.</span></div>
+<div class="market-note"><strong>★ Opinionated reviews</strong><span>Not everything gets five stars.</span></div>
+<div class="market-note"><strong>↻ Fresh tomorrow</strong><span>The hunt reshuffles each morning.</span></div>
+</div><div id="productResults"></div>`;
   document.getElementById('searchInput').addEventListener('input',e=>setQuery(e.target.value));
   document.getElementById('sortSelect').addEventListener('change',e=>setSort(e.target.value));
   document.getElementById('filterBar').addEventListener('click',e=>{
@@ -169,7 +212,7 @@ function renderProductResults(){
     ? `<div class="grid">${subset.map(productCard).join('')}</div>${pages>1?`<div class="pager"><button class="secondary" ${state.pageNo===1?'disabled':''} onclick="state.pageNo--;save();renderProductResults();window.scrollTo({top:430,behavior:'smooth'})">← Prev</button><span class="pill">Page ${state.pageNo} / ${pages}</span><button class="secondary" ${state.pageNo===pages?'disabled':''} onclick="state.pageNo++;save();renderProductResults();window.scrollTo({top:430,behavior:'smooth'})">Next →</button></div>`:''}`
     : `<div class="empty">No finds matched that search. Try another word, or tap a category to start a fresh browse.</div>`;
 }
-function renderDetail(){const p=selected;if(!p)return'';const optionControl=p.sizes?.length?`<div><label>Size<select id="sizeSelect">${p.sizes.map(s=>`<option>${s}</option>`).join('')}</select></label></div>`:p.variants?.length?`<div><label>Variant<select id="variantSelect">${p.variants.map(s=>`<option>${s}</option>`).join('')}</select></label></div>`:'';return `<button class="secondary" onclick="go('shop')" style="margin-bottom:14px">← Back to hunting</button><div class="detail">${photo(p,true)}<div><div class="eyebrow">${p.cat} · ${p.rarity}</div><h1>${p.name}</h1><div style="font-size:26px;font-weight:900">${money(p.price)}${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div><div class="rating" style="margin-top:6px">★ ${p.rating} · ${p.reviews.toLocaleString()} ratings · ${p.stock} in stock</div><p>${p.desc}</p><div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div class="spec"><div class="eyebrow">${k}</div><strong>${v}</strong></div>`).join('')}</div><div class="selectors">${optionControl}<div><label>Quantity<select id="qtySelect">${[1,2,3,4,5].map(q=>`<option value="${q}">${q}</option>`).join('')}</select></label></div></div><div class="actions"><button class="secondary" onclick="toggleWish('${p.id}')">${state.wishlist.includes(p.id)?'♥ Saved':'♡ Save'}</button><button class="primary" onclick="addCart('${p.id}')">Add to basket</button></div><div class="reviewbox"><div class="section-head" style="margin:18px 0 4px"><div><h2 style="font-size:20px">Customer notes</h2><p>Fictional reviews, because comparison is part of the hunt.</p></div></div>${p.reviewSnippets.map(r=>`<div class="review"><strong>${r.name} · ${'★'.repeat(r.stars)}</strong><span>${r.text}</span></div>`).join('')}</div></div></div>`}
+function renderDetail(){const p=selected;if(!p)return'';const optionControl=p.sizes?.length?`<div><label>Size<select id="sizeSelect">${p.sizes.map(s=>`<option>${s}</option>`).join('')}</select></label></div>`:p.variants?.length?`<div><label>Variant<select id="variantSelect">${p.variants.map(s=>`<option>${s}</option>`).join('')}</select></label></div>`:'';const maxQty=Math.max(1,Math.min(5,p.stock));return `<button class="secondary" onclick="go('shop')" style="margin-bottom:14px">← Back to hunting</button><div class="detail">${photo(p,true)}<div><div class="eyebrow">${p.cat} · ${p.rarity}</div><div><span class="discovery-badge">${p.marketBadge}</span>${p.limited?'<span class="discovery-badge">Limited batch</span>':''}</div><h1>${p.name}</h1><div style="font-size:26px;font-weight:900">${money(p.price)}${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div><div class="rating" style="margin-top:6px">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} ratings</div><div class="stockline">${forageStock(p)}</div><p>${p.desc}</p><div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div class="spec"><div class="eyebrow">${k}</div><strong>${v}</strong></div>`).join('')}</div><div class="selectors">${optionControl}<div><label>Quantity<select id="qtySelect">${Array.from({length:maxQty},(_,i)=>i+1).map(q=>`<option value="${q}">${q}</option>`).join('')}</select></label></div></div><div class="actions"><button class="secondary" onclick="toggleWish('${p.id}')">${state.wishlist.includes(p.id)?'♥ Saved':'♡ Save'}</button><button class="primary" onclick="addCart('${p.id}')">Add to basket</button></div><section style="margin-top:24px"><div class="section-head" style="margin-bottom:4px"><div><h2 style="font-size:20px">What foragers are saying</h2><p>Fictional reviews · comparison is part of the hunt.</p></div></div>${p.deepReviews.map(r=>`<div class="review-card"><div class="review-head"><strong>${r.title}</strong><span>${forageStars(r.stars)}</span></div><div><strong>${r.name}</strong> <span class="verified">✓ Verified fictional purchase</span></div><p>${r.text}</p></div>`).join('')}</section></div></div>`}
 function renderWishlist(){const items=state.wishlist.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);return `<div class="section-head"><div><h2>Wishlist</h2><p>The promising ones you were not ready to commit to.</p></div></div>${items.length?`<div class="grid">${items.map(productCard).join('')}</div>`:`<div class="empty">Nothing saved yet.</div>`}`}
 function addressText(a){return [a.recipient,a.line1,a.line2,a.city,a.region,a.postal].filter(Boolean).join(', ')}
 function renderCart(){
