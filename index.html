@@ -137,6 +137,21 @@ let selected=null;
 
 function save(){ localStorage.setItem('forageState', JSON.stringify(state)); renderHeader(); }
 function money(n){ return 'Ƶ ' + n.toLocaleString(); }
+
+function hasSize(p){
+  return ['Moto','Style'].includes(p.cat) && /(Pant|Jean|Jacket|Glove|Jersey|Armor|Shirt|Watch|Sneaker|Belt)/i.test(p.name);
+}
+function sizeOptions(p){
+  if(/Pant|Jean/i.test(p.name)) return ['XS Short','S Short','M Short','L Short'];
+  if(/Glove/i.test(p.name)) return ['XS','S','M','L'];
+  if(/Watch/i.test(p.name)) return ['Petite','Standard'];
+  if(/Sneaker/i.test(p.name)) return ['5','6','7','8','9'];
+  return ['XS','S','M','L','XL'];
+}
+function normalizeCart(){
+  state.cart = state.cart.map(x => typeof x === 'string' ? {id:x, qty:1, size:null} : ({qty:1,size:null,...x}));
+}
+normalizeCart();
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
 function deliveryDate(days=3){ const d=new Date(); d.setDate(d.getDate()+days); return d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'}); }
 function renderHeader(){
@@ -164,11 +179,19 @@ function productCard(p){
   </div>`;
 }
 function toggleWish(id){ const i=state.wishlist.indexOf(id); if(i>=0){state.wishlist.splice(i,1);toast('Removed from wishlist');}else{state.wishlist.push(id);toast('Saved for later');} save(); render(); }
-function addCart(id){ state.cart.push(id); save(); toast('Added to basket'); render(); }
+function addCart(id){
+  const p=PRODUCTS.find(x=>x.id===id);
+  const qty=Math.max(1, parseInt(document.getElementById('qtySelect')?.value || '1',10));
+  const size=hasSize(p) ? (document.getElementById('sizeSelect')?.value || sizeOptions(p)[0]) : null;
+  const existing=state.cart.find(x=>x.id===id && x.size===size);
+  if(existing) existing.qty += qty;
+  else state.cart.push({id,qty,size});
+  save(); toast(`Added ${qty} to basket`); render();
+}
 function viewProduct(id){ selected=PRODUCTS.find(p=>p.id===id); page='detail'; render(); window.scrollTo({top:0,behavior:'smooth'}); }
 function removeCart(i){ state.cart.splice(i,1); save(); render(); }
 function checkout(){
-  const total=state.cart.reduce((s,id)=>s+PRODUCTS.find(p=>p.id===id).price,0);
+  const total=state.cart.reduce((s,line)=>s+PRODUCTS.find(p=>p.id===line.id).price*line.qty,0);
   if(!state.cart.length) return;
   if(total>state.balance){ toast('Not enough forage funds'); return; }
   const ship=document.getElementById('ship').value;
@@ -178,7 +201,7 @@ function checkout(){
     items:[...state.cart],
     total, placed:new Date().toISOString(), delivery:deliveryDate(days), status:'Processing'
   };
-  state.balance-=total; state.spent+=total; state.purchases+=state.cart.length; state.orders.unshift(order); state.cart=[];
+  state.balance-=total; state.spent+=total; state.purchases+=state.cart.reduce((s,x)=>s+x.qty,0); state.orders.unshift(order); state.cart=[];
   save(); page='orders'; render(); toast('Order placed ✦');
 }
 function resetFunds(){ state.balance=2000; save(); render(); toast('Monthly forage funds refreshed'); }
@@ -206,6 +229,10 @@ function renderDetail(){
       <p>${p.desc}</p>
       <div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div class="spec"><div class="eyebrow">${k}</div><strong>${v}</strong></div>`).join('')}</div>
       <p><strong>Field note:</strong> This is the kind of item that rewards a second look. Compare the details, imagine where it fits, then decide whether it earns basket space.</p>
+      <div class="checkout-box" style="grid-template-columns:${'${hasSize(p)?\'1fr 1fr\':\'1fr\'}'}">
+        ${'${hasSize(p)?`<div><label>Size<select id="sizeSelect">${sizeOptions(p).map(s=>`<option>${s}</option>`).join(\'\')}</select></label></div>`:\'\'}'}
+        <div><label>Quantity<select id="qtySelect">${[1,2,3,4,5].map(q=>`<option value="${q}">${q}</option>`).join('')}</select></label></div>
+      </div>
       <div class="actions">
         <button class="secondary" onclick="toggleWish('${p.id}')">${state.wishlist.includes(p.id)?'♥ Saved':'♡ Save'}</button>
         <button class="primary" onclick="addCart('${p.id}')">Add to basket</button>
@@ -219,10 +246,10 @@ function renderWishlist(){
  ${items.length?`<div class="grid">${items.map(productCard).join('')}</div>`:`<div class="empty">Nothing saved yet. Hunt around and keep a few contenders.</div>`}`;
 }
 function renderCart(){
- const items=state.cart.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);
- const total=items.reduce((s,p)=>s+p.price,0);
+ const items=state.cart.map((line,i)=>({line,p:PRODUCTS.find(p=>p.id===line.id),i})).filter(x=>x.p);
+ const total=items.reduce((s,x)=>s+x.p.price*x.line.qty,0);
  return `<div class="section-head"><div><h2>Your basket</h2><p>The point where “interesting” becomes “mine.”</p></div></div>
- ${items.length?items.map((p,i)=>`<div class="cartline"><div class="miniart">${p.emoji}</div><div><strong>${p.name}</strong><div class="eyebrow">${p.cat}</div></div><div style="text-align:right"><strong>${money(p.price)}</strong><br><button class="danger" onclick="removeCart(${i})">Remove</button></div></div>`).join(''):`<div class="empty">Your basket is empty.</div>`}
+ ${items.length?items.map(({p,line,i})=>`<div class="cartline"><div class="miniart">${p.emoji}</div><div><strong>${p.name}</strong><div class="eyebrow">${p.cat}${line.size?` · ${line.size}`:''} · Qty ${line.qty}</div></div><div style="text-align:right"><strong>${money(p.price*line.qty)}</strong><br><button class="danger" onclick="removeCart(${i})">Remove</button></div></div>`).join(''):`<div class="empty">Your basket is empty.</div>`}
  ${items.length?`<div class="summary"><div class="summary-row"><span>Merchandise</span><strong>${money(total)}</strong></div><div class="summary-row"><span>Shipping</span><strong>Ƶ 0</strong></div><div class="summary-row total"><span>Total</span><span>${money(total)}</span></div>
  <div class="checkout-box"><div><label>Delivery speed<select id="ship"><option value="standard">Standard · arrives ${deliveryDate(3)}</option><option value="express">Express · arrives ${deliveryDate(1)}</option><option value="slow">Slow & scenic · arrives ${deliveryDate(5)}</option></select></label></div><div><label>Deliver to<input value="Home base" readonly></label></div></div>
  <button class="primary" style="width:100%;padding:14px" onclick="checkout()">Place order</button>
@@ -230,7 +257,7 @@ function renderCart(){
 }
 function renderOrders(){
  return `<div class="section-head"><div><h2>Orders</h2><p>The anticipation shelf.</p></div></div>
- ${state.orders.length?state.orders.map(o=>`<div class="order"><div class="miniart">📦</div><div><strong>${o.id}</strong><div style="color:var(--muted);margin-top:4px">${o.items.map(id=>PRODUCTS.find(p=>p.id===id)?.name).filter(Boolean).join(', ')}</div><div class="eyebrow" style="margin-top:7px">${o.status} · Estimated ${o.delivery}</div></div><strong>${money(o.total)}</strong></div>`).join(''):`<div class="empty">No orders yet. Your future parcels are waiting to be invented.</div>`}`;
+ ${state.orders.length?state.orders.map(o=>`<div class="order"><div class="miniart">📦</div><div><strong>${o.id}</strong><div style="color:var(--muted);margin-top:4px">${o.items.map(line=>{const x=typeof line==='string'?{id:line,qty:1,size:null}:line; const p=PRODUCTS.find(p=>p.id===x.id); return p?`${p.name}${x.size?` (${x.size})`:''} ×${x.qty}`:''}).filter(Boolean).join(', ')}</div><div class="eyebrow" style="margin-top:7px">${o.status} · Estimated ${o.delivery}</div></div><strong>${money(o.total)}</strong></div>`).join(''):`<div class="empty">No orders yet. Your future parcels are waiting to be invented.</div>`}`;
 }
 function renderStats(){
  return `<div class="section-head"><div><h2>Forage stats</h2><p>Quietly tracking your fictional collecting habits.</p></div></div>
