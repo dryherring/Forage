@@ -125,7 +125,12 @@ function setSort(v){
   renderProductResults();
 }
 function setFilter(c){
-  state.filter=c;state.pageNo=1;save();
+  state.filter=c;
+  state.query='';
+  state.pageNo=1;
+  const search=document.getElementById('searchInput');
+  if(search) search.value='';
+  save();
   document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===c));
   renderProductResults();
 }
@@ -160,7 +165,9 @@ function renderProductResults(){
   const subset=arr.slice((state.pageNo-1)*per,state.pageNo*per);
   const title=document.getElementById('resultsTitle'); if(title)title.textContent=state.query?'Search results':'Today’s finds';
   const meta=document.getElementById('resultsMeta'); if(meta)meta.textContent=`${arr.length.toLocaleString()} products in the market · showing ${subset.length}`;
-  host.innerHTML=`<div class="grid">${subset.map(productCard).join('')}</div>${pages>1?`<div class="pager"><button class="secondary" ${state.pageNo===1?'disabled':''} onclick="state.pageNo--;save();renderProductResults();window.scrollTo({top:430,behavior:'smooth'})">← Prev</button><span class="pill">Page ${state.pageNo} / ${pages}</span><button class="secondary" ${state.pageNo===pages?'disabled':''} onclick="state.pageNo++;save();renderProductResults();window.scrollTo({top:430,behavior:'smooth'})">Next →</button></div>`:''}`;
+  host.innerHTML=arr.length
+    ? `<div class="grid">${subset.map(productCard).join('')}</div>${pages>1?`<div class="pager"><button class="secondary" ${state.pageNo===1?'disabled':''} onclick="state.pageNo--;save();renderProductResults();window.scrollTo({top:430,behavior:'smooth'})">← Prev</button><span class="pill">Page ${state.pageNo} / ${pages}</span><button class="secondary" ${state.pageNo===pages?'disabled':''} onclick="state.pageNo++;save();renderProductResults();window.scrollTo({top:430,behavior:'smooth'})">Next →</button></div>`:''}`
+    : `<div class="empty">No finds matched that search. Try another word, or tap a category to start a fresh browse.</div>`;
 }
 function renderDetail(){const p=selected;if(!p)return'';const optionControl=p.sizes?.length?`<div><label>Size<select id="sizeSelect">${p.sizes.map(s=>`<option>${s}</option>`).join('')}</select></label></div>`:p.variants?.length?`<div><label>Variant<select id="variantSelect">${p.variants.map(s=>`<option>${s}</option>`).join('')}</select></label></div>`:'';return `<button class="secondary" onclick="go('shop')" style="margin-bottom:14px">← Back to hunting</button><div class="detail">${photo(p,true)}<div><div class="eyebrow">${p.cat} · ${p.rarity}</div><h1>${p.name}</h1><div style="font-size:26px;font-weight:900">${money(p.price)}${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div><div class="rating" style="margin-top:6px">★ ${p.rating} · ${p.reviews.toLocaleString()} ratings · ${p.stock} in stock</div><p>${p.desc}</p><div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div class="spec"><div class="eyebrow">${k}</div><strong>${v}</strong></div>`).join('')}</div><div class="selectors">${optionControl}<div><label>Quantity<select id="qtySelect">${[1,2,3,4,5].map(q=>`<option value="${q}">${q}</option>`).join('')}</select></label></div></div><div class="actions"><button class="secondary" onclick="toggleWish('${p.id}')">${state.wishlist.includes(p.id)?'♥ Saved':'♡ Save'}</button><button class="primary" onclick="addCart('${p.id}')">Add to basket</button></div><div class="reviewbox"><div class="section-head" style="margin:18px 0 4px"><div><h2 style="font-size:20px">Customer notes</h2><p>Fictional reviews, because comparison is part of the hunt.</p></div></div>${p.reviewSnippets.map(r=>`<div class="review"><strong>${r.name} · ${'★'.repeat(r.stars)}</strong><span>${r.text}</span></div>`).join('')}</div></div></div>`}
 function renderWishlist(){const items=state.wishlist.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);return `<div class="section-head"><div><h2>Wishlist</h2><p>The promising ones you were not ready to commit to.</p></div></div>${items.length?`<div class="grid">${items.map(productCard).join('')}</div>`:`<div class="empty">Nothing saved yet.</div>`}`}
