@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 128" role="img" aria-labelledby="t d">
+<title id="t">Forage</title><desc id="d">Mountain trail emblem with Forage wordmark and Hunt Choose Collect tagline</desc>
+<g transform="translate(6 6)">
+  <circle cx="56" cy="56" r="48" fill="#f3ead9" stroke="#b88952" stroke-width="2.5"/>
+  <circle cx="56" cy="56" r="43" fill="#eee4d0"/>
+  <path d="M16 66 L34 46 L44 56 L62 30 L92 66 Z" fill="#617257"/>
+  <path d="M24 72 L43 52 L53 62 L67 43 L96 72 Z" fill="#314d3d"/>
+  <path d="M18 82 C35 75 47 83 55 72 C63 61 69 68 76 61 C82 55 88 54 96 54" fill="none" stroke="#f8f4e9" stroke-width="7" stroke-linecap="round"/>
+  <path d="M18 82 C35 75 47 83 55 72 C63 61 69 68 76 61 C82 55 88 54 96 54" fill="none" stroke="#b88952" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="75" cy="23" r="6" fill="#c9824f"/>
+  <path d="M27 43 l7-13 7 13z" fill="#405b46"/><path d="M22 48 l6-11 6 11z" fill="#405b46"/>
+</g>
+<text x="120" y="65" font-family="Georgia, 'Times New Roman', serif" font-size="58" fill="#29473a">Forage</text>
+<text x="124" y="92" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="4" fill="#667068">HUNT • CHOOSE • COLLECT</text>
+</svg>

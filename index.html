@@ -50,12 +50,12 @@ header{position:sticky;top:0;z-index:20;background:rgba(246,243,236,.94);backdro
 .size-link{border:0;background:none;color:var(--accent);padding:5px 0;font-weight:850;text-decoration:underline}.field-notes{margin:20px 0;border:1px solid var(--line);border-radius:18px;padding:18px;background:#fbf8f2}.field-notes .location{font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:900;color:var(--accent)}.field-notes h3{margin:5px 0 8px;font-family:Georgia,serif;font-size:23px}.field-notes p{margin:0;color:var(--ink)!important}.forage-aside{margin-top:12px;padding:12px 14px;border-left:3px solid var(--accent2);font-family:Georgia,serif;font-style:italic}.modalback{position:fixed;inset:0;background:rgba(20,25,22,.55);z-index:100;display:grid;place-items:center;padding:18px}.modal{background:var(--paper);width:min(760px,100%);max-height:88vh;overflow:auto;border-radius:22px;padding:20px}.size-table{width:100%;border-collapse:collapse}.size-table th,.size-table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
 
 .brand-home{display:inline-flex;align-items:center;border:0;background:transparent;padding:0;cursor:pointer;text-decoration:none}
-.brand-home img{display:block;width:min(310px,42vw);height:auto;max-height:82px;object-fit:contain;object-position:left center}
-@media(max-width:650px){.brand-home img{width:220px;max-height:68px}}
+.brand-home img{display:block;width:min(300px,48vw);height:auto;max-height:74px;object-fit:contain;object-position:left center}
+@media(max-width:650px){.brand-home img{width:235px;max-height:64px}}
 </style>
 </head>
 <body>
-<div class="app"><header><div class="topbar"><button class="brand-home" onclick="goHome()" aria-label="Forage home"><img src="forage-logo.png" alt="Forage — Hunt, Choose, Collect"></button><div class="balance" id="balanceBox"></div></div><div class="nav" id="nav"></div></header><main id="main"></main><footer>Forage uses fictional money only. No real checkout exists.</footer></div><div class="toast" id="toast"></div>
+<div class="app"><header><div class="topbar"><button class="brand-home" onclick="goHome()" aria-label="Forage home"><img src="forage-logo.svg" alt="Forage — Hunt, Choose, Collect"></button><div class="balance" id="balanceBox"></div></div><div class="nav" id="nav"></div></header><main id="main"></main><footer>Forage uses fictional money only. No real checkout exists.</footer></div><div class="toast" id="toast"></div>
 <script>let PRODUCTS=[];
 const CATS=["All", "Moto", "Pottery", "Craft", "Korea", "Music", "Style", "Home", "Kitchen", "Travel", "Adventure", "Cats", "Books & Paper"];
 async function loadCatalog(){const r=await fetch('catalog.json',{cache:'no-store'});if(!r.ok)throw new Error('catalog.json could not be loaded');PRODUCTS=await r.json();}
@@ -125,7 +125,7 @@ function renderShopInto(){
   const root=document.getElementById('shopArea'); if(!root)return;
   root.innerHTML=`<div class="section-head"><div><h2 id="resultsTitle">Today’s finds</h2><p id="resultsMeta"></p></div></div>
   <div class="toolbar">
-    <input id="searchInput" class="search" placeholder="Search 1,000 finds…" value="${state.query.replace(/"/g,'&quot;')}">
+    <input id="searchInput" class="search" placeholder="${state.filter==='All'?`Search ${PRODUCTS.length.toLocaleString()} finds…`:`Search ${filteredProducts().length.toLocaleString()} ${state.filter} finds…`}" value="${state.query.replace(/"/g,'&quot;')}">
     <select id="sortSelect" class="sort">
       <option value="daily" ${state.sort==='daily'?'selected':''}>Today’s order</option>
       <option value="rating" ${state.sort==='rating'?'selected':''}>Highest rated</option>
