@@ -41,83 +41,21 @@ header{position:sticky;top:0;z-index:20;background:rgba(246,243,236,.94);backdro
 .review-card{border-top:1px solid var(--line);padding:14px 0}.review-head{display:flex;justify-content:space-between;gap:10px}
 .verified{font-size:11px;font-weight:800;color:var(--accent)}
 @media(max-width:760px){.market-strip{grid-template-columns:1fr 1fr}}
+
+.photo.real-photo{background:none!important;border-radius:0!important;overflow:hidden!important;padding:0!important}
+.photo.real-photo::before,.photo.real-photo::after{content:none!important;display:none!important}
+.photo.real-photo img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;border-radius:0!important}
+
 </style>
 </head>
 <body>
 <div class="app"><header><div class="topbar"><div class="brand"><div class="mark">✦</div><div>Forage<small>hunt • choose • collect</small></div></div><div class="balance" id="balanceBox"></div></div><div class="nav" id="nav"></div></header><main id="main"></main><footer>Forage uses fictional money only. No real checkout exists.</footer></div><div class="toast" id="toast"></div>
-<script>
-const CATDATA={
-'Moto':{emoji:'🏍️',mods:['Alpine','Wanderlight','Ridgeline','Switchback','Blue Ridge','Nomad','Waypoint','Trailwise'],nouns:['ADV Pant','Trail Jacket','Summer Glove','Tank Bag','Tail Pack','Riding Jersey','Armored Shirt','Tool Roll']},
-'Pottery':{emoji:'🏺',mods:['Rain-on-Stone','Cloudline','Moss Window','Quiet Kiln','Riverbed','Moon Jar','Celadon Field','Iron Speckle'],nouns:['Trimming Tool','Rib Set','Glaze Pair','Yunomi Mold','Brush Set','Clay Stamp','Carving Set','Tea Ware Bat']},
-'Craft':{emoji:'🧵',mods:['Northern Lights','Hidden Constellation','Midnight Spark','Prism Field','Tiny Orbit','Concert Night','Studio Pocket','Afterglow'],nouns:['Iridescent Thread Set','Rhinestone Mix','Stencil Kit','Fineliner Set','Detail Scissors','Button Pack','Zipper Pull Kit','Washi Tape Set']},
-'Korea':{emoji:'🇰🇷',mods:['Seoul','Busan','Hongdae','Euljiro','Hannam','Ikseon','Jeju','Mapo'],nouns:['Morning Field Notes','Transit Sticker Pack','Cafe Pencil Case','Hangul Label Set','Notebook Trio','Index Tab Kit','Gel Pen Pack','Travel Journal']},
-'Music':{emoji:'🎵',mods:['Encore','Night One','Purple Hour','Stadium','Aftershow','Soundcheck','Glowline','Fanchant'],nouns:['Concert Utility Pouch','Light Stick Sling','Freebie Organizer','Earplug Case','Ticket Wallet','Photo Card Folio','Battery Caddy','Concert Hat Kit']},
-'Style':{emoji:'⌚',mods:['Observatory','Cobalt','Indigo','Quiet Luxury','Cloud Grey','Soft Black','City Field','Petit Atelier'],nouns:['Petite Watch','Leather Crossbody','Soft Cargo Pant','Oversized Shirt','Slim Belt','Canvas Sneaker','Travel Cardigan','Relaxed Jean']},
-'Home':{emoji:'🏠',mods:['Double-Decker','Warm Window','Quiet Corner','Soft Landing','Morning Light','Little Library','Cat Approved','Oak & Linen'],nouns:['Window Perch','Reading Lamp','Desk Shelf','Wool Throw','Catchall Tray','Photo Frame','Cat Tunnel','Floor Basket']},
-'Kitchen':{emoji:'🍜',mods:['Little Ramen Night','Kitchen Window','Tea Break','Weeknight','Small Batch','Morning Matcha','Comfort Bowl','Home Cafe'],nouns:['Ramen Pot','Egg Marinating Jar','Rice Bowl Pair','Mini Steamer','Tea Tray','Matcha Bowl','Noodle Bowl','Condiment Jar Set']},
-'Travel':{emoji:'🧳',mods:['One-Night Adventure','Gate 23','Window Seat','Carry-On Only','Red-Eye','Weekend Away','Small Escape','Road Atlas'],nouns:['Packing Cube','Tech Pouch','Passport Wallet','Seatback Organizer','Toiletry Case','Cable Roll','Daypack','Packing Folder']},
-'Adventure':{emoji:'🗺️',mods:['Blue Ridge','Karst','Sunday','Secret','Map Room','Long Way Home','Backroad','Overlook'],nouns:['Mystery Day Trip','Backroad Route Pack','Scenic Detour Map','Trail Lunch Box','Overlook Field Guide','Micro Adventure Deck','Waterfall Hunt','Small Town Quest']},
-'Cats':{emoji:'🐈',mods:['Boba & Mochi','Two-Cat','Soft Paw','Window Watch','Zoomie','Whisker','Sunbeam','Treat Hunt'],nouns:['Treat Puzzle','Window Hammock','Wool Mouse Set','Ceramic Water Bowl','Tunnel Cube','Scratch Lounge','Slow Feeder','Feather Wand']},
-'Books & Paper':{emoji:'📚',mods:['Anthropologist’s','Field Notes','Small Archive','Library Table','Margin Notes','Observation','Pattern Finder','Commonplace'],nouns:['Field Journal','Index Card Box','Reading Log','Annotation Kit','Book Weight','Page Flag Set','Desk Notebook','Research Card Set']}
-};
-const COLORS=['Cobalt','Olive','Charcoal','Sand','Indigo','Moss','Clay','Bone','Black','Cream','Fog','Copper','Plum','Sage'];
-const REVIEWTEXT=['Better thought out than I expected. The little details are what sold me.','Exactly the kind of thing I did not know I was looking for until I found it.','Feels sturdy, useful, and pleasantly specific rather than generic.','I compared three similar options and kept coming back to this one.','The proportions are excellent and it feels considered in actual use.','A satisfying find. I would buy it again in another color.'];
-const NAMES=['Mina','Jules','Ari','Sam','Nora','Theo','Yuna','Kai','Rae','Mika'];
-function buildProducts(){
-  const cats=Object.keys(CATDATA), out=[];
-  for(let i=1;i<=1000;i++){
-    const cat=cats[(i-1)%cats.length], cfg=CATDATA[cat], block=Math.floor((i-1)/cats.length);
-    const mod=cfg.mods[block%cfg.mods.length], noun=cfg.nouns[Math.floor(block/cfg.mods.length)%cfg.nouns.length];
-    const cycle=Math.floor(block/(cfg.mods.length*cfg.nouns.length));
-    const suffix=cycle?` ${COLORS[(block+cycle)%COLORS.length]} ${cycle+1}`:'';
-    const name=`${mod} ${noun}${suffix}`;
-    let price=12+((i*37)%145); if(cat==='Moto')price+=30;if(cat==='Style')price+=15;if(cat==='Adventure')price+=10; price=Math.round(price/2)*2;
-    const oldPrice=(i%6>=3)?price+[12,18,24][i%3]:null;
-    const rating=Math.min(4.9,Math.round((3.8+((i*17)%12)/10)*10)/10), reviews=8+((i*97)%843), stock=1+((i*19)%28);
-    let sizes=null,variants=[]; const n=noun.toLowerCase();
-    if(/pant|jean/.test(n))sizes=['XS Short','S Short','M Short','L Short','XL Short'];
-    else if(/jacket|shirt|jersey|cardigan/.test(n))sizes=['XS','S','M','L','XL'];
-    else if(/glove/.test(n))sizes=['XS','S','M','L'];
-    else if(/sneaker/.test(n))sizes=['5','6','7','8','9'];
-    else if(/watch/.test(n))variants=['Petite 25 mm','Classic 30 mm'];
-    else if(i%7===0)variants=[COLORS[i%10],COLORS[(i+1)%10],COLORS[(i+2)%10]];
-    const reviewSnippets=[0,1,2].map(j=>({name:NAMES[(i+j*3)%NAMES.length],stars:Math.max(3,Math.min(5,Math.round(rating+(j-1)*.25))),text:REVIEWTEXT[(i+j)%REVIEWTEXT.length]}));
-    out.push({id:`p${String(i).padStart(4,'0')}`,seed:i,cat,emoji:cfg.emoji,name,price,oldPrice,rating,reviews,stock,rarity:['New','Excellent find','Maker pick','Limited','Tiny treasure','Staff pick','Quiet favorite','Rare find'][i%8],desc:`Designed for the pleasure of finding something unusually specific. Thoughtful materials, useful details, and a reason to look twice.`,sizes,variants,specs:{Material:['Waxed canvas','Brushed steel','Leather','Stoneware','Ripstop nylon','Cotton twill','Porcelain','Aluminum'][i%8],Finish:['Matte','Satin','Soft-touch','Textured','Gloss','Natural'][i%6],Use:['Daily','Travel','Studio','Trail','Home','Concert'][i%6],Edition:['Small batch','Design studio','Workshop series','Field edition'][i%4]},reviewSnippets});
-  }
-  return out;
-}
-const PRODUCTS=buildProducts(), CATS=['All',...Object.keys(CATDATA)];
-
-const FORAGE_REVIEW_BANK=[
- ['Mina R.','Thoughtful little find','I came back to this three times before choosing it. The details won me over.'],
- ['Theo K.','Better in use','The practical bits are better than the listing suggests. One tiny quibble, but I keep reaching for it.'],
- ['Nora J.','Good, with one caveat','The finish is more understated than I expected, which I ended up liking.'],
- ['Sam P.','My kind of unnecessary','Did I need this? No. Did I enjoy comparing six versions and waiting for it to arrive? Completely.'],
- ['Ari L.','Well thought out','The proportions and little design choices feel considered rather than gimmicky.'],
- ['June W.','Almost perfect','I wish there were one more option, but I am still very glad I picked this one.'],
- ['Casey T.','Quiet favorite','Not the flashiest thing in my order, somehow the one I keep noticing.'],
- ['Ren S.','Read the details','Once I picked the right option it was exactly what I hoped for.']
-];
-const FORAGE_BADGES=['Field favorite','Quiet gem','New arrival','Forager pick','Small-batch','Worth a look'];
-function forageSeed(id,salt=0){let h=2166136261,s=id+'|'+salt;for(let c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return(h>>>0)/4294967295}
-function deepenProduct(p){
- const a=forageSeed(p.id,11),b=forageSeed(p.id,22),c=forageSeed(p.id,33);
- p.rating=Math.round((3.65+a*1.3)*10)/10;
- p.reviews=Math.max(3,Math.floor(7+b*b*1700));
- p.stock=Math.max(1,Math.floor(2+c*30));
- p.marketBadge=FORAGE_BADGES[Math.floor(forageSeed(p.id,44)*FORAGE_BADGES.length)];
- p.limited=forageSeed(p.id,55)>.88;
- p.markdown=forageSeed(p.id,66)>.91;
- if(p.markdown&&!p.oldPrice)p.oldPrice=Math.ceil(p.price*(1.12+forageSeed(p.id,77)*.2));
- let base=Math.floor(forageSeed(p.id,88)*FORAGE_REVIEW_BANK.length);
- p.deepReviews=[0,1,2].map(n=>{let v=FORAGE_REVIEW_BANK[(base+n*3)%FORAGE_REVIEW_BANK.length];return{name:v[0],title:v[1],text:v[2],stars:Math.max(3,Math.min(5,Math.round(p.rating+(forageSeed(p.id,90+n)-.5))))}});
-}
-PRODUCTS.forEach(deepenProduct);
+<script>let PRODUCTS=[];
+const CATS=["All", "Moto", "Pottery", "Craft", "Korea", "Music", "Style", "Home", "Kitchen", "Travel", "Adventure", "Cats", "Books & Paper"];
+async function loadCatalog(){const r=await fetch('catalog.json',{cache:'no-store'});if(!r.ok)throw new Error('catalog.json could not be loaded');PRODUCTS=await r.json();}
 function forageStars(n){return'★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n))}
 function forageStock(p){if(p.stock<=3)return`Only ${p.stock} left today`;if(p.limited)return`Limited batch · ${p.stock} available`;if(p.stock<=8)return`${p.stock} available`;return'In stock'}
-
-const FORAGE_IMAGE_RULES=[["backpack", "trail-backpack.webp"], ["mug", "meadowstone-mug.webp"], ["watch", "petite-field-watch.webp"], ["packing", "orbit-packing-cubes.webp"], ["journal", "korean-floral-journal.webp"], ["coffee", "titanium-coffee-set.webp"], ["shirt", "linen-shirt.webp"], ["soap", "artisan-soap-set.webp"], ["cat", "wool-cat-cave.webp"], ["hat", "starry-cowboy-hat.webp"], ["tool", "trail-multitool.webp"], ["botanical", "botanical-print.webp"]];
-function forageImageFor(p){const n=(p.name+' '+p.cat+' '+p.desc).toLowerCase();const hit=FORAGE_IMAGE_RULES.find(([key])=>n.includes(key));return hit?'images/'+hit[1]:null}
+function photo(p,big=false){const src=p.image||null;if(src)return `<div class="photo real-photo ${big?'big':''}"><img src="${src}" alt="${p.name}" loading="lazy"></div>`;const rr=((p.seed%9)-4)*1.7;return `<div class="photo" style="--r:${rr}deg"><div class="product-object" style="font-size:${big?110:66}px">${p.emoji}</div><div class="photo-label">Photo coming to Forage · ${p.cat}</div></div>`}
 let state=JSON.parse(localStorage.getItem('forageV2State')||'null')||{balance:2000,cart:[],wishlist:[],orders:[],purchases:0,spent:0,filter:'All',query:'',sort:'daily',pageNo:1};
 state.profile=state.profile||{
   displayName:'Julz',
@@ -141,7 +79,7 @@ function renderHeader(){
   document.getElementById('nav').innerHTML=items.map(([id,label])=>`<button class="${page===id?'active':''}" onclick="go('${id}')">${label}${id==='cart'&&state.cart.length?`<span class="badge">${state.cart.reduce((s,x)=>s+x.qty,0)}</span>`:''}</button>`).join('');
 }
 function go(p){page=p;selected=null;render();window.scrollTo({top:0,behavior:'smooth'})}
-function photo(p,big=false){const src=forageImageFor(p);if(src)return `<div class="photo ${big?'big':''}"><img src="${src}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit"></div>`;const r=((p.seed%9)-4)*1.7;return `<div class="photo" style="--r:${r}deg"><div class="product-object" style="font-size:${big?110:66}px">${p.emoji}</div><div class="photo-label">Photo coming to Forage · ${p.cat}</div></div>`}
+function photo(p,big=false){const src=forageImageFor(p);if(src)return `<div class="photo real-photo ${big?'big':''}"><img src="${src}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit"></div>`;const r=((p.seed%9)-4)*1.7;return `<div class="photo" style="--r:${r}deg"><div class="product-object" style="font-size:${big?110:66}px">${p.emoji}</div><div class="photo-label">Photo coming to Forage · ${p.cat}</div></div>`}
 function productCard(p){const wished=state.wishlist.includes(p.id);return `<article class="card" onclick="openProduct('${p.id}')"><div class="art">${photo(p)}<div class="art-label">${p.cat}</div><button class="heart ${wished?'on':''}" onclick="event.stopPropagation();toggleWish('${p.id}')">${wished?'♥':'♡'}</button></div><div class="cardbody"><div><span class="discovery-badge">${p.marketBadge}</span>${p.limited?'<span class="discovery-badge">Limited</span>':''}</div><h3>${p.name}</h3><div class="rating">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} reviews</div><p>${p.desc}</p><div class="stockline">${forageStock(p)}</div><div class="actions" style="margin-top:10px"><button class="secondary" onclick="event.stopPropagation();openProduct('${p.id}')">Details →</button></div><div class="price">${money(p.price)} ${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div></div></article>`}
 function toggleWish(id){const i=state.wishlist.indexOf(id);if(i>=0){state.wishlist.splice(i,1);toast('Removed from wishlist')}else{state.wishlist.push(id);toast('Saved for later')}save();render()}
 function viewProduct(id){selected=PRODUCTS.find(p=>p.id===id);page='detail';render();window.scrollTo({top:0,behavior:'smooth'})}
@@ -341,6 +279,6 @@ function renderProfile(){
 function resetFunds(){state.balance=2000;save();render();toast('Monthly forage funds refreshed')}
 function renderStats(){return `<div class="section-head"><div><h2>Forage stats</h2><p>Quietly tracking your fictional collecting habits.</p></div></div><div class="statgrid"><div class="stat"><span class="eyebrow">Available</span><strong>${money(state.balance)}</strong>Current forage fund</div><div class="stat"><span class="eyebrow">Acquired</span><strong>${state.purchases}</strong>Items purchased</div><div class="stat"><span class="eyebrow">Spent</span><strong>${money(state.spent)}</strong>Fictional currency</div><div class="stat"><span class="eyebrow">Market</span><strong>${PRODUCTS.length.toLocaleString()}</strong>Unique finds</div></div><div class="summary"><h3 style="margin-top:0">Monthly reset</h3><p style="color:var(--muted)">Need a fresh hunt? Refill your imaginary account.</p><button class="secondary" onclick="resetFunds()">Refresh to Ƶ 2,000</button></div>`}
 function render(){renderHeader();const m=document.getElementById('main');if(page==='shop'){m.innerHTML=renderShop();renderShopInto()}else if(page==='detail')m.innerHTML=renderDetail();else if(page==='wishlist')m.innerHTML=renderWishlist();else if(page==='cart')m.innerHTML=renderCart();else if(page==='orders')m.innerHTML=renderOrders();else if(page==='profile')m.innerHTML=renderProfile();else if(page==='stats')m.innerHTML=renderStats()}
-render();
+loadCatalog().then(()=>render()).catch(err=>{document.getElementById('main').innerHTML=`<div class="empty"><strong>Forage couldn't load its catalog.</strong><br>${err.message}</div>`});
 </script>
 </body></html>
