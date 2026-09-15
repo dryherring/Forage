@@ -48,10 +48,14 @@ header{position:sticky;top:0;z-index:20;background:rgba(246,243,236,.94);backdro
 
 
 .size-link{border:0;background:none;color:var(--accent);padding:5px 0;font-weight:850;text-decoration:underline}.field-notes{margin:20px 0;border:1px solid var(--line);border-radius:18px;padding:18px;background:#fbf8f2}.field-notes .location{font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:900;color:var(--accent)}.field-notes h3{margin:5px 0 8px;font-family:Georgia,serif;font-size:23px}.field-notes p{margin:0;color:var(--ink)!important}.forage-aside{margin-top:12px;padding:12px 14px;border-left:3px solid var(--accent2);font-family:Georgia,serif;font-style:italic}.modalback{position:fixed;inset:0;background:rgba(20,25,22,.55);z-index:100;display:grid;place-items:center;padding:18px}.modal{background:var(--paper);width:min(760px,100%);max-height:88vh;overflow:auto;border-radius:22px;padding:20px}.size-table{width:100%;border-collapse:collapse}.size-table th,.size-table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+
+.brand-home{display:inline-flex;align-items:center;border:0;background:transparent;padding:0;cursor:pointer;text-decoration:none}
+.brand-home img{display:block;width:min(310px,42vw);height:auto;max-height:82px;object-fit:contain;object-position:left center}
+@media(max-width:650px){.brand-home img{width:220px;max-height:68px}}
 </style>
 </head>
 <body>
-<div class="app"><header><div class="topbar"><div class="brand"><div class="mark">✦</div><div>Forage<small>hunt • choose • collect</small></div></div><div class="balance" id="balanceBox"></div></div><div class="nav" id="nav"></div></header><main id="main"></main><footer>Forage uses fictional money only. No real checkout exists.</footer></div><div class="toast" id="toast"></div>
+<div class="app"><header><div class="topbar"><button class="brand-home" onclick="goHome()" aria-label="Forage home"><img src="forage-logo.png" alt="Forage — Hunt, Choose, Collect"></button><div class="balance" id="balanceBox"></div></div><div class="nav" id="nav"></div></header><main id="main"></main><footer>Forage uses fictional money only. No real checkout exists.</footer></div><div class="toast" id="toast"></div>
 <script>let PRODUCTS=[];
 const CATS=["All", "Moto", "Pottery", "Craft", "Korea", "Music", "Style", "Home", "Kitchen", "Travel", "Adventure", "Cats", "Books & Paper"];
 async function loadCatalog(){const r=await fetch('catalog.json',{cache:'no-store'});if(!r.ok)throw new Error('catalog.json could not be loaded');PRODUCTS=await r.json();}
@@ -284,6 +288,18 @@ function renderProfile(){
 
 function resetFunds(){state.balance=2000;save();render();toast('Monthly forage funds refreshed')}
 function renderStats(){return `<div class="section-head"><div><h2>Forage stats</h2><p>Quietly tracking your fictional collecting habits.</p></div></div><div class="statgrid"><div class="stat"><span class="eyebrow">Available</span><strong>${money(state.balance)}</strong>Current forage fund</div><div class="stat"><span class="eyebrow">Acquired</span><strong>${state.purchases}</strong>Items purchased</div><div class="stat"><span class="eyebrow">Spent</span><strong>${money(state.spent)}</strong>Fictional currency</div><div class="stat"><span class="eyebrow">Market</span><strong>${PRODUCTS.length.toLocaleString()}</strong>Unique finds</div></div><div class="summary"><h3 style="margin-top:0">Monthly reset</h3><p style="color:var(--muted)">Need a fresh hunt? Refill your imaginary account.</p><button class="secondary" onclick="resetFunds()">Refresh to Ƶ 2,000</button></div>`}
+
+function goHome(){
+  selected=null;
+  state.view='discover';
+  state.category='All';
+  state.search='';
+  state.page=1;
+  save();
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
 function render(){renderHeader();const m=document.getElementById('main');if(page==='shop'){m.innerHTML=renderShop();renderShopInto()}else if(page==='detail')m.innerHTML=renderDetail();else if(page==='wishlist')m.innerHTML=renderWishlist();else if(page==='cart')m.innerHTML=renderCart();else if(page==='orders')m.innerHTML=renderOrders();else if(page==='profile')m.innerHTML=renderProfile();else if(page==='stats')m.innerHTML=renderStats()}
 loadCatalog().then(()=>render()).catch(err=>{document.getElementById('main').innerHTML=`<div class="empty"><strong>Forage couldn't load its catalog.</strong><br>${err.message}</div>`});
 </script>
