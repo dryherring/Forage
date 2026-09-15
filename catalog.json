@@ -71,7 +71,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Brevard, North Carolina",
+      "story": "The first sample went to a rider tired of hemming gear made for somebody else’s legs. Her field report ended: “THE KNEE ARMOR IS ON MY KNEE.” We considered the brief fulfilled."
+    },
+    "forageAside": "“Twenty-nine inches. I nearly sent a thank-you note with my actual inseam.” — Jo",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0002",
@@ -843,7 +849,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Moab, Utah",
+      "story": "An early prototype was described as having “the ventilation strategy of a casserole dish.” The next one got considerably more mesh."
+    },
+    "forageAside": "“Air! On my legs! Revolutionary.” — Cam",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0014",
@@ -1620,7 +1632,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Uinta Mountains, Utah",
+      "story": "The brief: tough enough for trail, roomy over boots, and no redundant armor when the rider already has it underneath. Several educational dismounts later, the shell survived."
+    },
+    "forageAside": "“My base layer brought the armor; these brought the pockets.” — Ren",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0026",
@@ -2396,7 +2414,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Blue Ridge Parkway",
+      "story": "A slight chance of showers became an hour of enthusiastic mountain rain. Nobody wanted to stop and install a liner. The next sample was laminated."
+    },
+    "forageAside": "“The clouds broke. My pants did not.” — Mae",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0038",
@@ -3165,7 +3189,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Clayton, Georgia",
+      "story": "The first sample returned from the southern Appalachians considerably less clean. After a creek crossing, three controlled drops, and a blackberry thicket, the tester requested easier pocket pulls and MORE VENTS."
+    },
+    "forageAside": "“Apparently Red Clay is both the color story and the care instructions.” — Tess",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0050",
@@ -3937,7 +3967,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Asheville, North Carolina",
+      "story": "The short-torso pattern followed a petite tester’s demonstration of the standard-jacket “textile accordion.”"
+    },
+    "forageAside": "“Finally, a jacket that ends before I do.” — Lin",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0062",
@@ -4713,7 +4749,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Pisgah National Forest",
+      "story": "The brief was something between body armor and expedition luggage. The winning sample kept the stretch, lost the bulk, and gained vents."
+    },
+    "forageAside": "“Moves like a hoodie. Behaves better around motorcycles.” — Dee",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0074",
@@ -5490,7 +5532,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Cherohala Skyway",
+      "story": "A tiny rain shell became very important when the horizon disappeared behind grey weather. Glove-friendly zips immediately became non-negotiable."
+    },
+    "forageAside": "“Packs to nothing. Becomes everything six minutes after the weather app lies.” — Kit",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0086",
@@ -6262,7 +6310,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Sedona, Arizona",
+      "story": "The first sample had fingers long enough to rent out as studio apartments. Fit corrections shortened the digits without losing protection."
+    },
+    "forageAside": "“Glove Actually: the fingertips fit.” — Bea",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0098",
@@ -7034,7 +7088,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Bergen, Norway",
+      "story": "There are places where rain is weather and places where rain is infrastructure. A damp week of ferries made the visor-wiper strip non-negotiable."
+    },
+    "forageAside": "“I distrust the forecast rather than my gloves.” — Liv",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0110",
@@ -7808,7 +7868,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Moab, Utah",
+      "story": "A coach rejected three samples for feeling “like oven mitts with ambition.” The final glove got a thin palm and flexible protection."
+    },
+    "forageAside": "“Less glove, more clue.” — Ari",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0122",
@@ -8572,7 +8638,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Durango, Colorado",
+      "story": "It started as a pile of jacket-pocket contents: phone, wallet, power bank, snacks, earplugs, and one mysterious bolt."
+    },
+    "forageAside": "“Tank you very much. My pockets have resigned.” — Nia"
   },
   {
     "id": "p0134",
@@ -9336,7 +9407,12 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Blue Ridge Mountains",
+      "story": "A routine day ride acquired coffee beans, a paperback, and two pastries. The pastries survived. This became a design requirement."
+    },
+    "forageAside": "“Nine liters, or one cardigan plus questionable bakery decisions.” — Sol"
   },
   {
     "id": "p0146",
@@ -10104,7 +10180,12 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Uwharrie, North Carolina",
+      "story": "The requirement was unromantic: dry socks must remain dry. A welded roll-top beat prettier zippers after repeated hose tests."
+    },
+    "forageAside": "“Roll with it. Literally.” — Morgan"
   },
   {
     "id": "p0158",
@@ -10872,7 +10953,12 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Great Smoky Mountains",
+      "story": "A two-night test proved small-bike travel works best when luggage cannot quietly absorb every possible contingency."
+    },
+    "forageAside": "“Packs light. Enables heavy snack acquisition.” — Quinn"
   },
   {
     "id": "p0170",
@@ -11641,7 +11727,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "New Jersey Pine Barrens",
+      "story": "The team wanted armor to stay with the rider instead of wandering around inside the outer layer. The close-fitting chassis won."
+    },
+    "forageAside": "“Armor where it belongs. Imagine that.” — Jules",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0182",
@@ -12413,7 +12505,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Uinta Mountains, Utah",
+      "story": "A petite-rider complaint started this one: knee armor has an adventurous spirit of its own. A shorter pattern persuaded it to remain geographically accurate."
+    },
+    "forageAside": "“My kneepads stopped migrating south for winter.” — Sam",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0194",
@@ -13194,7 +13292,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Wasatch Mountains, Utah",
+      "story": "A jersey should fit over armor, vent heat, and avoid becoming a flag. Cobalt arrived because dirt gear need not dress exclusively as gravel."
+    },
+    "forageAside": "“Cobalt is a safety feature because I said so.” — Frankie",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0206",
@@ -13965,7 +14069,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Lofoten, Norway",
+      "story": "Cool mornings, ferry waits, and sudden wind made the case for merino. Flat seams followed one tester finding exactly one irritating seam under armor."
+    },
+    "forageAside": "“Sheepishly excellent.” — Nora",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0218",
@@ -14735,7 +14845,12 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Trans-America Trail",
+      "story": "A prefilled kit arrived with twelve tools and only four that fit the motorcycle. The team kept the roll and removed the optimism."
+    },
+    "forageAside": "“No mystery wrench. Five stars for restraint.” — Cal"
   },
   {
     "id": "p0230",
@@ -15506,7 +15621,12 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Somewhere beside a gravel road",
+      "story": "A roadside repair produced three household tool kits and still lacked the right metric socket. Every included tool now has to justify its weight."
+    },
+    "forageAside": "“Wheelie prepared. Sadly I still had to fix the wheel.” — Max"
   },
   {
     "id": "p0242",
@@ -16277,7 +16397,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Workshop, late Tuesday",
+      "story": "Born from the sound of a small fastener becoming a much smaller problem. The torque range covers hardware often tightened by feel and eventual regret."
+    },
+    "forageAside": "“A measured response to my ‘snug-ish’ torque specification.” — Ev"
   },
   {
     "id": "p0254",
@@ -17044,7 +17169,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "San Rafael Swell, Utah",
+      "story": "The first rule of airing down is remembering pavement eventually returns. Anything requiring heroic patience or its own pannier was rejected."
+    },
+    "forageAside": "“Inflated my tire and my sense of preparedness.” — Ro"
   },
   {
     "id": "p0266",
@@ -17825,7 +17955,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Brevard, North Carolina",
+      "story": "The first sample went to a rider tired of hemming gear made for somebody else’s legs. Her field report ended: “THE KNEE ARMOR IS ON MY KNEE.” We considered the brief fulfilled."
+    },
+    "forageAside": "“Twenty-nine inches. I nearly sent a thank-you note with my actual inseam.” — Jo",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0278",
@@ -18604,7 +18740,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Moab, Utah",
+      "story": "An early prototype was described as having “the ventilation strategy of a casserole dish.” The next one got considerably more mesh."
+    },
+    "forageAside": "“Air! On my legs! Revolutionary.” — Cam",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0290",
@@ -19376,7 +19518,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Uinta Mountains, Utah",
+      "story": "The brief: tough enough for trail, roomy over boots, and no redundant armor when the rider already has it underneath. Several educational dismounts later, the shell survived."
+    },
+    "forageAside": "“My base layer brought the armor; these brought the pockets.” — Ren",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0302",
@@ -20151,7 +20299,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Blue Ridge Parkway",
+      "story": "A slight chance of showers became an hour of enthusiastic mountain rain. Nobody wanted to stop and install a liner. The next sample was laminated."
+    },
+    "forageAside": "“The clouds broke. My pants did not.” — Mae",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0314",
@@ -20931,7 +21085,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Clayton, Georgia",
+      "story": "The first sample returned from the southern Appalachians considerably less clean. After a creek crossing, three controlled drops, and a blackberry thicket, the tester requested easier pocket pulls and MORE VENTS."
+    },
+    "forageAside": "“Apparently Red Clay is both the color story and the care instructions.” — Tess",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0326",
@@ -21710,7 +21870,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Asheville, North Carolina",
+      "story": "The short-torso pattern followed a petite tester’s demonstration of the standard-jacket “textile accordion.”"
+    },
+    "forageAside": "“Finally, a jacket that ends before I do.” — Lin",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0338",
@@ -22485,7 +22651,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Pisgah National Forest",
+      "story": "The brief was something between body armor and expedition luggage. The winning sample kept the stretch, lost the bulk, and gained vents."
+    },
+    "forageAside": "“Moves like a hoodie. Behaves better around motorcycles.” — Dee",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0350",
@@ -23265,7 +23437,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Cherohala Skyway",
+      "story": "A tiny rain shell became very important when the horizon disappeared behind grey weather. Glove-friendly zips immediately became non-negotiable."
+    },
+    "forageAside": "“Packs to nothing. Becomes everything six minutes after the weather app lies.” — Kit",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0362",
@@ -24044,7 +24222,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Sedona, Arizona",
+      "story": "The first sample had fingers long enough to rent out as studio apartments. Fit corrections shortened the digits without losing protection."
+    },
+    "forageAside": "“Glove Actually: the fingertips fit.” — Bea",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0374",
@@ -24814,7 +24998,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Bergen, Norway",
+      "story": "There are places where rain is weather and places where rain is infrastructure. A damp week of ferries made the visor-wiper strip non-negotiable."
+    },
+    "forageAside": "“I distrust the forecast rather than my gloves.” — Liv",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0386",
@@ -25584,7 +25774,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Moab, Utah",
+      "story": "A coach rejected three samples for feeling “like oven mitts with ambition.” The final glove got a thin palm and flexible protection."
+    },
+    "forageAside": "“Less glove, more clue.” — Ari",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0398",
@@ -26352,7 +26548,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Durango, Colorado",
+      "story": "It started as a pile of jacket-pocket contents: phone, wallet, power bank, snacks, earplugs, and one mysterious bolt."
+    },
+    "forageAside": "“Tank you very much. My pockets have resigned.” — Nia"
   },
   {
     "id": "p0410",
@@ -27120,7 +27321,12 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Blue Ridge Mountains",
+      "story": "A routine day ride acquired coffee beans, a paperback, and two pastries. The pastries survived. This became a design requirement."
+    },
+    "forageAside": "“Nine liters, or one cardigan plus questionable bakery decisions.” — Sol"
   },
   {
     "id": "p0422",
@@ -27884,7 +28090,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Uwharrie, North Carolina",
+      "story": "The requirement was unromantic: dry socks must remain dry. A welded roll-top beat prettier zippers after repeated hose tests."
+    },
+    "forageAside": "“Roll with it. Literally.” — Morgan"
   },
   {
     "id": "p0434",
@@ -28652,7 +28863,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Great Smoky Mountains",
+      "story": "A two-night test proved small-bike travel works best when luggage cannot quietly absorb every possible contingency."
+    },
+    "forageAside": "“Packs light. Enables heavy snack acquisition.” — Quinn"
   },
   {
     "id": "p0446",
@@ -29425,7 +29641,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "New Jersey Pine Barrens",
+      "story": "The team wanted armor to stay with the rider instead of wandering around inside the outer layer. The close-fitting chassis won."
+    },
+    "forageAside": "“Armor where it belongs. Imagine that.” — Jules",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0458",
@@ -30193,7 +30415,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Uinta Mountains, Utah",
+      "story": "A petite-rider complaint started this one: knee armor has an adventurous spirit of its own. A shorter pattern persuaded it to remain geographically accurate."
+    },
+    "forageAside": "“My kneepads stopped migrating south for winter.” — Sam",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0470",
@@ -30964,7 +31192,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Wasatch Mountains, Utah",
+      "story": "A jersey should fit over armor, vent heat, and avoid becoming a flag. Cobalt arrived because dirt gear need not dress exclusively as gravel."
+    },
+    "forageAside": "“Cobalt is a safety feature because I said so.” — Frankie",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0482",
@@ -31743,7 +31977,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Lofoten, Norway",
+      "story": "Cool mornings, ferry waits, and sudden wind made the case for merino. Flat seams followed one tester finding exactly one irritating seam under armor."
+    },
+    "forageAside": "“Sheepishly excellent.” — Nora",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0494",
@@ -32517,7 +32757,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Trans-America Trail",
+      "story": "A prefilled kit arrived with twelve tools and only four that fit the motorcycle. The team kept the roll and removed the optimism."
+    },
+    "forageAside": "“No mystery wrench. Five stars for restraint.” — Cal"
   },
   {
     "id": "p0506",
@@ -33284,7 +33529,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Somewhere beside a gravel road",
+      "story": "A roadside repair produced three household tool kits and still lacked the right metric socket. Every included tool now has to justify its weight."
+    },
+    "forageAside": "“Wheelie prepared. Sadly I still had to fix the wheel.” — Max"
   },
   {
     "id": "p0518",
@@ -34055,7 +34305,12 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Workshop, late Tuesday",
+      "story": "Born from the sound of a small fastener becoming a much smaller problem. The torque range covers hardware often tightened by feel and eventual regret."
+    },
+    "forageAside": "“A measured response to my ‘snug-ish’ torque specification.” — Ev"
   },
   {
     "id": "p0530",
@@ -34826,7 +35081,12 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "San Rafael Swell, Utah",
+      "story": "The first rule of airing down is remembering pavement eventually returns. Anything requiring heroic patience or its own pannier was rejected."
+    },
+    "forageAside": "“Inflated my tire and my sense of preparedness.” — Ro"
   },
   {
     "id": "p0542",
@@ -35599,7 +35859,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Brevard, North Carolina",
+      "story": "The first sample went to a rider tired of hemming gear made for somebody else’s legs. Her field report ended: “THE KNEE ARMOR IS ON MY KNEE.” We considered the brief fulfilled."
+    },
+    "forageAside": "“Twenty-nine inches. I nearly sent a thank-you note with my actual inseam.” — Jo",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0554",
@@ -36374,7 +36640,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Moab, Utah",
+      "story": "An early prototype was described as having “the ventilation strategy of a casserole dish.” The next one got considerably more mesh."
+    },
+    "forageAside": "“Air! On my legs! Revolutionary.” — Cam",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0566",
@@ -37154,7 +37426,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Uinta Mountains, Utah",
+      "story": "The brief: tough enough for trail, roomy over boots, and no redundant armor when the rider already has it underneath. Several educational dismounts later, the shell survived."
+    },
+    "forageAside": "“My base layer brought the armor; these brought the pockets.” — Ren",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0578",
@@ -37933,7 +38211,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Blue Ridge Parkway",
+      "story": "A slight chance of showers became an hour of enthusiastic mountain rain. Nobody wanted to stop and install a liner. The next sample was laminated."
+    },
+    "forageAside": "“The clouds broke. My pants did not.” — Mae",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0590",
@@ -38709,7 +38993,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Clayton, Georgia",
+      "story": "The first sample returned from the southern Appalachians considerably less clean. After a creek crossing, three controlled drops, and a blackberry thicket, the tester requested easier pocket pulls and MORE VENTS."
+    },
+    "forageAside": "“Apparently Red Clay is both the color story and the care instructions.” — Tess",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0602",
@@ -39488,7 +39778,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Asheville, North Carolina",
+      "story": "The short-torso pattern followed a petite tester’s demonstration of the standard-jacket “textile accordion.”"
+    },
+    "forageAside": "“Finally, a jacket that ends before I do.” — Lin",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0614",
@@ -40267,7 +40563,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Pisgah National Forest",
+      "story": "The brief was something between body armor and expedition luggage. The winning sample kept the stretch, lost the bulk, and gained vents."
+    },
+    "forageAside": "“Moves like a hoodie. Behaves better around motorcycles.” — Dee",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0626",
@@ -41039,7 +41341,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Cherohala Skyway",
+      "story": "A tiny rain shell became very important when the horizon disappeared behind grey weather. Glove-friendly zips immediately became non-negotiable."
+    },
+    "forageAside": "“Packs to nothing. Becomes everything six minutes after the weather app lies.” — Kit",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0638",
@@ -41814,7 +42122,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Sedona, Arizona",
+      "story": "The first sample had fingers long enough to rent out as studio apartments. Fit corrections shortened the digits without losing protection."
+    },
+    "forageAside": "“Glove Actually: the fingertips fit.” — Bea",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0650",
@@ -42592,7 +42906,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Bergen, Norway",
+      "story": "There are places where rain is weather and places where rain is infrastructure. A damp week of ferries made the visor-wiper strip non-negotiable."
+    },
+    "forageAside": "“I distrust the forecast rather than my gloves.” — Liv",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0662",
@@ -43372,7 +43692,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Moab, Utah",
+      "story": "A coach rejected three samples for feeling “like oven mitts with ambition.” The final glove got a thin palm and flexible protection."
+    },
+    "forageAside": "“Less glove, more clue.” — Ari",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0674",
@@ -44142,7 +44468,12 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Durango, Colorado",
+      "story": "It started as a pile of jacket-pocket contents: phone, wallet, power bank, snacks, earplugs, and one mysterious bolt."
+    },
+    "forageAside": "“Tank you very much. My pockets have resigned.” — Nia"
   },
   {
     "id": "p0686",
@@ -44916,7 +45247,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Blue Ridge Mountains",
+      "story": "A routine day ride acquired coffee beans, a paperback, and two pastries. The pastries survived. This became a design requirement."
+    },
+    "forageAside": "“Nine liters, or one cardigan plus questionable bakery decisions.” — Sol"
   },
   {
     "id": "p0698",
@@ -45690,7 +46026,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Uwharrie, North Carolina",
+      "story": "The requirement was unromantic: dry socks must remain dry. A welded roll-top beat prettier zippers after repeated hose tests."
+    },
+    "forageAside": "“Roll with it. Literally.” — Morgan"
   },
   {
     "id": "p0710",
@@ -46456,7 +46797,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Great Smoky Mountains",
+      "story": "A two-night test proved small-bike travel works best when luggage cannot quietly absorb every possible contingency."
+    },
+    "forageAside": "“Packs light. Enables heavy snack acquisition.” — Quinn"
   },
   {
     "id": "p0722",
@@ -47231,7 +47577,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "New Jersey Pine Barrens",
+      "story": "The team wanted armor to stay with the rider instead of wandering around inside the outer layer. The close-fitting chassis won."
+    },
+    "forageAside": "“Armor where it belongs. Imagine that.” — Jules",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0734",
@@ -48009,7 +48361,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Uinta Mountains, Utah",
+      "story": "A petite-rider complaint started this one: knee armor has an adventurous spirit of its own. A shorter pattern persuaded it to remain geographically accurate."
+    },
+    "forageAside": "“My kneepads stopped migrating south for winter.” — Sam",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0746",
@@ -48790,7 +49148,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Wasatch Mountains, Utah",
+      "story": "A jersey should fit over armor, vent heat, and avoid becoming a flag. Cobalt arrived because dirt gear need not dress exclusively as gravel."
+    },
+    "forageAside": "“Cobalt is a safety feature because I said so.” — Frankie",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0758",
@@ -49565,7 +49929,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Lofoten, Norway",
+      "story": "Cool mornings, ferry waits, and sudden wind made the case for merino. Flat seams followed one tester finding exactly one irritating seam under armor."
+    },
+    "forageAside": "“Sheepishly excellent.” — Nora",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0770",
@@ -50336,7 +50706,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Trans-America Trail",
+      "story": "A prefilled kit arrived with twelve tools and only four that fit the motorcycle. The team kept the roll and removed the optimism."
+    },
+    "forageAside": "“No mystery wrench. Five stars for restraint.” — Cal"
   },
   {
     "id": "p0782",
@@ -51104,7 +51479,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Somewhere beside a gravel road",
+      "story": "A roadside repair produced three household tool kits and still lacked the right metric socket. Every included tool now has to justify its weight."
+    },
+    "forageAside": "“Wheelie prepared. Sadly I still had to fix the wheel.” — Max"
   },
   {
     "id": "p0794",
@@ -51864,7 +52244,12 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Workshop, late Tuesday",
+      "story": "Born from the sound of a small fastener becoming a much smaller problem. The torque range covers hardware often tightened by feel and eventual regret."
+    },
+    "forageAside": "“A measured response to my ‘snug-ish’ torque specification.” — Ev"
   },
   {
     "id": "p0806",
@@ -52628,7 +53013,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "San Rafael Swell, Utah",
+      "story": "The first rule of airing down is remembering pavement eventually returns. Anything requiring heroic patience or its own pannier was rejected."
+    },
+    "forageAside": "“Inflated my tire and my sense of preparedness.” — Ro"
   },
   {
     "id": "p0818",
@@ -53406,7 +53796,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Brevard, North Carolina",
+      "story": "The first sample went to a rider tired of hemming gear made for somebody else’s legs. Her field report ended: “THE KNEE ARMOR IS ON MY KNEE.” We considered the brief fulfilled."
+    },
+    "forageAside": "“Twenty-nine inches. I nearly sent a thank-you note with my actual inseam.” — Jo",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0830",
@@ -54182,7 +54578,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Moab, Utah",
+      "story": "An early prototype was described as having “the ventilation strategy of a casserole dish.” The next one got considerably more mesh."
+    },
+    "forageAside": "“Air! On my legs! Revolutionary.” — Cam",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0842",
@@ -54955,7 +55357,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Uinta Mountains, Utah",
+      "story": "The brief: tough enough for trail, roomy over boots, and no redundant armor when the rider already has it underneath. Several educational dismounts later, the shell survived."
+    },
+    "forageAside": "“My base layer brought the armor; these brought the pockets.” — Ren",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0854",
@@ -55731,7 +56139,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Blue Ridge Parkway",
+      "story": "A slight chance of showers became an hour of enthusiastic mountain rain. Nobody wanted to stop and install a liner. The next sample was laminated."
+    },
+    "forageAside": "“The clouds broke. My pants did not.” — Mae",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0866",
@@ -56505,7 +56919,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Clayton, Georgia",
+      "story": "The first sample returned from the southern Appalachians considerably less clean. After a creek crossing, three controlled drops, and a blackberry thicket, the tester requested easier pocket pulls and MORE VENTS."
+    },
+    "forageAside": "“Apparently Red Clay is both the color story and the care instructions.” — Tess",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0878",
@@ -57274,7 +57694,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Asheville, North Carolina",
+      "story": "The short-torso pattern followed a petite tester’s demonstration of the standard-jacket “textile accordion.”"
+    },
+    "forageAside": "“Finally, a jacket that ends before I do.” — Lin",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0890",
@@ -58043,7 +58469,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Pisgah National Forest",
+      "story": "The brief was something between body armor and expedition luggage. The winning sample kept the stretch, lost the bulk, and gained vents."
+    },
+    "forageAside": "“Moves like a hoodie. Behaves better around motorcycles.” — Dee",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0902",
@@ -58817,7 +59249,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Cherohala Skyway",
+      "story": "A tiny rain shell became very important when the horizon disappeared behind grey weather. Glove-friendly zips immediately became non-negotiable."
+    },
+    "forageAside": "“Packs to nothing. Becomes everything six minutes after the weather app lies.” — Kit",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0914",
@@ -59590,7 +60028,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Sedona, Arizona",
+      "story": "The first sample had fingers long enough to rent out as studio apartments. Fit corrections shortened the digits without losing protection."
+    },
+    "forageAside": "“Glove Actually: the fingertips fit.” — Bea",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0926",
@@ -60358,7 +60802,13 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Bergen, Norway",
+      "story": "There are places where rain is weather and places where rain is infrastructure. A damp week of ferries made the visor-wiper strip non-negotiable."
+    },
+    "forageAside": "“I distrust the forecast rather than my gloves.” — Liv",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0938",
@@ -61132,7 +61582,13 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Moab, Utah",
+      "story": "A coach rejected three samples for feeling “like oven mitts with ambition.” The final glove got a thin palm and flexible protection."
+    },
+    "forageAside": "“Less glove, more clue.” — Ari",
+    "fitNote": "Use body measurements first. Short lengths are patterned as short sizes rather than simply hemmed."
   },
   {
     "id": "p0950",
@@ -61900,7 +62356,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Durango, Colorado",
+      "story": "It started as a pile of jacket-pocket contents: phone, wallet, power bank, snacks, earplugs, and one mysterious bolt."
+    },
+    "forageAside": "“Tank you very much. My pockets have resigned.” — Nia"
   },
   {
     "id": "p0962",
@@ -62666,7 +63127,12 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Blue Ridge Mountains",
+      "story": "A routine day ride acquired coffee beans, a paperback, and two pastries. The pastries survived. This became a design requirement."
+    },
+    "forageAside": "“Nine liters, or one cardigan plus questionable bakery decisions.” — Sol"
   },
   {
     "id": "p0974",
@@ -63436,7 +63902,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Uwharrie, North Carolina",
+      "story": "The requirement was unromantic: dry socks must remain dry. A welded roll-top beat prettier zippers after repeated hose tests."
+    },
+    "forageAside": "“Roll with it. Literally.” — Morgan"
   },
   {
     "id": "p0986",
@@ -64210,7 +64681,12 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": null,
+    "fieldNotes": {
+      "location": "Great Smoky Mountains",
+      "story": "A two-night test proved small-bike travel works best when luggage cannot quietly absorb every possible contingency."
+    },
+    "forageAside": "“Packs light. Enables heavy snack acquisition.” — Quinn"
   },
   {
     "id": "p0998",
