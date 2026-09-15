@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#294d3b" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Forage" />
+<title>Forage</title>
+<style>
+:root{--bg:#f6f3ec;--paper:#fffdf8;--ink:#1f2a24;--muted:#6c766f;--line:#ddd8ce;--accent:#315f49;--accent2:#a77645;--danger:#9d3e3e;--shadow:0 10px 30px rgba(50,50,40,.08);--radius:18px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.app{max-width:1180px;margin:auto;min-height:100vh;padding-bottom:84px}
+header{position:sticky;top:0;z-index:20;background:rgba(246,243,236,.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(221,216,206,.75)}.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;gap:14px}.brand{display:flex;align-items:center;gap:12px;font-weight:800}.mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#315f49,#a77645);display:grid;place-items:center;color:white;font-size:20px;box-shadow:var(--shadow)}.brand small{display:block;font-size:11px;color:var(--muted);font-weight:650;letter-spacing:.8px;text-transform:uppercase}.balance{background:var(--paper);border:1px solid var(--line);padding:10px 14px;border-radius:14px;box-shadow:var(--shadow);font-weight:800;white-space:nowrap}.nav{display:flex;gap:8px;padding:0 20px 14px;overflow:auto}.nav button,.chip{border:1px solid var(--line);background:var(--paper);padding:10px 14px;border-radius:999px;color:var(--ink)}.nav button.active,.chip.active{background:var(--ink);color:white;border-color:var(--ink)}main{padding:20px}
+.hero{background:linear-gradient(135deg,#294d3b 0%,#496d57 48%,#b47f4a 100%);color:white;border-radius:28px;padding:28px;display:grid;grid-template-columns:1.4fr .8fr;gap:22px;box-shadow:var(--shadow)}.hero h1{font-size:clamp(34px,6vw,70px);line-height:.95;margin:0 0 16px}.hero p{max-width:650px;font-size:18px;line-height:1.5;opacity:.92}.hero-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:22px;padding:20px;align-self:end}.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:28px 0 14px}.section-head h2{margin:0;font-size:24px}.section-head p{margin:4px 0 0;color:var(--muted)}.toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin:14px 0}.search{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--paper)}.sort{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--paper)}.filters{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}.photo{aspect-ratio:4/3;position:relative;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,#eae5db,#dfe9e2)}.photo::before{content:"";position:absolute;width:72%;height:72%;border-radius:48%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.92),rgba(255,255,255,.08));transform:rotate(var(--r,0deg))}.product-object{position:relative;z-index:1;font-size:66px;filter:drop-shadow(0 10px 16px rgba(0,0,0,.16));transform:rotate(var(--r,0deg)) scale(1.05)}.photo-label{position:absolute;left:12px;bottom:10px;z-index:2;background:rgba(255,253,248,.86);backdrop-filter:blur(6px);border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase}.card-body{padding:15px;display:flex;flex-direction:column;gap:9px;flex:1}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.9px;color:var(--muted);font-weight:800}.title{font-weight:850;font-size:18px;line-height:1.2}.desc{color:var(--muted);font-size:14px;line-height:1.4;min-height:40px}.rating{font-size:13px;color:#5a5147}.price-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto}.price{font-weight:900}.old{text-decoration:line-through;color:var(--muted);font-size:12px;margin-left:6px}.pill{font-size:11px;padding:6px 9px;border-radius:999px;background:#ece7df;color:#5a5147}.actions{display:flex;gap:8px}.primary,.secondary,.danger{border:0;border-radius:12px;padding:10px 12px}.primary{background:var(--ink);color:white}.secondary{background:#ece7df;color:var(--ink)}.danger{background:#f6dcdc;color:var(--danger)}.empty{background:var(--paper);border:1px dashed var(--line);border-radius:var(--radius);padding:28px;color:var(--muted)}
+.detail{display:grid;grid-template-columns:1fr 1.05fr;gap:24px;background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:var(--shadow)}.detail .photo{border-radius:20px;min-height:380px}.detail h1{font-size:38px;margin:8px 0}.detail p{color:var(--muted);line-height:1.6}.specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.spec{border:1px solid var(--line);border-radius:14px;padding:12px}.selectors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0}.selectors label{display:block;font-size:12px;color:var(--muted);font-weight:700}.selectors select{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:12px;padding:11px;background:white}.reviewbox{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}.review{padding:12px 0;border-bottom:1px solid #ece7df}.review:last-child{border-bottom:0}.review strong{display:block}.cartline,.order{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}.miniart{width:70px;height:70px;border-radius:14px;background:linear-gradient(145deg,#e9e1d5,#dfe9e2);display:grid;place-items:center;font-size:36px}.summary{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:16px}.summary-row{display:flex;justify-content:space-between;margin:9px 0}.summary-row.total{font-size:20px;font-weight:900;border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.checkout-box{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}.checkout-box label{display:block;font-size:13px;color:var(--muted)}.checkout-box select,.checkout-box input{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:12px;padding:11px;background:white}.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.stat{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px}.stat strong{font-size:28px;display:block}.badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#b57a43;color:white;font-size:12px;margin-left:4px}.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:#1f2a24;color:white;padding:12px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:.2s;z-index:50}.toast.show{opacity:1}.pager{display:flex;justify-content:center;gap:8px;align-items:center;margin:22px 0}footer{padding:30px 20px;color:var(--muted);text-align:center}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}.detail{grid-template-columns:1fr}.statgrid{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){main{padding:14px}.topbar{padding:12px 14px}.nav{padding:0 14px 12px}.grid{grid-template-columns:1fr;gap:12px}.hero{padding:22px;border-radius:22px}.checkout-box,.selectors{grid-template-columns:1fr}.detail h1{font-size:30px}.toolbar{grid-template-columns:1fr}}
+
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.panel h3{margin:0 0 12px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-grid label,.gift-box label{display:block;font-size:12px;color:var(--muted);font-weight:700}
+.form-grid input,.form-grid textarea,.form-grid select,.gift-box input,.gift-box textarea{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:12px;padding:11px;background:white;color:var(--ink)}
+.form-grid textarea,.gift-box textarea{min-height:76px;resize:vertical}
+.full{grid-column:1/-1}
+.saved-row{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.saved-row small{display:block;color:var(--muted);margin-top:3px}
+.gift-box{border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0;background:#fbf8f2}
+.checkrow{display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--ink)}
+.checkrow input{width:auto;margin:0}
+@media(max-width:900px){.profile-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.form-grid{grid-template-columns:1fr}.full{grid-column:auto}}
+
+
+.market-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+.market-note{border:1px solid var(--line);border-radius:15px;padding:12px;background:var(--paper)}
+.market-note strong{display:block;font-size:14px}.market-note span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.discovery-badge{display:inline-block;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;border:1px solid var(--line);border-radius:999px;padding:5px 8px;background:white;margin:0 5px 5px 0}
+.stockline{font-size:12px;font-weight:800;margin-top:7px}
+.review-card{border-top:1px solid var(--line);padding:14px 0}.review-head{display:flex;justify-content:space-between;gap:10px}
+.verified{font-size:11px;font-weight:800;color:var(--accent)}
+@media(max-width:760px){.market-strip{grid-template-columns:1fr 1fr}}
+
+.photo.real-photo{background:none!important;border-radius:0!important;overflow:hidden!important;padding:0!important}
+.photo.real-photo::before,.photo.real-photo::after{content:none!important;display:none!important}
+.photo.real-photo img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;border-radius:0!important}
+
+</style>
+</head>
+<body>
+<div class="app"><header><div class="topbar"><div class="brand"><div class="mark">✦</div><div>Forage<small>hunt • choose • collect</small></div></div><div class="balance" id="balanceBox"></div></div><div class="nav" id="nav"></div></header><main id="main"></main><footer>Forage uses fictional money only. No real checkout exists.</footer></div><div class="toast" id="toast"></div>
+<script>let PRODUCTS=[];
+const CATS=["All", "Moto", "Pottery", "Craft", "Korea", "Music", "Style", "Home", "Kitchen", "Travel", "Adventure", "Cats", "Books & Paper"];
+async function loadCatalog(){const r=await fetch('catalog.json',{cache:'no-store'});if(!r.ok)throw new Error('catalog.json could not be loaded');PRODUCTS=await r.json();}
+function forageStars(n){return'★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n))}
+function forageStock(p){if(p.stock<=3)return`Only ${p.stock} left today`;if(p.limited)return`Limited batch · ${p.stock} available`;if(p.stock<=8)return`${p.stock} available`;return'In stock'}
+function photo(p,big=false){const src=p.image||null;if(src)return `<div class="photo real-photo ${big?'big':''}"><img src="${src}" alt="${p.name}" loading="lazy"></div>`;const rr=((p.seed%9)-4)*1.7;return `<div class="photo" style="--r:${rr}deg"><div class="product-object" style="font-size:${big?110:66}px">${p.emoji}</div><div class="photo-label">Photo coming to Forage · ${p.cat}</div></div>`}
+let state=JSON.parse(localStorage.getItem('forageV2State')||'null')||{balance:2000,cart:[],wishlist:[],orders:[],purchases:0,spent:0,filter:'All',query:'',sort:'daily',pageNo:1};
+state.profile=state.profile||{
+  displayName:'Julz',
+  defaultAddress:{label:'Home base',recipient:'Julz',line1:'123 Forage Lane',line2:'',city:'Chapel Hill',region:'NC',postal:'27514'},
+  addresses:[],
+  paymentMethods:[
+    {id:'pm1',brand:'Visa',label:'Forage Visa',last4:'4242',default:true},
+    {id:'pm2',brand:'Mastercard',label:'Trail Rewards',last4:'8841',default:false}
+  ]
+};
+let page='shop',selected=null;
+function save(){localStorage.setItem('forageV2State',JSON.stringify(state));renderHeader()}
+function money(n){return 'Ƶ '+Number(n).toLocaleString()}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1700)}
+function deliveryDate(days=3){const d=new Date();d.setDate(d.getDate()+days);return d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})}
+function daySeed(){const d=new Date();return Number(`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`)}
+function dailyScore(p){return ((p.seed*9301+daySeed()*49297)%233280)/233280}
+function renderHeader(){
+  document.getElementById('balanceBox').textContent=money(state.balance);
+  const items=[['shop','Discover'],['wishlist','Wishlist'],['cart','Cart'],['orders','Orders'],['profile','Profile'],['stats','Stats']];
+  document.getElementById('nav').innerHTML=items.map(([id,label])=>`<button class="${page===id?'active':''}" onclick="go('${id}')">${label}${id==='cart'&&state.cart.length?`<span class="badge">${state.cart.reduce((s,x)=>s+x.qty,0)}</span>`:''}</button>`).join('');
+}
+function go(p){page=p;selected=null;render();window.scrollTo({top:0,behavior:'smooth'})}
+
+function productCard(p){const wished=state.wishlist.includes(p.id);return `<article class="card" onclick="openProduct('${p.id}')"><div class="art">${photo(p)}<div class="art-label">${p.cat}</div><button class="heart ${wished?'on':''}" onclick="event.stopPropagation();toggleWish('${p.id}')">${wished?'♥':'♡'}</button></div><div class="cardbody"><div><span class="discovery-badge">${p.marketBadge}</span>${p.limited?'<span class="discovery-badge">Limited</span>':''}</div><h3>${p.name}</h3><div class="rating">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} reviews</div><p>${p.desc}</p><div class="stockline">${forageStock(p)}</div><div class="actions" style="margin-top:10px"><button class="secondary" onclick="event.stopPropagation();openProduct('${p.id}')">Details →</button></div><div class="price">${money(p.price)} ${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div></div></article>`}
+function toggleWish(id){const i=state.wishlist.indexOf(id);if(i>=0){state.wishlist.splice(i,1);toast('Removed from wishlist')}else{state.wishlist.push(id);toast('Saved for later')}save();render()}
+function viewProduct(id){selected=PRODUCTS.find(p=>p.id===id);page='detail';render();window.scrollTo({top:0,behavior:'smooth'})}
+function selectedOption(p){if(p.sizes?.length)return document.getElementById('sizeSelect')?.value||p.sizes[0];if(p.variants?.length)return document.getElementById('variantSelect')?.value||p.variants[0];return null}
+function addCart(id){const p=PRODUCTS.find(x=>x.id===id),qty=Math.max(1,parseInt(document.getElementById('qtySelect')?.value||'1')),option=selectedOption(p),existing=state.cart.find(x=>x.id===id&&x.option===option);if(existing)existing.qty+=qty;else state.cart.push({id,qty,option});save();toast(`Added ${qty} to basket`);render()}
+function removeCart(i){state.cart.splice(i,1);save();render()}
+function filteredProducts(){
+  let arr=PRODUCTS.filter(p=>(state.filter==='All'||p.cat===state.filter)&&(!state.query||(`${p.name} ${p.cat} ${p.desc}`).toLowerCase().includes(state.query.toLowerCase())));
+  if(state.sort==='daily')arr.sort((a,b)=>dailyScore(a)-dailyScore(b));
+  if(state.sort==='rating')arr.sort((a,b)=>b.rating-a.rating||b.reviews-a.reviews);
+  if(state.sort==='low')arr.sort((a,b)=>a.price-b.price);
+  if(state.sort==='high')arr.sort((a,b)=>b.price-a.price);
+  return arr;
+}
+function setQuery(v){
+  state.query=v;state.pageNo=1;save();
+  renderProductResults();
+}
+function setSort(v){
+  state.sort=v;state.pageNo=1;save();
+  renderProductResults();
+}
+function setFilter(c){
+  state.filter=c;
+  state.query='';
+  state.pageNo=1;
+  const search=document.getElementById('searchInput');
+  if(search) search.value='';
+  save();
+  document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===c));
+  renderProductResults();
+}
+function renderShop(){
+  return `<section class="hero"><div><div class="eyebrow" style="color:#e7efe9">Morning expedition</div><h1>Find something worth hunting for.</h1><p>One thousand fictional objects. Search, compare, inspect reviews, choose variants, and buy only what wins.</p></div><div class="hero-card"><strong>Today’s forage fund</strong><div style="font-size:38px;font-weight:900;margin:8px 0">${money(state.balance)}</div><div style="opacity:.85">Today’s Finds rotate every morning.</div></div></section><div id="shopArea"></div>`;
+}
+function renderShopInto(){
+  const root=document.getElementById('shopArea'); if(!root)return;
+  root.innerHTML=`<div class="section-head"><div><h2 id="resultsTitle">Today’s finds</h2><p id="resultsMeta"></p></div></div>
+  <div class="toolbar">
+    <input id="searchInput" class="search" placeholder="Search 1,000 finds…" value="${state.query.replace(/"/g,'&quot;')}">
+    <select id="sortSelect" class="sort">
+      <option value="daily" ${state.sort==='daily'?'selected':''}>Today’s order</option>
+      <option value="rating" ${state.sort==='rating'?'selected':''}>Highest rated</option>
+      <option value="low" ${state.sort==='low'?'selected':''}>Price: low to high</option>
+      <option value="high" ${state.sort==='high'?'selected':''}>Price: high to low</option>
+    </select>
+  </div>
+  <div class="filters" id="filterBar">${CATS.map(c=>`<button class="chip ${state.filter===c?'active':''}" data-filter="${c.replace(/"/g,'&quot;')}">${c}</button>`).join('')}</div>
+  <div class="market-strip">
+<div class="market-note"><strong>✦ Rare finds</strong><span>Some things surface less often.</span></div>
+<div class="market-note"><strong>▣ Small batches</strong><span>Stock varies across the market.</span></div>
+<div class="market-note"><strong>★ Opinionated reviews</strong><span>Not everything gets five stars.</span></div>
+<div class="market-note"><strong>↻ Fresh tomorrow</strong><span>The hunt reshuffles each morning.</span></div>
+</div><div id="productResults"></div>`;
+  document.getElementById('searchInput').addEventListener('input',e=>setQuery(e.target.value));
+  document.getElementById('sortSelect').addEventListener('change',e=>setSort(e.target.value));
+  document.getElementById('filterBar').addEventListener('click',e=>{
+    const b=e.target.closest('[data-filter]'); if(b)setFilter(b.dataset.filter);
+  });
+  renderProductResults();
+}
+function renderProductResults(){
+  const host=document.getElementById('productResults'); if(!host)return;
+  const arr=filteredProducts(),per=24,pages=Math.max(1,Math.ceil(arr.length/per));
+  state.pageNo=Math.min(state.pageNo,pages);
+  const subset=arr.slice((state.pageNo-1)*per,state.pageNo*per);
+  const title=document.getElementById('resultsTitle'); if(title)title.textContent=state.query?'Search results':'Today’s finds';
+  const meta=document.getElementById('resultsMeta'); if(meta)meta.textContent=`${arr.length.toLocaleString()} products in the market · showing ${subset.length}`;
+  host.innerHTML=arr.length
+    ? `<div class="grid">${subset.map(productCard).join('')}</div>${pages>1?`<div class="pager"><button class="secondary" ${state.pageNo===1?'disabled':''} onclick="state.pageNo--;save();renderProductResults();window.scrollTo({top:430,behavior:'smooth'})">← Prev</button><span class="pill">Page ${state.pageNo} / ${pages}</span><button class="secondary" ${state.pageNo===pages?'disabled':''} onclick="state.pageNo++;save();renderProductResults();window.scrollTo({top:430,behavior:'smooth'})">Next →</button></div>`:''}`
+    : `<div class="empty">No finds matched that search. Try another word, or tap a category to start a fresh browse.</div>`;
+}
+function openProduct(id){selected=PRODUCTS.find(p=>p.id===id)||null;if(!selected)return;page='detail';render();window.scrollTo({top:0,behavior:'smooth'})}
+function renderDetail(){const p=selected;if(!p)return'';const optionControl=p.sizes?.length?`<div><label>Size<select id="sizeSelect">${p.sizes.map(s=>`<option>${s}</option>`).join('')}</select></label></div>`:p.variants?.length?`<div><label>Variant<select id="variantSelect">${p.variants.map(s=>`<option>${s}</option>`).join('')}</select></label></div>`:'';const maxQty=Math.max(1,Math.min(5,p.stock));return `<button class="secondary" onclick="go('shop')" style="margin-bottom:14px">← Back to hunting</button><div class="detail">${photo(p,true)}<div><div class="eyebrow">${p.cat} · ${p.rarity}</div><div><span class="discovery-badge">${p.marketBadge}</span>${p.limited?'<span class="discovery-badge">Limited batch</span>':''}</div><h1>${p.name}</h1><div style="font-size:26px;font-weight:900">${money(p.price)}${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div><div class="rating" style="margin-top:6px">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} ratings</div><div class="stockline">${forageStock(p)}</div><p>${p.desc}</p><div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div class="spec"><div class="eyebrow">${k}</div><strong>${v}</strong></div>`).join('')}</div><div class="selectors">${optionControl}<div><label>Quantity<select id="qtySelect">${Array.from({length:maxQty},(_,i)=>i+1).map(q=>`<option value="${q}">${q}</option>`).join('')}</select></label></div></div><div class="actions"><button class="secondary" onclick="toggleWish('${p.id}')">${state.wishlist.includes(p.id)?'♥ Saved':'♡ Save'}</button><button class="primary" onclick="addCart('${p.id}')">Add to basket</button></div><section style="margin-top:24px"><div class="section-head" style="margin-bottom:4px"><div><h2 style="font-size:20px">What foragers are saying</h2><p>Fictional reviews · comparison is part of the hunt.</p></div></div>${p.deepReviews.map(r=>`<div class="review-card"><div class="review-head"><strong>${r.title}</strong><span>${forageStars(r.stars)}</span></div><div><strong>${r.name}</strong> <span class="verified">✓ Verified fictional purchase</span></div><p>${r.text}</p></div>`).join('')}</section></div></div>`}
+function renderWishlist(){const items=state.wishlist.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);return `<div class="section-head"><div><h2>Wishlist</h2><p>The promising ones you were not ready to commit to.</p></div></div>${items.length?`<div class="grid">${items.map(productCard).join('')}</div>`:`<div class="empty">Nothing saved yet.</div>`}`}
+function addressText(a){return [a.recipient,a.line1,a.line2,a.city,a.region,a.postal].filter(Boolean).join(', ')}
+function renderCart(){
+  const items=state.cart.map((line,i)=>({line,p:PRODUCTS.find(p=>p.id===line.id),i})).filter(x=>x.p),total=items.reduce((s,x)=>s+x.p.price*x.line.qty,0);
+  const methods=state.profile.paymentMethods||[];
+  return `<div class="section-head"><div><h2>Your basket</h2><p>The point where interesting becomes mine.</p></div></div>
+  ${items.length?items.map(({p,line,i})=>`<div class="cartline"><div class="miniart">${p.emoji}</div><div><strong>${p.name}</strong><div class="eyebrow">${p.cat}${line.option?` · ${line.option}`:''} · Qty ${line.qty}</div></div><div style="text-align:right"><strong>${money(p.price*line.qty)}</strong><br><button class="danger" onclick="removeCart(${i})">Remove</button></div></div>`).join(''):`<div class="empty">Your basket is empty.</div>`}
+  ${items.length?`<div class="summary">
+    <div class="summary-row"><span>Merchandise</span><strong>${money(total)}</strong></div>
+    <div class="summary-row"><span>Shipping</span><strong>Ƶ 0</strong></div>
+    <div class="summary-row total"><span>Total</span><span>${money(total)}</span></div>
+    <div class="checkout-box">
+      <div><label>Delivery speed<select id="ship"><option value="standard">Standard · arrives ${deliveryDate(3)}</option><option value="express">Express · arrives ${deliveryDate(1)}</option><option value="slow">Slow & scenic · arrives ${deliveryDate(5)}</option></select></label></div>
+      <div><label>Payment method<select id="payMethod">${methods.map(m=>`<option value="${m.id}" ${m.default?'selected':''}>${m.brand} •••• ${m.last4} · ${m.label}</option>`).join('')}</select></label></div>
+    </div>
+    <div class="gift-box">
+      <label class="checkrow"><input type="checkbox" id="giftToggle" onchange="toggleGift()"> Send as a gift</label>
+      <div id="shipFields">
+        <div class="form-grid">
+          <label class="full">Recipient<input id="shipRecipient" value="${state.profile.defaultAddress.recipient||''}"></label>
+          <label class="full">Address<input id="shipLine1" value="${state.profile.defaultAddress.line1||''}"></label>
+          <label class="full">Address line 2<input id="shipLine2" value="${state.profile.defaultAddress.line2||''}"></label>
+          <label>City<input id="shipCity" value="${state.profile.defaultAddress.city||''}"></label>
+          <label>State / region<input id="shipRegion" value="${state.profile.defaultAddress.region||''}"></label>
+          <label>ZIP / postal<input id="shipPostal" value="${state.profile.defaultAddress.postal||''}"></label>
+          <label class="full" id="giftMessageWrap" style="display:none">Gift message<textarea id="giftMessage" placeholder="A little note for the recipient"></textarea></label>
+        </div>
+      </div>
+    </div>
+    <button class="primary" style="width:100%;padding:14px" onclick="checkout()">Place order</button>
+  </div>`:''}`;
+}
+function toggleGift(){
+  const on=document.getElementById('giftToggle')?.checked;
+  const msg=document.getElementById('giftMessageWrap'); if(msg)msg.style.display=on?'block':'none';
+  if(on){document.getElementById('shipRecipient').value='';document.getElementById('shipLine1').value='';document.getElementById('shipLine2').value='';document.getElementById('shipCity').value='';document.getElementById('shipRegion').value='';document.getElementById('shipPostal').value='';}
+  else{
+    const a=state.profile.defaultAddress;
+    document.getElementById('shipRecipient').value=a.recipient||'';
+    document.getElementById('shipLine1').value=a.line1||'';
+    document.getElementById('shipLine2').value=a.line2||'';
+    document.getElementById('shipCity').value=a.city||'';
+    document.getElementById('shipRegion').value=a.region||'';
+    document.getElementById('shipPostal').value=a.postal||'';
+  }
+}
+function checkout(){
+  const total=state.cart.reduce((s,line)=>s+PRODUCTS.find(p=>p.id===line.id).price*line.qty,0);
+  if(!state.cart.length)return;
+  if(total>state.balance){toast('Not enough forage funds');return}
+  const ship=document.getElementById('ship').value,days=ship==='express'?1:ship==='slow'?5:3;
+  const shippingAddress={
+    recipient:document.getElementById('shipRecipient')?.value.trim()||'',
+    line1:document.getElementById('shipLine1')?.value.trim()||'',
+    line2:document.getElementById('shipLine2')?.value.trim()||'',
+    city:document.getElementById('shipCity')?.value.trim()||'',
+    region:document.getElementById('shipRegion')?.value.trim()||'',
+    postal:document.getElementById('shipPostal')?.value.trim()||''
+  };
+  if(!shippingAddress.recipient||!shippingAddress.line1||!shippingAddress.city){toast('Add a delivery name and address');return}
+  const gift=!!document.getElementById('giftToggle')?.checked;
+  const paymentId=document.getElementById('payMethod')?.value||null;
+  const order={id:'FG-'+Math.random().toString(36).slice(2,8).toUpperCase(),items:[...state.cart],total,placed:new Date().toISOString(),delivery:deliveryDate(days),status:'Processing',shippingAddress,gift,giftMessage:gift?(document.getElementById('giftMessage')?.value||''):'' ,paymentId};
+  state.balance-=total;state.spent+=total;state.purchases+=state.cart.reduce((s,x)=>s+x.qty,0);state.orders.unshift(order);state.cart=[];save();page='orders';render();toast('Order placed ✦');
+}
+function renderOrders(){return `<div class="section-head"><div><h2>Orders</h2><p>The anticipation shelf.</p></div></div>${state.orders.length?state.orders.map(o=>`<div class="order"><div class="miniart">📦</div><div><strong>${o.id}</strong><div style="color:var(--muted);margin-top:4px">${o.items.map(line=>{const p=PRODUCTS.find(p=>p.id===line.id);return p?`${p.name}${line.option?` (${line.option})`:''} ×${line.qty}`:''}).filter(Boolean).join(', ')}</div><div class="eyebrow" style="margin-top:7px">${o.status} · Estimated ${o.delivery}</div></div><strong>${money(o.total)}</strong></div>`).join(''):`<div class="empty">No orders yet.</div>`}`}
+
+function saveProfile(){
+  state.profile.displayName=document.getElementById('profileName').value.trim()||'Forager';
+  state.profile.defaultAddress={
+    label:'Home base',
+    recipient:document.getElementById('profileRecipient').value.trim(),
+    line1:document.getElementById('profileLine1').value.trim(),
+    line2:document.getElementById('profileLine2').value.trim(),
+    city:document.getElementById('profileCity').value.trim(),
+    region:document.getElementById('profileRegion').value.trim(),
+    postal:document.getElementById('profilePostal').value.trim()
+  };
+  save();toast('Profile saved');
+}
+function addPaymentMethod(){
+  const label=document.getElementById('cardLabel').value.trim();
+  const brand=document.getElementById('cardBrand').value;
+  const last4=document.getElementById('cardLast4').value.replace(/\D/g,'').slice(-4);
+  if(!label||last4.length!==4){toast('Use a nickname and four fictional digits');return}
+  state.profile.paymentMethods.push({id:'pm'+Date.now(),brand,label,last4,default:state.profile.paymentMethods.length===0});
+  save();render();toast('Fictional card added');
+}
+function setDefaultPayment(id){
+  state.profile.paymentMethods.forEach(m=>m.default=m.id===id);save();render();toast('Default card changed');
+}
+function removePayment(id){
+  state.profile.paymentMethods=state.profile.paymentMethods.filter(m=>m.id!==id);
+  if(state.profile.paymentMethods.length&&!state.profile.paymentMethods.some(m=>m.default))state.profile.paymentMethods[0].default=true;
+  save();render();
+}
+function renderProfile(){
+  const a=state.profile.defaultAddress,m=state.profile.paymentMethods||[];
+  return `<div class="section-head"><div><h2>Profile</h2><p>Your fictional shopper identity, delivery settings, and wallet.</p></div></div>
+  <div class="profile-grid">
+    <div class="panel"><h3>Shopper profile</h3><div class="form-grid">
+      <label class="full">Display name<input id="profileName" value="${state.profile.displayName||''}"></label>
+      <label class="full">Recipient name<input id="profileRecipient" value="${a.recipient||''}"></label>
+      <label class="full">Default address<input id="profileLine1" value="${a.line1||''}"></label>
+      <label class="full">Address line 2<input id="profileLine2" value="${a.line2||''}"></label>
+      <label>City<input id="profileCity" value="${a.city||''}"></label>
+      <label>State / region<input id="profileRegion" value="${a.region||''}"></label>
+      <label>ZIP / postal<input id="profilePostal" value="${a.postal||''}"></label>
+      <div class="full"><button class="primary" onclick="saveProfile()">Save profile</button></div>
+    </div></div>
+    <div class="panel"><h3>Fictional wallet</h3><p style="color:var(--muted);margin-top:0">These are pretend payment methods. Do not enter real card numbers.</p>
+      ${m.map(x=>`<div class="saved-row"><div><strong>${x.brand} •••• ${x.last4}</strong><small>${x.label}${x.default?' · Default':''}</small></div><div class="actions">${!x.default?`<button class="secondary" onclick="setDefaultPayment('${x.id}')">Make default</button>`:''}<button class="danger" onclick="removePayment('${x.id}')">Remove</button></div></div>`).join('')}
+      <div class="form-grid" style="margin-top:14px">
+        <label>Brand<select id="cardBrand"><option>Visa</option><option>Mastercard</option><option>Amex</option><option>Discover</option></select></label>
+        <label>Nickname<input id="cardLabel" placeholder="Adventure card"></label>
+        <label>Last four fictional digits<input id="cardLast4" inputmode="numeric" maxlength="4" placeholder="1234"></label>
+        <div style="align-self:end"><button class="secondary" onclick="addPaymentMethod()">Add card</button></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function resetFunds(){state.balance=2000;save();render();toast('Monthly forage funds refreshed')}
+function renderStats(){return `<div class="section-head"><div><h2>Forage stats</h2><p>Quietly tracking your fictional collecting habits.</p></div></div><div class="statgrid"><div class="stat"><span class="eyebrow">Available</span><strong>${money(state.balance)}</strong>Current forage fund</div><div class="stat"><span class="eyebrow">Acquired</span><strong>${state.purchases}</strong>Items purchased</div><div class="stat"><span class="eyebrow">Spent</span><strong>${money(state.spent)}</strong>Fictional currency</div><div class="stat"><span class="eyebrow">Market</span><strong>${PRODUCTS.length.toLocaleString()}</strong>Unique finds</div></div><div class="summary"><h3 style="margin-top:0">Monthly reset</h3><p style="color:var(--muted)">Need a fresh hunt? Refill your imaginary account.</p><button class="secondary" onclick="resetFunds()">Refresh to Ƶ 2,000</button></div>`}
+function render(){renderHeader();const m=document.getElementById('main');if(page==='shop'){m.innerHTML=renderShop();renderShopInto()}else if(page==='detail')m.innerHTML=renderDetail();else if(page==='wishlist')m.innerHTML=renderWishlist();else if(page==='cart')m.innerHTML=renderCart();else if(page==='orders')m.innerHTML=renderOrders();else if(page==='profile')m.innerHTML=renderProfile();else if(page==='stats')m.innerHTML=renderStats()}
+loadCatalog().then(()=>render()).catch(err=>{document.getElementById('main').innerHTML=`<div class="empty"><strong>Forage couldn't load its catalog.</strong><br>${err.message}</div>`});
+</script>
+</body></html>
