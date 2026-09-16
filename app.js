@@ -16,7 +16,7 @@ function sanitizeCart(raw){
   }));
 }
 function sanitizeStringArray(raw){return Array.isArray(raw)?raw.filter(x=>typeof x==='string'):[]}
-function sanitizeOrders(raw){return Array.isArray(raw)?raw.filter(o=>o&&typeof o==='object'):[]}
+function sanitizeOrders(raw){return Array.isArray(raw)?raw.filter(o=>o&&typeof o==='object').map(o=>({...o,items:Array.isArray(o.items)?o.items:[]})):[]}
 function sanitizeProfile(p){
   const defaults={
     displayName:'Julz',
