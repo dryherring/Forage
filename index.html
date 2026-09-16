@@ -97,10 +97,24 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 function deliveryDate(days=3){const d=new Date();d.setDate(d.getDate()+days);return d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})}
 function daySeed(){const d=new Date();return Number(`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`)}
 function dailyScore(p){return ((p.seed*9301+daySeed()*49297)%233280)/233280}
+function validCartLines(){
+  return state.cart.filter(line=>line&&PRODUCTS.some(p=>p.id===line.id)&&Number.isFinite(Number(line.qty))&&Number(line.qty)>0);
+}
+function reconcileCart(){
+  const valid=validCartLines().map(line=>({...line,qty:Math.max(1,Math.floor(Number(line.qty)))}));
+  const changed=valid.length!==state.cart.length||valid.some((line,i)=>line.qty!==state.cart[i]?.qty);
+  if(changed){
+    state.cart=valid;
+    localStorage.setItem('forageV2State',JSON.stringify(state));
+  }
+  return valid;
+}
+function cartQuantity(){return validCartLines().reduce((sum,line)=>sum+Math.max(1,Math.floor(Number(line.qty))),0)}
 function renderHeader(){
   document.getElementById('balanceBox').textContent=money(state.balance);
+  const cartQty=cartQuantity();
   const items=[['shop','Discover'],['cart','Cart'],['orders','Orders'],['stats','Stats'],['gifts','🎁 Gift Cabinet'],['wishlist','Wishlist'],['reading','📚 Reading List'],['profile','Profile']];
-  document.getElementById('nav').innerHTML=items.map(([id,label])=>`<button class="${page===id?'active':''} ${id==='gifts'?'nav-spacer':''}" onclick="go('${id}')">${label}${id==='cart'&&state.cart.length?`<span class="badge">${state.cart.reduce((s,x)=>s+x.qty,0)}</span>`:''}</button>`).join('');
+  document.getElementById('nav').innerHTML=items.map(([id,label])=>`<button class="${page===id?'active':''} ${id==='gifts'?'nav-spacer':''}" onclick="go('${id}')">${label}${id==='cart'&&cartQty?`<span class="badge">${cartQty}</span>`:''}</button>`).join('');
 }
 
 function go(p){page=p;selected=null;render();window.scrollTo({top:0,behavior:'smooth'})}
@@ -241,7 +255,8 @@ function renderDetail(){const p=selected;if(!p)return'';const optionControl=p.si
 function renderWishlist(){const items=state.wishlist.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);return `<div class="section-head"><div><h2>Wishlist</h2><p>The promising ones you were not ready to commit to.</p></div></div>${items.length?`<div class="grid">${items.map(productCard).join('')}</div>`:`<div class="empty">Nothing saved yet.</div>`}`}
 function addressText(a){return [a.recipient,a.line1,a.line2,a.city,a.region,a.postal].filter(Boolean).join(', ')}
 function renderCart(){
-  const items=state.cart.map((line,i)=>({line,p:PRODUCTS.find(p=>p.id===line.id),i})).filter(x=>x.p),total=items.reduce((s,x)=>s+x.p.price*x.line.qty,0);
+  reconcileCart();
+  const items=state.cart.map((line,i)=>({line,p:PRODUCTS.find(p=>p.id===line.id),i})),total=items.reduce((s,x)=>s+x.p.price*x.line.qty,0);
   const methods=state.profile.paymentMethods||[];
   return `<div class="section-head"><div><h2>Your basket</h2><p>The point where interesting becomes mine.</p></div></div>
   ${items.length?items.map(({p,line,i})=>`<div class="cartline"><div class="miniart">${p.emoji}</div><div><strong>${p.name}</strong><div class="eyebrow">${p.cat}${line.option?` · ${line.option}`:''} · Qty ${line.qty}</div></div><div style="text-align:right"><strong>${money(p.price*line.qty)}</strong><br><button class="danger" onclick="removeCart(${i})">Remove</button></div></div>`).join(''):`<div class="empty">Your basket is empty.</div>`}
