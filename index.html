@@ -193,7 +193,8 @@ function amazonBook(p){
 function saveReading(id){
  const p=PRODUCTS.find(x=>x.id===id);if(!p)return;
  state.readingList=state.readingList||[];
- if(!state.readingList.some(x=>x.id===id))state.readingList.unshift({id,name:p.name,format:(p.formats||["Any"])[0],formats:p.formats||["Any"],status:"Want to Read"});
+ if(state.readingList.some(x=>x.id===id)){toast("Already in Reading List");return;}
+ state.readingList.unshift({id,name:p.name,format:(p.formats||["Any"])[0],formats:p.formats||["Any"],status:"Want to Read"});
  save();toast("Saved to Reading List");
 }
 function saveGiftIdea(id){
@@ -351,20 +352,6 @@ function goHome(){
 }
 
 
-function ensureForageCollections(){state.readingList=state.readingList||[];state.giftIdeas=state.giftIdeas||[]}
-function saveReading(p){
- ensureForageCollections();
- if(!state.readingList.some(x=>x.id===p.id))state.readingList.unshift({id:p.id,name:p.name,format:"Any",status:"Want to Read",added:new Date().toISOString()});
- save(); render();
-}
-function saveGift(p){
- ensureForageCollections();
- const person=prompt("Who is this gift idea for?",""); if(person===null||!person.trim())return;
- const occasion=prompt("Occasion? (Birthday, Christmas, Just Because…)","Just Because"); if(occasion===null)return;
- const note=prompt("Private note (optional)","")||"";
- state.giftIdeas.unshift({id:p.id,name:p.name,person:person.trim(),occasion:occasion.trim()||"Just Because",note,status:"Idea",added:new Date().toISOString()});
- save(); render();
-}
 function renderReading(){
  ensureForageCollections();
  const rows=state.readingList.map((x,i)=>`<div class="card" style="padding:16px"><b>${x.name}</b><div class="small">${x.status} · ${x.format}</div><div class="actions"><select onchange="state.readingList[${i}].status=this.value;save();render()"><option ${x.status==="Want to Read"?"selected":""}>Want to Read</option><option ${x.status==="Fictionally Purchased"?"selected":""}>Fictionally Purchased</option><option ${x.status==="Read"?"selected":""}>Read</option></select><button class="secondary" onclick="state.readingList.splice(${i},1);save();render()">Remove</button></div></div>`).join("");
