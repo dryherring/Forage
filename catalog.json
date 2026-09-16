@@ -60875,7 +60875,7 @@
       "Audiobook"
     ],
     "narrator": "Dick Hill",
-    "runtime": "5 hr 22 min",
+    "runtime": "5 hr 23 min",
     "price": 18,
     "rating": 4.2,
     "reviews": 120,
@@ -60898,7 +60898,7 @@
       "Topic": "NDEs",
       "Formats": "Print · eBook · Audiobook",
       "Audiobook narrator": "Dick Hill",
-      "Audiobook runtime": "5 hr 22 min"
+      "Audiobook runtime": "5 hr 23 min"
     },
     "desc": "A classic early study built from accounts of people who came close to death and reported recurring features in their experiences.",
     "reviewSnippets": [],
@@ -60959,7 +60959,7 @@
       "Audiobook"
     ],
     "narrator": "Rene Ruiz",
-    "runtime": "9 hr 22 min",
+    "runtime": "9 hr 23 min",
     "price": 26,
     "rating": 4.4,
     "reviews": 262,
@@ -60982,7 +60982,7 @@
       "Topic": "Buddhism",
       "Formats": "Print · eBook · Audiobook",
       "Audiobook narrator": "Rene Ruiz",
-      "Audiobook runtime": "9 hr 22 min"
+      "Audiobook runtime": "9 hr 23 min"
     },
     "desc": "An accessible presentation of foundational Buddhist teachings including the Four Noble Truths and Noble Eightfold Path.",
     "reviewSnippets": [],
@@ -61364,7 +61364,7 @@
       "eBook",
       "Audiobook"
     ],
-    "narrator": null,
+    "narrator": "Sean Patrick Hopkins",
     "runtime": null,
     "price": 26,
     "rating": 4.7,
@@ -61386,7 +61386,8 @@
     "specs": {
       "Author": "Bruce Greyson",
       "Topic": "NDEs",
-      "Formats": "Print · eBook · Audiobook"
+      "Formats": "Print · eBook · Audiobook",
+      "Audiobook narrator": "Sean Patrick Hopkins"
     },
     "desc": "A psychiatrist and long-time NDE researcher reviews decades of investigation into near-death experiences and their effects.",
     "reviewSnippets": [],
@@ -61506,6 +61507,234 @@
       "Formats": "Print"
     },
     "desc": "An illustrated reference to Japanese pottery techniques, tools, forms, decoration, and terminology.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "consciousness-beyond-life",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Consciousness Beyond Life",
+    "author": "Pim van Lommel",
+    "bookTopic": "NDEs & Consciousness",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 22,
+    "rating": 4.6,
+    "reviews": 180,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 549083,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Pim van Lommel",
+      "Topic": "NDEs & Consciousness",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A cardiologist’s account of near-death experience research and questions about consciousness.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "no-death-no-fear",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "No Death, No Fear",
+    "author": "Thich Nhat Hanh",
+    "bookTopic": "Buddhism & Death",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 22,
+    "rating": 4.6,
+    "reviews": 180,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 920108,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Thich Nhat Hanh",
+      "Topic": "Buddhism & Death",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "Teachings on impermanence, continuation, grief, and freedom from fear.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "why-we-die",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Why We Die",
+    "author": "Venki Ramakrishnan",
+    "bookTopic": "Science & Mortality",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 22,
+    "rating": 4.6,
+    "reviews": 180,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 832075,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Venki Ramakrishnan",
+      "Topic": "Science & Mortality",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A molecular biologist explores the science of aging, mortality, and efforts to extend healthy life.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "salt-fat-acid-heat",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Salt, Fat, Acid, Heat",
+    "author": "Samin Nosrat",
+    "bookTopic": "Cooking",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook"
+    ],
+    "price": 22,
+    "rating": 4.6,
+    "reviews": 180,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 456310,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook"
+    ],
+    "specs": {
+      "Author": "Samin Nosrat",
+      "Topic": "Cooking",
+      "Formats": "Print · eBook"
+    },
+    "desc": "A technique-centered approach to understanding four fundamental elements of good cooking.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "wild-fermentation",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Wild Fermentation",
+    "author": "Sandor Ellix Katz",
+    "bookTopic": "Fermentation",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook"
+    ],
+    "price": 22,
+    "rating": 4.6,
+    "reviews": 180,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 104600,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook"
+    ],
+    "specs": {
+      "Author": "Sandor Ellix Katz",
+      "Topic": "Fermentation",
+      "Formats": "Print · eBook"
+    },
+    "desc": "A practical and cultural guide to fermented foods and the living processes behind them.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "ceramic-glazes",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Complete Guide to Mid-Range Glazes",
+    "author": "John Britt",
+    "bookTopic": "Pottery",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook"
+    ],
+    "price": 22,
+    "rating": 4.6,
+    "reviews": 180,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 83685,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook"
+    ],
+    "specs": {
+      "Author": "John Britt",
+      "Topic": "Pottery",
+      "Formats": "Print · eBook"
+    },
+    "desc": "A practical ceramics reference focused on glaze chemistry, testing, recipes, and firing in the mid-range.",
     "reviewSnippets": [],
     "deepReviews": []
   }
