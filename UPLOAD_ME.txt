@@ -1,0 +1,1 @@
+Replace index.html and catalog.json in the repository root.
