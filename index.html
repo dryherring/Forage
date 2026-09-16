@@ -52,6 +52,8 @@ header{position:sticky;top:0;z-index:20;background:rgba(246,243,236,.94);backdro
 .brand-home{display:inline-flex;align-items:center;border:0;background:transparent;padding:0;cursor:pointer;text-decoration:none}
 .brand-home img{display:block;width:min(300px,48vw);height:auto;max-height:74px;object-fit:contain;object-position:left center}
 @media(max-width:650px){.brand-home img{width:235px;max-height:64px}}
+
+@media(min-width:850px){#nav .nav-spacer{margin-left:auto}}
 </style>
 </head>
 <body>
@@ -82,9 +84,12 @@ function daySeed(){const d=new Date();return Number(`${d.getFullYear()}${String(
 function dailyScore(p){return ((p.seed*9301+daySeed()*49297)%233280)/233280}
 function renderHeader(){
   document.getElementById('balanceBox').textContent=money(state.balance);
-  const items=[['shop','Discover'],['wishlist','Wishlist'],['cart','Cart'],['orders','Orders'],['reading','📚 Reading List'],['gifts','🎁 Gift Cabinet'],['profile','Profile'],['stats','Stats']];
-  document.getElementById('nav').innerHTML=items.map(([id,label])=>`<button class="${page===id?'active':''}" onclick="go('${id}')">${label}${id==='cart'&&state.cart.length?`<span class="badge">${state.cart.reduce((s,x)=>s+x.qty,0)}</span>`:''}</button>`).join('');
+  const items=[['shop','Discover'],['cart','Cart'],['orders','Orders'],['stats','Stats'],['gifts','🎁 Gift Cabinet'],['wishlist','Wishlist'],['reading','📚 Reading List'],['profile','Profile']];
+  document.getElementById('nav').innerHTML=items.map(([id,label])=>`<button class="${page===id?'active':''} ${id==='gifts'?'nav-spacer':''}" onclick="${id==='reading'?'goReading()':`go('${id}')`}">${label}${id==='cart'&&state.cart.length?`<span class="badge">${state.cart.reduce((s,x)=>s+x.qty,0)}</span>`:''}</button>`).join('');
 }
+
+function goReading(){page='reading';selected=null;render();window.scrollTo({top:0,behavior:'smooth'});}
+
 function go(p){page=p;selected=null;render();window.scrollTo({top:0,behavior:'smooth'})}
 
 function productCard(p){const wished=state.wishlist.includes(p.id);return `<article class="card" onclick="openProduct('${p.id}')"><div class="art">${photo(p)}<div class="art-label">${p.cat}</div><button class="heart ${wished?'on':''}" onclick="event.stopPropagation();toggleWish('${p.id}')">${wished?'♥':'♡'}</button></div><div class="cardbody"><div><span class="discovery-badge">${p.marketBadge}</span>${p.limited?'<span class="discovery-badge">Limited</span>':''}</div><h3>${p.name}</h3><div class="rating">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} reviews</div><p>${p.desc}</p><div class="stockline">${forageStock(p)}</div><div class="actions" style="margin-top:10px"><button class="secondary" onclick="event.stopPropagation();openProduct('${p.id}')">Details →</button></div><div class="price">${money(p.price)} ${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div></div></article>`}
