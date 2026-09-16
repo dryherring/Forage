@@ -51242,69 +51242,6 @@
     "image": "images/wool-cat-cave.webp"
   },
   {
-    "id": "p0876",
-    "seed": 876,
-    "cat": "Stationery & Paper",
-    "emoji": "📚",
-    "name": "Anthropologist’s Index Card Box Sand 2",
-    "price": 90,
-    "oldPrice": null,
-    "rating": 4.6,
-    "reviews": 68,
-    "stock": 7,
-    "rarity": "Tiny treasure",
-    "desc": "Designed for notes that need to be moved, grouped, compared, and reconsidered. Sturdy materials tolerate being shuffled around a desk, bag, or project table. This version pairs ripstop nylon with a matte finish.",
-    "sizes": null,
-    "variants": [],
-    "specs": {
-      "Material": "Ripstop nylon",
-      "Finish": "Matte",
-      "Use": "Daily",
-      "Edition": "Small batch"
-    },
-    "reviewSnippets": [
-      {
-        "name": "Yuna",
-        "stars": 4,
-        "text": "Better thought out than I expected. The little details are what sold me."
-      },
-      {
-        "name": "Mika",
-        "stars": 4,
-        "text": "Exactly the kind of thing I did not know I was looking for until I found it."
-      },
-      {
-        "name": "Ari",
-        "stars": 4,
-        "text": "Feels sturdy, useful, and pleasantly specific rather than generic."
-      }
-    ],
-    "marketBadge": "Quiet gem",
-    "limited": false,
-    "markdown": false,
-    "deepReviews": [
-      {
-        "name": "Casey T.",
-        "title": "Quiet favorite",
-        "text": "Not the flashiest thing in my order, somehow the one I keep noticing.",
-        "stars": 5
-      },
-      {
-        "name": "Theo K.",
-        "title": "Better in use",
-        "text": "The practical bits are better than the listing suggests. One tiny quibble, but I keep reaching for it.",
-        "stars": 5
-      },
-      {
-        "name": "Ari L.",
-        "title": "Well thought out",
-        "text": "The proportions and little design choices feel considered rather than gimmicky.",
-        "stars": 5
-      }
-    ],
-    "image": "images/starry-cowboy-hat.webp"
-  },
-  {
     "id": "p0878",
     "seed": 878,
     "cat": "Pottery",
@@ -51939,69 +51876,6 @@
     "image": "images/petite-field-watch.webp"
   },
   {
-    "id": "p0888",
-    "seed": 888,
-    "cat": "Stationery & Paper",
-    "emoji": "📚",
-    "name": "Field Notes Index Card Box Indigo 2",
-    "price": 98,
-    "oldPrice": null,
-    "rating": 4.8,
-    "reviews": 329,
-    "stock": 14,
-    "rarity": "New",
-    "desc": "Designed for notes that need to be moved, grouped, compared, and reconsidered. Sturdy materials tolerate being shuffled around a desk, bag, or project table. This version pairs waxed canvas with a matte finish.",
-    "sizes": null,
-    "variants": [],
-    "specs": {
-      "Material": "Waxed canvas",
-      "Finish": "Matte",
-      "Use": "Daily",
-      "Edition": "Small batch"
-    },
-    "reviewSnippets": [
-      {
-        "name": "Rae",
-        "stars": 4,
-        "text": "Better thought out than I expected. The little details are what sold me."
-      },
-      {
-        "name": "Jules",
-        "stars": 4,
-        "text": "Exactly the kind of thing I did not know I was looking for until I found it."
-      },
-      {
-        "name": "Nora",
-        "stars": 4,
-        "text": "Feels sturdy, useful, and pleasantly specific rather than generic."
-      }
-    ],
-    "marketBadge": "New arrival",
-    "limited": false,
-    "markdown": false,
-    "deepReviews": [
-      {
-        "name": "Sam P.",
-        "title": "My kind of unnecessary",
-        "text": "Did I need this? No. Did I enjoy comparing six versions and waiting for it to arrive? Completely.",
-        "stars": 5
-      },
-      {
-        "name": "Casey T.",
-        "title": "Quiet favorite",
-        "text": "Not the flashiest thing in my order, somehow the one I keep noticing.",
-        "stars": 5
-      },
-      {
-        "name": "Theo K.",
-        "title": "Better in use",
-        "text": "The practical bits are better than the listing suggests. One tiny quibble, but I keep reaching for it.",
-        "stars": 5
-      }
-    ],
-    "image": "images/starry-cowboy-hat.webp"
-  },
-  {
     "id": "p0890",
     "seed": 890,
     "cat": "Pottery",
@@ -52634,69 +52508,6 @@
       }
     ],
     "image": "images/wool-cat-cave.webp"
-  },
-  {
-    "id": "p0900",
-    "seed": 900,
-    "cat": "Stationery & Paper",
-    "emoji": "📚",
-    "name": "Small Archive Index Card Box Moss 2",
-    "price": 108,
-    "oldPrice": null,
-    "rating": 4.4,
-    "reviews": 671,
-    "stock": 21,
-    "rarity": "Tiny treasure",
-    "desc": "A tactile thinking tool for research, planning, lists, and beautifully excessive organization. Equally at home supporting serious thinking and recording extremely unserious ideas. This version pairs ripstop nylon with a matte finish.",
-    "sizes": null,
-    "variants": [],
-    "specs": {
-      "Material": "Ripstop nylon",
-      "Finish": "Matte",
-      "Use": "Daily",
-      "Edition": "Small batch"
-    },
-    "reviewSnippets": [
-      {
-        "name": "Mina",
-        "stars": 4,
-        "text": "Better thought out than I expected. The little details are what sold me."
-      },
-      {
-        "name": "Sam",
-        "stars": 4,
-        "text": "Exactly the kind of thing I did not know I was looking for until I found it."
-      },
-      {
-        "name": "Yuna",
-        "stars": 4,
-        "text": "Feels sturdy, useful, and pleasantly specific rather than generic."
-      }
-    ],
-    "marketBadge": "Forager pick",
-    "limited": false,
-    "markdown": false,
-    "deepReviews": [
-      {
-        "name": "Ari L.",
-        "title": "Well thought out",
-        "text": "The proportions and little design choices feel considered rather than gimmicky.",
-        "stars": 5
-      },
-      {
-        "name": "Ren S.",
-        "title": "Read the details",
-        "text": "Once I picked the right option it was exactly what I hoped for.",
-        "stars": 5
-      },
-      {
-        "name": "Nora J.",
-        "title": "Good, with one caveat",
-        "text": "The finish is more understated than I expected, which I ended up liking.",
-        "stars": 5
-      }
-    ],
-    "image": "images/trail-multitool.webp"
   },
   {
     "id": "p0902",
@@ -53337,69 +53148,6 @@
     "image": "images/petite-field-watch.webp"
   },
   {
-    "id": "p0912",
-    "seed": 912,
-    "cat": "Stationery & Paper",
-    "emoji": "📚",
-    "name": "Library Table Index Card Box Clay 2",
-    "price": 116,
-    "oldPrice": null,
-    "rating": 4.7,
-    "reviews": 107,
-    "stock": 26,
-    "rarity": "New",
-    "desc": "A tactile thinking tool for research, planning, lists, and beautifully excessive organization. Equally at home supporting serious thinking and recording extremely unserious ideas. This version pairs waxed canvas with a matte finish.",
-    "sizes": null,
-    "variants": [],
-    "specs": {
-      "Material": "Waxed canvas",
-      "Finish": "Matte",
-      "Use": "Daily",
-      "Edition": "Small batch"
-    },
-    "reviewSnippets": [
-      {
-        "name": "Ari",
-        "stars": 4,
-        "text": "Better thought out than I expected. The little details are what sold me."
-      },
-      {
-        "name": "Theo",
-        "stars": 4,
-        "text": "Exactly the kind of thing I did not know I was looking for until I found it."
-      },
-      {
-        "name": "Rae",
-        "stars": 4,
-        "text": "Feels sturdy, useful, and pleasantly specific rather than generic."
-      }
-    ],
-    "marketBadge": "Quiet gem",
-    "limited": false,
-    "markdown": false,
-    "deepReviews": [
-      {
-        "name": "Casey T.",
-        "title": "Quiet favorite",
-        "text": "Not the flashiest thing in my order, somehow the one I keep noticing.",
-        "stars": 5
-      },
-      {
-        "name": "Theo K.",
-        "title": "Better in use",
-        "text": "The practical bits are better than the listing suggests. One tiny quibble, but I keep reaching for it.",
-        "stars": 5
-      },
-      {
-        "name": "Ari L.",
-        "title": "Well thought out",
-        "text": "The proportions and little design choices feel considered rather than gimmicky.",
-        "stars": 5
-      }
-    ],
-    "image": "images/trail-multitool.webp"
-  },
-  {
     "id": "p0914",
     "seed": 914,
     "cat": "Pottery",
@@ -54034,73 +53782,6 @@
     "image": "images/petite-field-watch.webp"
   },
   {
-    "id": "p0924",
-    "seed": 924,
-    "cat": "Stationery & Paper",
-    "emoji": "📚",
-    "name": "Margin Notes Index Card Box Bone 2",
-    "price": 126,
-    "oldPrice": null,
-    "rating": 4.9,
-    "reviews": 1303,
-    "stock": 28,
-    "rarity": "Tiny treasure",
-    "desc": "A paper-and-desk find for people who think better when ideas become physical objects. The format encourages short, useful captures rather than perfect prose. This version pairs ripstop nylon with a matte finish.",
-    "sizes": null,
-    "variants": [
-      "Indigo",
-      "Moss",
-      "Clay"
-    ],
-    "specs": {
-      "Material": "Ripstop nylon",
-      "Finish": "Matte",
-      "Use": "Daily",
-      "Edition": "Small batch"
-    },
-    "reviewSnippets": [
-      {
-        "name": "Nora",
-        "stars": 4,
-        "text": "Better thought out than I expected. The little details are what sold me."
-      },
-      {
-        "name": "Kai",
-        "stars": 4,
-        "text": "Exactly the kind of thing I did not know I was looking for until I found it."
-      },
-      {
-        "name": "Mina",
-        "stars": 4,
-        "text": "Feels sturdy, useful, and pleasantly specific rather than generic."
-      }
-    ],
-    "marketBadge": "New arrival",
-    "limited": true,
-    "markdown": false,
-    "deepReviews": [
-      {
-        "name": "Ren S.",
-        "title": "Read the details",
-        "text": "Once I picked the right option it was exactly what I hoped for.",
-        "stars": 5
-      },
-      {
-        "name": "Nora J.",
-        "title": "Good, with one caveat",
-        "text": "The finish is more understated than I expected, which I ended up liking.",
-        "stars": 5
-      },
-      {
-        "name": "June W.",
-        "title": "Almost perfect",
-        "text": "I wish there were one more option, but I am still very glad I picked this one.",
-        "stars": 5
-      }
-    ],
-    "image": null
-  },
-  {
     "id": "p0926",
     "seed": 926,
     "cat": "Pottery",
@@ -54733,69 +54414,6 @@
       }
     ],
     "image": "images/wool-cat-cave.webp"
-  },
-  {
-    "id": "p0936",
-    "seed": 936,
-    "cat": "Stationery & Paper",
-    "emoji": "📚",
-    "name": "Observation Index Card Box Black 2",
-    "price": 134,
-    "oldPrice": 177,
-    "rating": 4.9,
-    "reviews": 552,
-    "stock": 18,
-    "rarity": "New",
-    "desc": "A paper-and-desk find for people who think better when ideas become physical objects. Equally at home supporting serious thinking and recording extremely unserious ideas. This version pairs waxed canvas with a matte finish.",
-    "sizes": null,
-    "variants": [],
-    "specs": {
-      "Material": "Waxed canvas",
-      "Finish": "Matte",
-      "Use": "Daily",
-      "Edition": "Small batch"
-    },
-    "reviewSnippets": [
-      {
-        "name": "Yuna",
-        "stars": 4,
-        "text": "Better thought out than I expected. The little details are what sold me."
-      },
-      {
-        "name": "Mika",
-        "stars": 4,
-        "text": "Exactly the kind of thing I did not know I was looking for until I found it."
-      },
-      {
-        "name": "Ari",
-        "stars": 4,
-        "text": "Feels sturdy, useful, and pleasantly specific rather than generic."
-      }
-    ],
-    "marketBadge": "Forager pick",
-    "limited": false,
-    "markdown": true,
-    "deepReviews": [
-      {
-        "name": "Mina R.",
-        "title": "Thoughtful little find",
-        "text": "I came back to this three times before choosing it. The details won me over.",
-        "stars": 4
-      },
-      {
-        "name": "Sam P.",
-        "title": "My kind of unnecessary",
-        "text": "Did I need this? No. Did I enjoy comparing six versions and waiting for it to arrive? Completely.",
-        "stars": 4
-      },
-      {
-        "name": "Casey T.",
-        "title": "Quiet favorite",
-        "text": "Not the flashiest thing in my order, somehow the one I keep noticing.",
-        "stars": 4
-      }
-    ],
-    "image": null
   },
   {
     "id": "p0938",
@@ -55436,69 +55054,6 @@
     "image": "images/wool-cat-cave.webp"
   },
   {
-    "id": "p0948",
-    "seed": 948,
-    "cat": "Stationery & Paper",
-    "emoji": "📚",
-    "name": "Pattern Finder Index Card Box Cream 2",
-    "price": 144,
-    "oldPrice": null,
-    "rating": 4,
-    "reviews": 50,
-    "stock": 22,
-    "rarity": "Tiny treasure",
-    "desc": "Designed for notes that need to be moved, grouped, compared, and reconsidered. Sturdy materials tolerate being shuffled around a desk, bag, or project table. This version pairs ripstop nylon with a matte finish.",
-    "sizes": null,
-    "variants": [],
-    "specs": {
-      "Material": "Ripstop nylon",
-      "Finish": "Matte",
-      "Use": "Daily",
-      "Edition": "Small batch"
-    },
-    "reviewSnippets": [
-      {
-        "name": "Rae",
-        "stars": 4,
-        "text": "Better thought out than I expected. The little details are what sold me."
-      },
-      {
-        "name": "Jules",
-        "stars": 4,
-        "text": "Exactly the kind of thing I did not know I was looking for until I found it."
-      },
-      {
-        "name": "Nora",
-        "stars": 4,
-        "text": "Feels sturdy, useful, and pleasantly specific rather than generic."
-      }
-    ],
-    "marketBadge": "Small-batch",
-    "limited": false,
-    "markdown": false,
-    "deepReviews": [
-      {
-        "name": "Theo K.",
-        "title": "Better in use",
-        "text": "The practical bits are better than the listing suggests. One tiny quibble, but I keep reaching for it.",
-        "stars": 4
-      },
-      {
-        "name": "Ari L.",
-        "title": "Well thought out",
-        "text": "The proportions and little design choices feel considered rather than gimmicky.",
-        "stars": 4
-      },
-      {
-        "name": "Ren S.",
-        "title": "Read the details",
-        "text": "Once I picked the right option it was exactly what I hoped for.",
-        "stars": 4
-      }
-    ],
-    "image": "images/starry-cowboy-hat.webp"
-  },
-  {
     "id": "p0950",
     "seed": 950,
     "cat": "Pottery",
@@ -56135,69 +55690,6 @@
       }
     ],
     "image": "images/wool-cat-cave.webp"
-  },
-  {
-    "id": "p0960",
-    "seed": 960,
-    "cat": "Stationery & Paper",
-    "emoji": "📚",
-    "name": "Commonplace Index Card Box Fog 2",
-    "price": 152,
-    "oldPrice": null,
-    "rating": 4.1,
-    "reviews": 1033,
-    "stock": 10,
-    "rarity": "New",
-    "desc": "Designed for notes that need to be moved, grouped, compared, and reconsidered. Sturdy materials tolerate being shuffled around a desk, bag, or project table. This version pairs waxed canvas with a matte finish.",
-    "sizes": null,
-    "variants": [],
-    "specs": {
-      "Material": "Waxed canvas",
-      "Finish": "Matte",
-      "Use": "Daily",
-      "Edition": "Small batch"
-    },
-    "reviewSnippets": [
-      {
-        "name": "Mina",
-        "stars": 4,
-        "text": "Better thought out than I expected. The little details are what sold me."
-      },
-      {
-        "name": "Sam",
-        "stars": 4,
-        "text": "Exactly the kind of thing I did not know I was looking for until I found it."
-      },
-      {
-        "name": "Yuna",
-        "stars": 4,
-        "text": "Feels sturdy, useful, and pleasantly specific rather than generic."
-      }
-    ],
-    "marketBadge": "Small-batch",
-    "limited": false,
-    "markdown": false,
-    "deepReviews": [
-      {
-        "name": "Nora J.",
-        "title": "Good, with one caveat",
-        "text": "The finish is more understated than I expected, which I ended up liking.",
-        "stars": 4
-      },
-      {
-        "name": "June W.",
-        "title": "Almost perfect",
-        "text": "I wish there were one more option, but I am still very glad I picked this one.",
-        "stars": 4
-      },
-      {
-        "name": "Mina R.",
-        "title": "Thoughtful little find",
-        "text": "I came back to this three times before choosing it. The details won me over.",
-        "stars": 4
-      }
-    ],
-    "image": "images/starry-cowboy-hat.webp"
   },
   {
     "id": "p0962",
@@ -61368,5 +60860,653 @@
     "reviewSnippets": [],
     "deepReviews": [],
     "rarity": ""
+  },
+  {
+    "id": "life-after-life-moody",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Life After Life",
+    "author": "Raymond A. Moody Jr.",
+    "bookTopic": "NDEs",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "narrator": "Dick Hill",
+    "runtime": "5 hr 22 min",
+    "price": 18,
+    "rating": 4.2,
+    "reviews": 120,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100000,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Raymond A. Moody Jr.",
+      "Topic": "NDEs",
+      "Formats": "Print · eBook · Audiobook",
+      "Audiobook narrator": "Dick Hill",
+      "Audiobook runtime": "5 hr 22 min"
+    },
+    "desc": "A classic early study built from accounts of people who came close to death and reported recurring features in their experiences.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "journey-of-souls-newton",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Journey of Souls: Case Studies of Life Between Lives",
+    "author": "Michael Newton",
+    "bookTopic": "Between Lives",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 22,
+    "rating": 4.3,
+    "reviews": 191,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100001,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Michael Newton",
+      "Topic": "Between Lives",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "Case-based accounts from Newton’s hypnotic regression work exploring purported experiences between incarnations.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "heart-buddha-teaching",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Heart of the Buddha’s Teaching",
+    "author": "Thich Nhat Hanh",
+    "bookTopic": "Buddhism",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "narrator": "Rene Ruiz",
+    "runtime": "9 hr 22 min",
+    "price": 26,
+    "rating": 4.4,
+    "reviews": 262,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100002,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Thich Nhat Hanh",
+      "Topic": "Buddhism",
+      "Formats": "Print · eBook · Audiobook",
+      "Audiobook narrator": "Rene Ruiz",
+      "Audiobook runtime": "9 hr 22 min"
+    },
+    "desc": "An accessible presentation of foundational Buddhist teachings including the Four Noble Truths and Noble Eightfold Path.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "seven-brief-lessons",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Seven Brief Lessons on Physics",
+    "author": "Carlo Rovelli",
+    "bookTopic": "Science",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "narrator": "Carlo Rovelli",
+    "runtime": "1 hr 45 min",
+    "price": 30,
+    "rating": 4.5,
+    "reviews": 333,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100003,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Carlo Rovelli",
+      "Topic": "Science",
+      "Formats": "Print · eBook · Audiobook",
+      "Audiobook narrator": "Carlo Rovelli",
+      "Audiobook runtime": "1 hr 45 min"
+    },
+    "desc": "A compact introduction to major ideas in modern physics, from relativity and quantum mechanics to the structure of the cosmos.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "flour-water-salt-yeast",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Flour Water Salt Yeast",
+    "author": "Ken Forkish",
+    "bookTopic": "Bread & Sourdough",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 34,
+    "rating": 4.6,
+    "reviews": 404,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100004,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook"
+    ],
+    "specs": {
+      "Author": "Ken Forkish",
+      "Topic": "Bread & Sourdough",
+      "Formats": "Print · eBook"
+    },
+    "desc": "A technique-focused bread book from baker Ken Forkish covering artisan loaves, fermentation, and pizza dough.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "perfect-loaf",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Perfect Loaf",
+    "author": "Maurizio Leo",
+    "bookTopic": "Bread & Sourdough",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 18,
+    "rating": 4.7,
+    "reviews": 475,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100005,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook"
+    ],
+    "specs": {
+      "Author": "Maurizio Leo",
+      "Topic": "Bread & Sourdough",
+      "Formats": "Print · eBook"
+    },
+    "desc": "A detailed guide to naturally leavened bread built around fermentation, process, and repeatable home-baking practice.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "conscious-brain",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Consciousness and the Brain",
+    "author": "Stanislas Dehaene",
+    "bookTopic": "Consciousness & Science",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 22,
+    "rating": 4.8,
+    "reviews": 546,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100006,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Stanislas Dehaene",
+      "Topic": "Consciousness & Science",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A cognitive-neuroscience account of how conscious access can be studied experimentally.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "why-buddhism-true",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Why Buddhism Is True",
+    "author": "Robert Wright",
+    "bookTopic": "Buddhism & Science",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 26,
+    "rating": 4.2,
+    "reviews": 617,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100007,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Robert Wright",
+      "Topic": "Buddhism & Science",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A secular exploration of Buddhist ideas through evolutionary psychology and cognitive science.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "craft-art-clay",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Craft and Art of Clay",
+    "author": "Susan Peterson and Jan Peterson",
+    "bookTopic": "Pottery",
+    "realBook": true,
+    "formats": [
+      "Print"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 30,
+    "rating": 4.3,
+    "reviews": 688,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100008,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print"
+    ],
+    "specs": {
+      "Author": "Susan Peterson and Jan Peterson",
+      "Topic": "Pottery",
+      "Formats": "Print"
+    },
+    "desc": "A broad ceramics reference spanning materials, forming methods, surface, firing, and ceramic practice.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "braiding-sweetgrass",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Braiding Sweetgrass",
+    "author": "Robin Wall Kimmerer",
+    "bookTopic": "Nature & Ways of Knowing",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 34,
+    "rating": 4.4,
+    "reviews": 759,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100009,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Robin Wall Kimmerer",
+      "Topic": "Nature & Ways of Knowing",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "Essays bringing botany, Indigenous knowledge, reciprocity, and relationship with the living world into conversation.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "being-mortal",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Being Mortal",
+    "author": "Atul Gawande",
+    "bookTopic": "Mortality & Care",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 18,
+    "rating": 4.5,
+    "reviews": 830,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100010,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Atul Gawande",
+      "Topic": "Mortality & Care",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "An examination of aging, serious illness, autonomy, medicine, and what matters near the end of life.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "tibetan-book-living-dying",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Tibetan Book of Living and Dying",
+    "author": "Sogyal Rinpoche",
+    "bookTopic": "Buddhism & Death",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 22,
+    "rating": 4.6,
+    "reviews": 901,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100011,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Sogyal Rinpoche",
+      "Topic": "Buddhism & Death",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A modern presentation of Tibetan Buddhist teachings on life, dying, death, and contemplative practice.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "after-bruce-greyson",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "After: A Doctor Explores What Near-Death Experiences Reveal about Life and Beyond",
+    "author": "Bruce Greyson",
+    "bookTopic": "NDEs",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 26,
+    "rating": 4.7,
+    "reviews": 972,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100012,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Bruce Greyson",
+      "Topic": "NDEs",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A psychiatrist and long-time NDE researcher reviews decades of investigation into near-death experiences and their effects.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "immense-world",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "An Immense World",
+    "author": "Ed Yong",
+    "bookTopic": "Science & Animals",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 30,
+    "rating": 4.8,
+    "reviews": 1043,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100013,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Ed Yong",
+      "Topic": "Science & Animals",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A tour of the radically different sensory worlds through which animals perceive their environments.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "art-of-fermentation",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Art of Fermentation",
+    "author": "Sandor Ellix Katz",
+    "bookTopic": "Fermentation",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 34,
+    "rating": 4.2,
+    "reviews": 1114,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100014,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook"
+    ],
+    "specs": {
+      "Author": "Sandor Ellix Katz",
+      "Topic": "Fermentation",
+      "Formats": "Print · eBook"
+    },
+    "desc": "A wide-ranging exploration of fermentation traditions, principles, and practical experimentation.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "japanese-pottery-handbook",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Japanese Pottery Handbook",
+    "author": "Penny Simpson, Lucy Kitto and Kanji Sodeoka",
+    "bookTopic": "Pottery",
+    "realBook": true,
+    "formats": [
+      "Print"
+    ],
+    "narrator": null,
+    "runtime": null,
+    "price": 18,
+    "rating": 4.3,
+    "reviews": 1185,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100015,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print"
+    ],
+    "specs": {
+      "Author": "Penny Simpson, Lucy Kitto and Kanji Sodeoka",
+      "Topic": "Pottery",
+      "Formats": "Print"
+    },
+    "desc": "An illustrated reference to Japanese pottery techniques, tools, forms, decoration, and terminology.",
+    "reviewSnippets": [],
+    "deepReviews": []
   }
 ]
