@@ -55,9 +55,9 @@ header{position:sticky;top:0;z-index:20;background:rgba(246,243,236,.94);backdro
 </style>
 </head>
 <body>
-<div class="app"><header><div class="topbar"><button class="brand-home" onclick="goHome()" aria-label="Forage home"><img src="forage-logo.svg" alt="Forage — Hunt, Choose, Collect"></button><div class="balance" id="balanceBox"></div></div><div class="nav" id="nav"></div></header><main id="main"></main><footer>Forage uses fictional money only. No real checkout exists.</footer></div><div class="toast" id="toast"></div>
+<div class="app"><header><div class="topbar" onclick="goHome()" role="button" tabindex="0" aria-label="Forage home"><button class="brand-home" onclick="event.stopPropagation();goHome()" aria-label="Forage home"><img src="forage-logo.svg" alt="Forage — Hunt, Choose, Collect"></button><div class="balance" id="balanceBox"></div></div><div class="nav" id="nav"></div></header><main id="main"></main><footer>Forage uses fictional money only. No real checkout exists.</footer></div><div class="toast" id="toast"></div>
 <script>let PRODUCTS=[];
-const CATS=["All", "Moto", "Pottery", "Craft", "Korea", "Music", "Style", "Home", "Kitchen", "Travel", "Adventure", "Cats", 'Stationery & Paper','Gifts & Curiosities'];
+const CATS=["All", "Moto", "Pottery", "Craft", "Korea", "Music", "Style", "Home", "Kitchen", "Travel", "Adventure", "Cats", 'Books','Stationery & Paper','Gifts & Curiosities'];
 async function loadCatalog(){const r=await fetch('catalog.json',{cache:'no-store'});if(!r.ok)throw new Error('catalog.json could not be loaded');PRODUCTS=await r.json();}
 function forageStars(n){return'★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n))}
 function forageStock(p){if(p.stock<=3)return`Only ${p.stock} left today`;if(p.limited)return`Limited batch · ${p.stock} available`;if(p.stock<=8)return`${p.stock} available`;return'In stock'}
@@ -94,7 +94,13 @@ function selectedOption(p){if(p.sizes?.length)return document.getElementById('si
 function addCart(id){const p=PRODUCTS.find(x=>x.id===id),qty=Math.max(1,parseInt(document.getElementById('qtySelect')?.value||'1')),option=selectedOption(p),existing=state.cart.find(x=>x.id===id&&x.option===option);if(existing)existing.qty+=qty;else state.cart.push({id,qty,option});save();toast(`Added ${qty} to basket`);render()}
 function removeCart(i){state.cart.splice(i,1);save();render()}
 function filteredProducts(){
-  let arr=PRODUCTS.filter(p=>(state.filter==='All'||p.cat===state.filter)&&(!state.query||(`${p.name} ${p.cat} ${p.desc}`).toLowerCase().includes(state.query.toLowerCase())));
+  let arr=PRODUCTS.filter(p=>{
+    const categoryMatch=state.filter==='All'
+      ||(state.filter==='Books'&&p.realBook)
+      ||(state.filter==='Stationery & Paper'&&p.cat==='Stationery & Paper'&&!p.realBook)
+      ||p.cat===state.filter;
+    return categoryMatch&&(!state.query||(`${p.name} ${p.author||''} ${p.bookTopic||''} ${p.cat} ${p.desc}`).toLowerCase().includes(state.query.toLowerCase()));
+  });
   if(state.sort==='daily')arr.sort((a,b)=>dailyScore(a)-dailyScore(b));
   if(state.sort==='rating')arr.sort((a,b)=>b.rating-a.rating||b.reviews-a.reviews);
   if(state.sort==='low')arr.sort((a,b)=>a.price-b.price);
@@ -188,7 +194,7 @@ function saveGiftIdea(id){
 }
 function renderReading(){
  const xs=state.readingList||[];
- return `<div class="section-head"><div><h2>📚 Books I Actually Might Read</h2><p>Curiosity gets its own shelf.</p></div></div>${xs.length?xs.map((x,i)=>`<div class="cartline"><div class="miniart">📚</div><div><strong>${x.name}</strong><div class="eyebrow">${x.status} · ${x.format}</div></div><div><select onchange="state.readingList[${i}].format=this.value;save();render()">${(x.formats||["Any"]).map(f=>`<option ${x.format===f?'selected':''}>${f}</option>`).join('')}</select><select onchange="state.readingList[${i}].status=this.value;save();render()"><option ${x.status==='Want to Read'?'selected':''}>Want to Read</option><option ${x.status==='Fictionally Purchased'?'selected':''}>Fictionally Purchased</option><option ${x.status==='Read'?'selected':''}>Read</option></select><button class="danger" onclick="state.readingList.splice(${i},1);save();render()">Remove</button></div></div>`).join(''):`<div class="empty">No books saved yet. The shelves are waiting.</div>`}`;
+ return `<div class="section-head"><div><h2>📚 Books I Actually Might Read</h2><p>Curiosity gets its own shelf.</p></div></div>${xs.length?xs.map((x,i)=>`<div class="cartline"><div class="miniart">📚</div><div><strong>${x.name}</strong><div class="eyebrow">${x.status} · ${x.format}</div></div><div><select onchange="state.readingList[${i}].format=this.value;save();render()">${(x.formats||["Any"]).map(f=>`<option ${x.format===f?'selected':''}>${f}</option>`).join('')}</select><select onchange="state.readingList[${i}].status=this.value;save();render()"><option ${x.status==='Want to Read'?'selected':''}>Want to Read</option><option ${x.status==='Already Own'?'selected':''}>Already Own</option><option ${x.status==='Know & Love'?'selected':''}>Know & Love</option><option ${x.status==='Used Regularly'?'selected':''}>Used Regularly</option><option ${x.status==='Fictionally Purchased'?'selected':''}>Fictionally Purchased</option><option ${x.status==='Read'?'selected':''}>Read</option></select><button class="danger" onclick="state.readingList.splice(${i},1);save();render()">Remove</button></div></div>`).join(''):`<div class="empty">No books saved yet. The shelves are waiting.</div>`}`;
 }
 function renderGifts(){
  const xs=state.giftIdeas||[];
@@ -322,10 +328,10 @@ function renderStats(){return `<div class="section-head"><div><h2>Forage stats</
 
 function goHome(){
   selected=null;
-  state.view='discover';
-  state.category='All';
-  state.search='';
-  state.page=1;
+  page='shop';
+  state.filter='All';
+  state.query='';
+  state.pageNo=1;
   save();
   render();
   window.scrollTo({top:0,behavior:'smooth'});
