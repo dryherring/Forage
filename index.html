@@ -57,7 +57,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(246,243,236,.94);backdro
 <body>
 <div class="app"><header><div class="topbar"><button class="brand-home" onclick="goHome()" aria-label="Forage home"><img src="forage-logo.svg" alt="Forage — Hunt, Choose, Collect"></button><div class="balance" id="balanceBox"></div></div><div class="nav" id="nav"></div></header><main id="main"></main><footer>Forage uses fictional money only. No real checkout exists.</footer></div><div class="toast" id="toast"></div>
 <script>let PRODUCTS=[];
-const CATS=["All", "Moto", "Pottery", "Craft", "Korea", "Music", "Style", "Home", "Kitchen", "Travel", "Adventure", "Cats", "Books & Paper"];
+const CATS=["All", "Moto", "Pottery", "Craft", "Korea", "Music", "Style", "Home", "Kitchen", "Travel", "Adventure", "Cats", "Books & Paper",'Stationery & Paper','Gifts & Curiosities'];
 async function loadCatalog(){const r=await fetch('catalog.json',{cache:'no-store'});if(!r.ok)throw new Error('catalog.json could not be loaded');PRODUCTS=await r.json();}
 function forageStars(n){return'★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n))}
 function forageStock(p){if(p.stock<=3)return`Only ${p.stock} left today`;if(p.limited)return`Limited batch · ${p.stock} available`;if(p.stock<=8)return`${p.stock} available`;return'In stock'}
@@ -298,6 +298,32 @@ function goHome(){
   save();
   render();
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+
+function ensureForageCollections(){state.readingList=state.readingList||[];state.giftIdeas=state.giftIdeas||[]}
+function saveReading(p){
+ ensureForageCollections();
+ if(!state.readingList.some(x=>x.id===p.id))state.readingList.unshift({id:p.id,name:p.name,format:"Any",status:"Want to Read",added:new Date().toISOString()});
+ save(); render();
+}
+function saveGift(p){
+ ensureForageCollections();
+ const person=prompt("Who is this gift idea for?",""); if(person===null||!person.trim())return;
+ const occasion=prompt("Occasion? (Birthday, Christmas, Just Because…)","Just Because"); if(occasion===null)return;
+ const note=prompt("Private note (optional)","")||"";
+ state.giftIdeas.unshift({id:p.id,name:p.name,person:person.trim(),occasion:occasion.trim()||"Just Because",note,status:"Idea",added:new Date().toISOString()});
+ save(); render();
+}
+function renderReading(){
+ ensureForageCollections();
+ const rows=state.readingList.map((x,i)=>`<div class="card" style="padding:16px"><b>${x.name}</b><div class="small">${x.status} · ${x.format}</div><div class="actions"><select onchange="state.readingList[${i}].status=this.value;save();render()"><option ${x.status==="Want to Read"?"selected":""}>Want to Read</option><option ${x.status==="Fictionally Purchased"?"selected":""}>Fictionally Purchased</option><option ${x.status==="Read"?"selected":""}>Read</option></select><button class="secondary" onclick="state.readingList.splice(${i},1);save();render()">Remove</button></div></div>`).join("");
+ return `<section><div class="eyebrow">Curiosity shelf</div><h1>📚 Books I Actually Might Read</h1><p class="sub">A deliberate bridge between “I want to possess this” and “I actually want to read this.”</p><div class="grid">${rows||'<div class="empty">No books saved yet.</div>'}</div></section>`;
+}
+function renderGifts(){
+ ensureForageCollections();
+ const rows=state.giftIdeas.map((x,i)=>`<div class="card" style="padding:16px"><div class="eyebrow">${x.occasion}</div><b>${x.name}</b><div class="small">For ${x.person}</div>${x.note?`<p>${x.note}</p>`:""}<div class="actions"><select onchange="state.giftIdeas[${i}].status=this.value;save();render()"><option ${x.status==="Idea"?"selected":""}>Idea</option><option ${x.status==="Fictionally Purchased"?"selected":""}>Fictionally Purchased</option><option ${x.status==="Actually Purchased"?"selected":""}>Actually Purchased</option><option ${x.status==="Given"?"selected":""}>Given</option></select><button class="secondary" onclick="state.giftIdeas.splice(${i},1);save();render()">Remove</button></div></div>`).join("");
+ return `<section><div class="eyebrow">Generosity shelf</div><h1>🎁 Gift Cabinet</h1><p class="sub">Ideas organized by person and occasion—fictional finds are welcome.</p><div class="grid">${rows||'<div class="empty">No gift ideas saved yet.</div>'}</div></section>`;
 }
 
 function render(){renderHeader();const m=document.getElementById('main');if(page==='shop'){m.innerHTML=renderShop();renderShopInto()}else if(page==='detail')m.innerHTML=renderDetail();else if(page==='wishlist')m.innerHTML=renderWishlist();else if(page==='cart')m.innerHTML=renderCart();else if(page==='orders')m.innerHTML=renderOrders();else if(page==='profile')m.innerHTML=renderProfile();else if(page==='stats')m.innerHTML=renderStats()}
