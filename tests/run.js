@@ -44,7 +44,7 @@ function record(name, fn) {
 function assert(cond, msg) { if (!cond) throw new Error(msg); }
 
 // nav helpers -----------------------------------------------------------
-const navSel = id => `#nav button[onclick="go('${id}')"]`;
+const navSel = id => `#nav button[data-action="go"][data-page="${id}"]`;
 async function goNav(page, id) { await page.click(navSel(id)); await page.waitForTimeout(80); }
 async function activeNavLabel(page) {
   return page.evaluate(() => {
@@ -89,7 +89,7 @@ async function run() {
     await page.locator('.card').first().click();
     await page.waitForSelector('.detail');
     wishedProductName = (await page.locator('.detail h1').textContent()).trim();
-    await page.click("button[onclick^='toggleWish']");
+    await page.click('button[data-action="toggle-wish"]');
     await page.waitForTimeout(80);
     await goNav(page, 'wishlist');
     assert(await page.locator('.card').count() === 1, 'exactly one card in populated wishlist');
@@ -116,7 +116,7 @@ async function run() {
     await page.locator('.card').first().click();
     await page.waitForSelector('.detail');
     bookName = (await page.locator('.detail h1').textContent()).trim();
-    const readingBtn = page.locator("button[onclick^='saveReading']");
+    const readingBtn = page.locator('button[data-action="save-reading"]');
     assert(await readingBtn.count() === 1, 'detail page for a book shows the Reading List button');
     await readingBtn.click();
     await page.waitForTimeout(80);
@@ -149,7 +149,7 @@ async function run() {
       else if (dialogCount === 2) await d.accept('Birthday');
       else await d.accept('');
     });
-    await page.click("button[onclick^='saveGiftIdea']");
+    await page.click('button[data-action="save-gift-idea"]');
     await page.waitForTimeout(120);
     await goNav(page, 'gifts');
     assert(await page.locator('.cartline').count() === 1, 'exactly one entry in populated gift cabinet');
@@ -282,7 +282,7 @@ async function run() {
     await goNav(page, 'shop');
     await page.locator('.card').first().click();
     await page.waitForSelector('.detail');
-    await page.click("button[onclick^='addCart']");
+    await page.click('button[data-action="add-cart"]');
     await page.waitForTimeout(80);
     await goNav(page, 'cart');
     assert(await page.locator('h2:has-text("Your basket")').count() === 1, 'Cart heading present');
@@ -296,7 +296,7 @@ async function run() {
     await page.fill('#shipRecipient', 'Test Recipient');
     await page.fill('#shipLine1', '1 Test Way');
     await page.fill('#shipCity', 'Testville');
-    await page.click("button[onclick='checkout()']");
+    await page.click('button[data-action="checkout"]');
     await page.waitForTimeout(150);
     assert(await page.locator('h2:has-text("Orders")').count() === 1, 'checkout navigates to Orders');
     assert(await page.locator('.order').count() >= 1, 'order recorded');
@@ -307,7 +307,7 @@ async function run() {
   await record('Stats navigation and fund reset remain intact', async () => {
     await goNav(page, 'stats');
     assert(await page.locator('h2:has-text("Forage stats")').count() === 1, 'Stats heading present');
-    await page.click("button[onclick='resetFunds()']");
+    await page.click('button[data-action="reset-funds"]');
     await page.waitForTimeout(80);
     assert((await page.locator('#balanceBox').textContent()).includes('2,000'), 'reset funds sets balance back to 2,000');
     assert((await activeNavLabel(page)) === 'Stats', 'active pill is Stats');
@@ -318,7 +318,7 @@ async function run() {
     await goNav(page, 'profile');
     assert(await page.locator('h2:has-text("Profile")').count() === 1, 'Profile heading present');
     await page.fill('#profileName', 'Test Forager');
-    await page.click("button[onclick='saveProfile()']");
+    await page.click('button[data-action="save-profile"]');
     await page.waitForTimeout(80);
     await goNav(page, 'shop');
     await goNav(page, 'profile');
