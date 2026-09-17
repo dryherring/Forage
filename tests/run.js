@@ -136,25 +136,23 @@ async function run() {
   });
 
   // --- Gift Cabinet: populated state ------------------------------------------
+  // Saving to the Gift Cabinet is a single click with no dialogs and no
+  // required metadata (see tests/gift-cabinet.js for the full lifecycle).
   await record('Gift Cabinet opens populated with the saved gift idea', async () => {
     await goNav(page, 'shop');
     await page.click('[data-filter="All"]');
     await page.waitForTimeout(80);
     await page.locator('.card').first().click();
     await page.waitForSelector('.detail');
-    let dialogCount = 0;
-    page.on('dialog', async d => {
-      dialogCount++;
-      if (dialogCount === 1) await d.accept('Alex');
-      else if (dialogCount === 2) await d.accept('Birthday');
-      else await d.accept('');
-    });
+    let dialogFired = false;
+    page.once('dialog', d => { dialogFired = true; d.dismiss(); });
     await page.click('button[data-action="save-gift-idea"]');
     await page.waitForTimeout(120);
+    assert(!dialogFired, 'saving to the Gift Cabinet does not prompt for any metadata');
     await goNav(page, 'gifts');
     assert(await page.locator('.cartline').count() === 1, 'exactly one entry in populated gift cabinet');
     const eyebrow = (await page.locator('.cartline .eyebrow').first().textContent());
-    assert(eyebrow.includes('Alex') && eyebrow.includes('Birthday'), `gift entry shows person/occasion (got "${eyebrow}")`);
+    assert(eyebrow.length > 0, `gift entry shows a status/summary line even with no metadata yet (got "${eyebrow}")`);
     assert((await activeNavLabel(page)) === '🎁 Gift Cabinet', 'active pill is Gift Cabinet');
   });
 

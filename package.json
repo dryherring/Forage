@@ -5,7 +5,7 @@
   "main": "sw.js",
   "private": true,
   "scripts": {
-    "test": "node tests/run.js && node tests/phase2-hardening.js"
+    "test": "node tests/run.js && node tests/phase2-hardening.js && node tests/gift-cabinet.js"
   },
   "devDependencies": {
     "playwright": "^1.56.1"
