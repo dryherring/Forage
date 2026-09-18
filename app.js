@@ -179,12 +179,33 @@ function saveReading(id){
  state.readingList.unshift({id,name:p.name,format:(p.formats||["Any"])[0],formats:p.formats||["Any"],status:"Want to Read"});
  save();toast("Saved to Reading List");
 }
-function saveGiftIdea(id){
+function saveGiftIdea(id,meta){
  const p=PRODUCTS.find(x=>x.id===id);if(!p)return;
  state.giftIdeas=state.giftIdeas||[];
  if(state.giftIdeas.some(x=>x.id===id)){toast("Already in Gift Cabinet");return;}
- state.giftIdeas.unshift({id,name:p.name,person:'',occasion:'',note:'',status:'Idea'});
+ const{person='',occasion='',note=''}=meta||{};
+ state.giftIdeas.unshift({id,name:p.name,person,occasion,note,status:'Idea'});
  save();toast("Saved to Gift Cabinet");
+}
+let giftModalReturnFocus=null;
+function openGiftModal(id){
+ const p=PRODUCTS.find(x=>x.id===id);if(!p)return;
+ if((state.giftIdeas||[]).some(x=>x.id===id)){toast("Already in Gift Cabinet");return;}
+ giftModalReturnFocus=document.querySelector(`[data-action="open-gift-modal"][data-id="${CSS.escape(id)}"]`);
+ document.body.insertAdjacentHTML('beforeend',`<div class="modalback" id="giftModal" data-action="close-modal-backdrop"><div class="modal"><h2>🎁 Save as a gift idea</h2><p style="color:var(--muted);margin-top:0">${esc(p.name)}</p><div class="form-grid" style="margin-top:14px"><label class="full">Recipient<input id="giftModalRecipient" placeholder="Who's it for? (optional)"></label><label class="full">Occasion<input id="giftModalOccasion" placeholder="Birthday, just because… (optional)"></label><label class="full">Note<textarea id="giftModalNote" placeholder="Why you saved this (optional)"></textarea></label></div><div class="actions" style="margin-top:16px;justify-content:flex-end"><button class="secondary" data-action="close-gift-modal">Cancel</button><button class="primary" data-action="confirm-gift-modal" data-id="${esc(p.id)}">Save to Gift Cabinet</button></div></div></div>`);
+ document.getElementById('giftModalRecipient')?.focus();
+}
+function closeGiftModal(){
+ document.getElementById('giftModal')?.remove();
+ giftModalReturnFocus?.focus();
+ giftModalReturnFocus=null;
+}
+function confirmGiftModal(id){
+ const person=(document.getElementById('giftModalRecipient')?.value||'').trim();
+ const occasion=(document.getElementById('giftModalOccasion')?.value||'').trim();
+ const note=(document.getElementById('giftModalNote')?.value||'').trim();
+ saveGiftIdea(id,{person,occasion,note});
+ closeGiftModal();
 }
 function normalizeReadingList(){
   if(!Array.isArray(state.readingList))state.readingList=[];
@@ -227,8 +248,8 @@ function normalizeGiftIdeas(){
 }
 function giftSummary(x){
   const parts=[];
-  if(x.person)parts.push(`For ${esc(x.person)}`);
-  if(x.occasion)parts.push(esc(x.occasion));
+  if(x.person)parts.push(`For ${x.person}`);
+  if(x.occasion)parts.push(x.occasion);
   return parts.length?parts.join(' · '):'No details yet — add them below';
 }
 function renderGifts(){
@@ -236,10 +257,10 @@ function renderGifts(){
  const xs=state.giftIdeas||[];
  return `<div class="section-head"><div><h2>🎁 Gift Cabinet</h2><p>Things that made you think of someone.</p></div></div>${xs.length?xs.map((x,i)=>{
    const editing=openGiftEdits.has(x.id);
-   return `<div class="cartline"${x.status==='Given'?' style="opacity:.6"':''}><div class="miniart">🎁</div><div><strong>${esc(x.name)}</strong><div class="eyebrow">${giftSummary(x)}</div>${!editing&&x.note?`<p>${esc(x.note)}</p>`:''}<button class="size-link" data-action="gift-edit-toggle" data-id="${esc(x.id)}">${editing?'Hide details':'Edit details →'}</button>${editing?`<div class="form-grid" style="margin-top:8px"><label class="full">Recipient<input value="${esc(x.person)}" placeholder="Who's it for?" data-action="gift-recipient" data-index="${i}"></label><label class="full">Occasion<input value="${esc(x.occasion)}" placeholder="Birthday, just because…" data-action="gift-occasion" data-index="${i}"></label><label class="full">Notes<textarea placeholder="Why you saved this" data-action="gift-note" data-index="${i}">${esc(x.note)}</textarea></label></div>`:''}</div><div><select data-action="gift-status" data-index="${i}">${GIFT_STATUSES.map(s=>`<option ${x.status===s?'selected':''}>${s}</option>`).join('')}</select><button class="danger" data-action="remove-gift" data-index="${i}">Remove</button></div></div>`;
+   return `<div class="cartline"${x.status==='Given'?' style="opacity:.6"':''}><div class="miniart">🎁</div><div><strong>${esc(x.name)}</strong><div class="eyebrow">${esc(giftSummary(x))}</div>${!editing&&x.note?`<p>${esc(x.note)}</p>`:''}<button class="size-link" data-action="gift-edit-toggle" data-id="${esc(x.id)}">${editing?'Hide details':'Edit details →'}</button>${editing?`<div class="form-grid" style="margin-top:8px"><label class="full">Recipient<input value="${esc(x.person)}" placeholder="Who's it for?" data-action="gift-recipient" data-index="${i}"></label><label class="full">Occasion<input value="${esc(x.occasion)}" placeholder="Birthday, just because…" data-action="gift-occasion" data-index="${i}"></label><label class="full">Notes<textarea placeholder="Why you saved this" data-action="gift-note" data-index="${i}">${esc(x.note)}</textarea></label></div>`:''}</div><div><select data-action="gift-status" data-index="${i}">${GIFT_STATUSES.map(s=>`<option ${x.status===s?'selected':''}>${s}</option>`).join('')}</select><button class="danger" data-action="remove-gift" data-index="${i}">Remove</button></div></div>`;
  }).join(''):`<div class="empty">No gift ideas yet.</div>`}`;
 }
-function renderDetail(){const p=selected;if(!p)return'';const optionControl=p.sizes?.length?`<div><label>Size<select id="sizeSelect">${p.sizes.map(s=>`<option>${esc(s)}</option>`).join('')}</select></label><button class="size-link" data-action="show-size-guide">Size guide →</button></div>`:p.variants?.length?`<div><label>Variant<select id="variantSelect">${p.variants.map(s=>`<option>${esc(s)}</option>`).join('')}</select></label></div>`:'';const maxQty=Math.max(1,Math.min(5,p.stock));return `<button class="secondary" data-action="go" data-page="shop" style="margin-bottom:14px">← Back to hunting</button><div class="detail">${photo(p,true)}<div><div class="eyebrow">${esc(displayCat(p))}${p.rarity?` · ${esc(p.rarity)}`:''}</div><div><span class="discovery-badge">${esc(p.marketBadge)}</span>${p.limited?'<span class="discovery-badge">Limited batch</span>':''}</div><h1>${esc(p.name)}</h1>${p.realBook?`<p class="sub"><strong>${esc(p.author)}</strong> · ${esc(p.bookTopic)}</p>`:''}<div style="font-size:26px;font-weight:900">${money(p.price)}${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div><div class="rating" style="margin-top:6px">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} ratings</div><div class="stockline">${forageStock(p)}</div><p>${esc(p.desc)}</p>${fieldNotes(p)}<div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div class="spec"><div class="eyebrow">${esc(k)}</div><strong>${esc(v)}</strong></div>`).join('')}</div><div class="selectors">${optionControl}<div><label>Quantity<select id="qtySelect">${Array.from({length:maxQty},(_,i)=>i+1).map(q=>`<option value="${q}">${q}</option>`).join('')}</select></label></div></div><div class="actions">${p.realBook?`<button class="secondary" data-action="save-reading" data-id="${esc(p.id)}">📚 Reading List</button><button class="secondary" data-action="amazon-book">↗ View on Amazon</button>`:''}<button class="secondary" data-action="save-gift-idea" data-id="${esc(p.id)}">🎁 Gift idea</button><button class="secondary" data-action="toggle-wish" data-id="${esc(p.id)}">${state.wishlist.includes(p.id)?'♥ Saved':'♡ Save'}</button><button class="primary" data-action="add-cart" data-id="${esc(p.id)}">Add to basket</button></div><section style="margin-top:24px"><div class="section-head" style="margin-bottom:4px"><div><h2 style="font-size:20px">What foragers are saying</h2><p>Fictional reviews · comparison is part of the hunt.</p></div></div>${p.deepReviews.map(r=>`<div class="review-card"><div class="review-head"><strong>${esc(r.title)}</strong><span>${forageStars(r.stars)}</span></div><div><strong>${esc(r.name)}</strong> <span class="verified">✓ Verified fictional purchase</span></div><p>${esc(r.text)}</p></div>`).join('')}</section></div></div>`}
+function renderDetail(){const p=selected;if(!p)return'';const optionControl=p.sizes?.length?`<div><label>Size<select id="sizeSelect">${p.sizes.map(s=>`<option>${esc(s)}</option>`).join('')}</select></label><button class="size-link" data-action="show-size-guide">Size guide →</button></div>`:p.variants?.length?`<div><label>Variant<select id="variantSelect">${p.variants.map(s=>`<option>${esc(s)}</option>`).join('')}</select></label></div>`:'';const maxQty=Math.max(1,Math.min(5,p.stock));return `<button class="secondary" data-action="go" data-page="shop" style="margin-bottom:14px">← Back to hunting</button><div class="detail">${photo(p,true)}<div><div class="eyebrow">${esc(displayCat(p))}${p.rarity?` · ${esc(p.rarity)}`:''}</div><div><span class="discovery-badge">${esc(p.marketBadge)}</span>${p.limited?'<span class="discovery-badge">Limited batch</span>':''}</div><h1>${esc(p.name)}</h1>${p.realBook?`<p class="sub"><strong>${esc(p.author)}</strong> · ${esc(p.bookTopic)}</p>`:''}<div style="font-size:26px;font-weight:900">${money(p.price)}${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div><div class="rating" style="margin-top:6px">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} ratings</div><div class="stockline">${forageStock(p)}</div><p>${esc(p.desc)}</p>${fieldNotes(p)}<div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div class="spec"><div class="eyebrow">${esc(k)}</div><strong>${esc(v)}</strong></div>`).join('')}</div><div class="selectors">${optionControl}<div><label>Quantity<select id="qtySelect">${Array.from({length:maxQty},(_,i)=>i+1).map(q=>`<option value="${q}">${q}</option>`).join('')}</select></label></div></div><div class="actions">${p.realBook?`<button class="secondary" data-action="save-reading" data-id="${esc(p.id)}">📚 Reading List</button><button class="secondary" data-action="amazon-book">↗ View on Amazon</button>`:''}<button class="secondary" data-action="open-gift-modal" data-id="${esc(p.id)}">🎁 Gift idea</button><button class="secondary" data-action="toggle-wish" data-id="${esc(p.id)}">${state.wishlist.includes(p.id)?'♥ Saved':'♡ Save'}</button><button class="primary" data-action="add-cart" data-id="${esc(p.id)}">Add to basket</button></div><section style="margin-top:24px"><div class="section-head" style="margin-bottom:4px"><div><h2 style="font-size:20px">What foragers are saying</h2><p>Fictional reviews · comparison is part of the hunt.</p></div></div>${p.deepReviews.map(r=>`<div class="review-card"><div class="review-head"><strong>${esc(r.title)}</strong><span>${forageStars(r.stars)}</span></div><div><strong>${esc(r.name)}</strong> <span class="verified">✓ Verified fictional purchase</span></div><p>${esc(r.text)}</p></div>`).join('')}</section></div></div>`}
 function renderWishlist(){const items=state.wishlist.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);return `<div class="section-head"><div><h2>Wishlist</h2><p>The promising ones you were not ready to commit to.</p></div></div>${items.length?`<div class="grid">${items.map(productCard).join('')}</div>`:`<div class="empty">Nothing saved yet.</div>`}`}
 function addressText(a){return [a.recipient,a.line1,a.line2,a.city,a.region,a.postal].filter(Boolean).join(', ')}
 function renderCart(){
@@ -408,9 +429,11 @@ const CLICK_ACTIONS={
   'page-next':()=>{state.pageNo++;save();renderProductResults();window.scrollTo({top:430,behavior:'smooth'})},
   'show-size-guide':()=>showSizeGuide(selected),
   'close-size-modal':()=>document.getElementById('sizeModal')?.remove(),
-  'close-modal-backdrop':(el,e)=>{if(e.target===el)el.remove()},
+  'close-modal-backdrop':(el,e)=>{if(e.target!==el)return;if(el.id==='giftModal')closeGiftModal();else el.remove()},
   'save-reading':(el)=>saveReading(el.dataset.id),
-  'save-gift-idea':(el)=>saveGiftIdea(el.dataset.id),
+  'open-gift-modal':(el)=>openGiftModal(el.dataset.id),
+  'close-gift-modal':()=>closeGiftModal(),
+  'confirm-gift-modal':(el)=>confirmGiftModal(el.dataset.id),
   'amazon-book':()=>amazonBook(selected),
   'remove-reading':(el)=>{state.readingList.splice(Number(el.dataset.index),1);save();render()},
   'remove-gift':(el)=>{const idx=Number(el.dataset.index);openGiftEdits.delete(state.giftIdeas[idx]?.id);state.giftIdeas.splice(idx,1);save();render()},
@@ -425,10 +448,19 @@ const CHANGE_ACTIONS={
   'toggle-gift':()=>toggleGift(),
   'reading-format':(el)=>{state.readingList[Number(el.dataset.index)].format=el.value;save();render()},
   'reading-status':(el)=>{state.readingList[Number(el.dataset.index)].status=el.value;save();render()},
-  'gift-status':(el)=>{state.giftIdeas[Number(el.dataset.index)].status=el.value;save();render()},
-  'gift-recipient':(el)=>{state.giftIdeas[Number(el.dataset.index)].person=el.value;save();render()},
-  'gift-occasion':(el)=>{state.giftIdeas[Number(el.dataset.index)].occasion=el.value;save();render()},
-  'gift-note':(el)=>{state.giftIdeas[Number(el.dataset.index)].note=el.value;save();render()}
+  'gift-status':(el)=>{
+    state.giftIdeas[Number(el.dataset.index)].status=el.value;save();
+    const card=el.closest('.cartline');if(card)card.style.opacity=el.value==='Given'?'.6':'';
+  },
+  'gift-recipient':(el)=>{
+    const idx=Number(el.dataset.index);state.giftIdeas[idx].person=el.value;save();
+    const eyebrow=el.closest('.cartline')?.querySelector('.eyebrow');if(eyebrow)eyebrow.textContent=giftSummary(state.giftIdeas[idx]);
+  },
+  'gift-occasion':(el)=>{
+    const idx=Number(el.dataset.index);state.giftIdeas[idx].occasion=el.value;save();
+    const eyebrow=el.closest('.cartline')?.querySelector('.eyebrow');if(eyebrow)eyebrow.textContent=giftSummary(state.giftIdeas[idx]);
+  },
+  'gift-note':(el)=>{state.giftIdeas[Number(el.dataset.index)].note=el.value;save()}
 };
 document.addEventListener('click',e=>{
   const el=e.target.closest('[data-action]');
@@ -441,5 +473,24 @@ document.addEventListener('change',e=>{
   if(!el)return;
   const handler=CHANGE_ACTIONS[el.dataset.action];
   if(handler)handler(el,e);
+});
+function focusableIn(container){
+  return [...container.querySelectorAll('button, input, select, textarea, a[href]')].filter(el=>!el.disabled&&el.offsetParent!==null);
+}
+document.addEventListener('keydown',e=>{
+  const modal=document.querySelector('.modalback');
+  if(!modal)return;
+  if(e.key==='Escape'){
+    e.preventDefault();
+    if(modal.id==='giftModal')closeGiftModal();else modal.remove();
+    return;
+  }
+  if(e.key==='Tab'){
+    const focusable=focusableIn(modal.querySelector('.modal')||modal);
+    if(!focusable.length)return;
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+  }
 });
 loadCatalog().then(()=>render()).catch(err=>{document.getElementById('main').innerHTML=`<div class="empty"><strong>Forage couldn't load its catalog.</strong><br>${err.message}</div>`});

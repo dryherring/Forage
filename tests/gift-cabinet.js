@@ -1,7 +1,9 @@
-// Regression coverage for the Gift Cabinet lifecycle (issue #8): saving with
-// no required metadata, adding/editing recipient/occasion/notes later,
-// changing status, persistence across navigation and reload, removal, and
-// tolerance of legacy/malformed Gift Cabinet state.
+// Regression coverage for the Gift Cabinet lifecycle (issue #8) and its
+// follow-up acceptance-testing fixes: the lightweight gift-capture modal
+// (recipient/occasion/note, all optional), editing metadata later, changing
+// status, persistence across navigation and reload, removal, tolerance of
+// legacy/malformed Gift Cabinet state, and keyboard navigation (Tab/Escape)
+// through both the capture modal and the Gift Cabinet edit form.
 //
 // Run with: node tests/gift-cabinet.js  (or via `npm test`, which runs this
 // after run.js and phase2-hardening.js)
@@ -56,105 +58,136 @@ async function run() {
     await page.reload({ waitUntil: 'networkidle' });
     await page.waitForSelector('.card');
   }
-  async function saveFirstProductToGifts() {
+  async function openProductDetail(cardIndex = 0) {
     await goNav(page, 'shop');
     await page.click('[data-filter="All"]');
     await page.waitForTimeout(80);
-    await page.locator('.card').first().click();
+    await page.locator('.card').nth(cardIndex).click();
     await page.waitForSelector('.detail');
-    const name = (await page.locator('.detail h1').textContent()).trim();
-    await page.click('button[data-action="save-gift-idea"]');
+    return (await page.locator('.detail h1').textContent()).trim();
+  }
+  async function openGiftModalFromDetail() {
+    await page.click('button[data-action="open-gift-modal"]');
+    await page.waitForSelector('#giftModal');
+  }
+  async function saveGiftModal() {
+    await page.click('#giftModal button[data-action="confirm-gift-modal"]');
     await page.waitForTimeout(100);
+  }
+  async function cancelGiftModal() {
+    await page.click('#giftModal button[data-action="close-gift-modal"]');
+    await page.waitForTimeout(100);
+  }
+  async function saveFirstProductToGifts(meta) {
+    const name = await openProductDetail();
+    await openGiftModalFromDetail();
+    if (meta?.person) await page.fill('#giftModalRecipient', meta.person);
+    if (meta?.occasion) await page.fill('#giftModalOccasion', meta.occasion);
+    if (meta?.note) await page.fill('#giftModalNote', meta.note);
+    await saveGiftModal();
     return name;
   }
 
   await fresh();
 
-  // --- Save with no dialogs and no required metadata --------------------------
-  let productName = null;
-  await record('Saving to the Gift Cabinet is a single click, no dialogs, no required metadata', async () => {
+  // --- Opening the capture modal ------------------------------------------------
+  await record('Clicking Gift idea opens a modal with empty, optional Recipient/Occasion/Note fields', async () => {
     let dialogFired = false;
     page.once('dialog', d => { dialogFired = true; d.dismiss(); });
-    productName = await saveFirstProductToGifts();
-    assert(!dialogFired, 'no native dialog appeared while saving');
+    await openProductDetail();
+    await openGiftModalFromDetail();
+    assert(!dialogFired, 'no native prompt() dialog appears');
+    assert(await page.locator('#giftModal input#giftModalRecipient').count() === 1, 'Recipient field present');
+    assert(await page.locator('#giftModal input#giftModalOccasion').count() === 1, 'Occasion field present');
+    assert(await page.locator('#giftModal textarea#giftModalNote').count() === 1, 'Note field present');
+    assert((await page.locator('#giftModalRecipient').inputValue()) === '', 'Recipient starts empty');
+    assert((await page.locator('#giftModalOccasion').inputValue()) === '', 'Occasion starts empty');
+    assert((await page.locator('#giftModalNote').inputValue()) === '', 'Note starts empty');
+    assert(await page.locator('#giftModal button[data-action="close-gift-modal"]').count() === 1, 'Cancel action present');
+    assert(await page.locator('#giftModal button[data-action="confirm-gift-modal"]').count() === 1, 'Save action present');
+    const giftCount = await page.evaluate(() => JSON.parse(localStorage.getItem('forageV2State') || '{}').giftIdeas?.length || 0);
+    assert(giftCount === 0, 'Gift Cabinet has nothing saved yet, before confirming');
+    await cancelGiftModal();
+  });
+
+  // --- Cancel ---------------------------------------------------------------------
+  await record('Cancel closes the modal, creates nothing, and returns focus to the Gift idea button', async () => {
+    await openProductDetail();
+    await openGiftModalFromDetail();
+    await page.fill('#giftModalRecipient', 'Should be discarded');
+    await cancelGiftModal();
+    assert(await page.locator('#giftModal').count() === 0, 'modal is closed');
+    const focused = await page.evaluate(() => document.activeElement?.getAttribute('data-action'));
+    assert(focused === 'open-gift-modal', `focus returns to the Gift idea button (got data-action="${focused}")`);
+    await goNav(page, 'gifts');
+    assert(await page.locator('.empty').count() === 1, 'Cancel created no Gift Cabinet item');
+  });
+
+  // --- Save with everything empty ---------------------------------------------------
+  await record('Saving with all fields empty creates an item with no metadata', async () => {
+    const name = await saveFirstProductToGifts();
+    assert(await page.locator('#giftModal').count() === 0, 'modal closes after saving');
     await goNav(page, 'gifts');
     assert(await page.locator('.cartline').count() === 1, 'Gift Cabinet shows the saved item');
     const title = (await page.locator('.cartline strong').first().textContent()).trim();
-    assert(title === productName, `saved item shows the right product name (expected "${productName}", got "${title}")`);
+    assert(title === name, `saved item shows the right product name (expected "${name}", got "${title}")`);
+    const eyebrow = (await page.locator('.cartline .eyebrow').first().textContent());
+    assert(eyebrow.includes('No details yet'), `friendly placeholder shown for no metadata (got "${eyebrow}")`);
   });
 
-  // --- Item exists without metadata, with a friendly placeholder ---------------
-  await record('A Gift Cabinet item can exist with no recipient/occasion/notes', async () => {
-    const eyebrow = (await page.locator('.cartline .eyebrow').first().textContent()).trim();
-    assert(eyebrow.length > 0, 'a summary line is shown even with nothing filled in');
-    assert(await page.locator('.cartline p').count() === 0, 'no empty note paragraph is rendered when there is no note');
-  });
-
-  // --- Saving the same product twice does not duplicate it ---------------------
-  await record('Saving the same product to the Gift Cabinet again does not create a duplicate', async () => {
-    await goNav(page, 'shop');
-    await page.locator('.card').first().click();
-    await page.waitForSelector('.detail');
-    await page.click('button[data-action="save-gift-idea"]');
-    await page.waitForTimeout(100);
+  // --- Save with recipient only ------------------------------------------------------
+  await record('Saving with only a recipient filled captures just that field', async () => {
+    await fresh();
+    await saveFirstProductToGifts({ person: 'Alex' });
     await goNav(page, 'gifts');
-    assert(await page.locator('.cartline').count() === 1, 'still exactly one entry after saving the same product twice');
+    const eyebrow = (await page.locator('.cartline .eyebrow').first().textContent());
+    assert(eyebrow.includes('For Alex'), `summary shows the recipient (got "${eyebrow}")`);
+    assert(await page.locator('.cartline p').count() === 0, 'no note preview when no note was given');
   });
 
-  // --- Edit details toggle: add recipient/occasion/notes -----------------------
-  await record('Edit details toggle reveals recipient/occasion/notes fields', async () => {
-    assert(await page.locator('input[data-action="gift-recipient"]').count() === 0, 'edit fields are hidden by default');
+  // --- Save with all three fields -----------------------------------------------------
+  await record('Saving with recipient, occasion, and note captures all three', async () => {
+    await fresh();
+    await saveFirstProductToGifts({ person: 'Alex', occasion: 'Birthday', note: 'She mentioned wanting one.' });
+    await goNav(page, 'gifts');
+    const eyebrow = (await page.locator('.cartline .eyebrow').first().textContent());
+    assert(eyebrow.includes('For Alex') && eyebrow.includes('Birthday'), `summary shows recipient and occasion (got "${eyebrow}")`);
+    const note = (await page.locator('.cartline p').first().textContent());
+    assert(note.includes('mentioned wanting'), `note preview shows the saved note (got "${note}")`);
+  });
+
+  // --- Duplicate behavior ------------------------------------------------------------
+  await record('Opening Gift idea again for an already-saved product skips the modal and behaves sensibly', async () => {
+    await openProductDetail();
+    await page.click('button[data-action="open-gift-modal"]');
+    await page.waitForTimeout(150);
+    assert(await page.locator('#giftModal').count() === 0, 'no modal opens for a product already in the Gift Cabinet');
+    assert((await page.locator('.toast').textContent()).includes('Already in Gift Cabinet'), 'a toast explains why nothing happened');
+    await goNav(page, 'gifts');
+    assert(await page.locator('.cartline').count() === 1, 'still exactly one entry, no duplicate created');
+  });
+
+  // --- Metadata remains editable afterward --------------------------------------------
+  await record('Metadata captured at save time remains editable afterward in the Gift Cabinet', async () => {
+    await goNav(page, 'gifts');
     await page.click('button[data-action="gift-edit-toggle"]');
     await page.waitForTimeout(80);
-    assert(await page.locator('input[data-action="gift-recipient"]').count() === 1, 'recipient field appears after toggling edit');
-    assert(await page.locator('input[data-action="gift-occasion"]').count() === 1, 'occasion field appears after toggling edit');
-    assert(await page.locator('textarea[data-action="gift-note"]').count() === 1, 'notes field appears after toggling edit');
-  });
-
-  await record('Adding a recipient updates the Gift Cabinet summary', async () => {
-    await page.fill('input[data-action="gift-recipient"]', 'Alex');
+    assert((await page.locator('input[data-action="gift-recipient"]').inputValue()) === 'Alex', 'recipient field is pre-filled with the captured value');
+    assert((await page.locator('input[data-action="gift-occasion"]').inputValue()) === 'Birthday', 'occasion field is pre-filled with the captured value');
+    await page.fill('input[data-action="gift-recipient"]', 'Sam');
     await page.locator('input[data-action="gift-recipient"]').blur();
     await page.waitForTimeout(100);
     const eyebrow = (await page.locator('.cartline .eyebrow').first().textContent());
-    assert(eyebrow.includes('Alex'), `summary shows the new recipient (got "${eyebrow}")`);
+    assert(eyebrow.includes('Sam') && !eyebrow.includes('Alex'), `edited recipient replaces the captured one (got "${eyebrow}")`);
   });
 
-  await record('Adding an occasion updates the Gift Cabinet summary', async () => {
-    // re-open edit (blur's re-render preserves open state, but confirm defensively)
-    if (await page.locator('input[data-action="gift-occasion"]').count() === 0) {
-      await page.click('button[data-action="gift-edit-toggle"]');
-      await page.waitForTimeout(80);
-    }
-    await page.fill('input[data-action="gift-occasion"]', 'Birthday');
-    await page.locator('input[data-action="gift-occasion"]').blur();
-    await page.waitForTimeout(100);
-    const eyebrow = (await page.locator('.cartline .eyebrow').first().textContent());
-    assert(eyebrow.includes('Alex') && eyebrow.includes('Birthday'), `summary shows recipient and occasion (got "${eyebrow}")`);
-  });
-
-  await record('Adding a note shows a note preview when the edit panel is collapsed', async () => {
-    if (await page.locator('textarea[data-action="gift-note"]').count() === 0) {
-      await page.click('button[data-action="gift-edit-toggle"]');
-      await page.waitForTimeout(80);
-    }
-    await page.fill('textarea[data-action="gift-note"]', 'She mentioned wanting one of these.');
-    await page.locator('textarea[data-action="gift-note"]').blur();
-    await page.waitForTimeout(100);
-    await page.click('button[data-action="gift-edit-toggle"]'); // collapse
-    await page.waitForTimeout(80);
-    assert(await page.locator('input[data-action="gift-recipient"]').count() === 0, 'edit panel collapsed');
-    const noteText = (await page.locator('.cartline p').first().textContent());
-    assert(noteText.includes('mentioned wanting'), `note preview shows saved text (got "${noteText}")`);
-  });
-
-  // --- Change lifecycle/status ---------------------------------------------------
-  await record('Gift status can be changed and offers the simplified Idea/Purchased/Given lifecycle', async () => {
+  // --- Status lifecycle ----------------------------------------------------------------
+  await record('Gift status offers the simplified Idea/Purchased/Given lifecycle and can be changed', async () => {
     const options = await page.locator('select[data-action="gift-status"]').first().locator('option').allTextContents();
     assert(JSON.stringify(options) === JSON.stringify(['Idea', 'Purchased', 'Given']), `status options are Idea/Purchased/Given (got ${JSON.stringify(options)})`);
     await page.selectOption('select[data-action="gift-status"]', 'Purchased');
     await page.waitForTimeout(100);
-    const selected = await page.locator('select[data-action="gift-status"]').first().inputValue();
-    assert(selected === 'Purchased', 'status updated to Purchased');
+    assert((await page.locator('select[data-action="gift-status"]').first().inputValue()) === 'Purchased', 'status updated to Purchased');
   });
 
   await record('Marking a gift Given keeps it in the Gift Cabinet (no auto-delete) and visually de-emphasizes it', async () => {
@@ -165,14 +198,13 @@ async function run() {
     assert(parseFloat(opacity) < 1, `a Given gift is visually de-emphasized (opacity was ${opacity})`);
   });
 
-  // --- Persistence across navigation and reload -----------------------------------
+  // --- Persistence across navigation and reload -----------------------------------------
   await record('Metadata and status persist after navigating away and back', async () => {
     await goNav(page, 'wishlist');
     await goNav(page, 'gifts');
     const eyebrow = (await page.locator('.cartline .eyebrow').first().textContent());
-    assert(eyebrow.includes('Alex') && eyebrow.includes('Birthday'), 'recipient/occasion survive navigating away and back');
-    const status = await page.locator('select[data-action="gift-status"]').first().inputValue();
-    assert(status === 'Given', 'status survives navigating away and back');
+    assert(eyebrow.includes('Sam') && eyebrow.includes('Birthday'), 'recipient/occasion survive navigating away and back');
+    assert((await page.locator('select[data-action="gift-status"]').first().inputValue()) === 'Given', 'status survives navigating away and back');
   });
 
   await record('Metadata and status persist after a full page reload', async () => {
@@ -180,14 +212,13 @@ async function run() {
     await page.waitForSelector('.hero');
     await goNav(page, 'gifts');
     const eyebrow = (await page.locator('.cartline .eyebrow').first().textContent());
-    assert(eyebrow.includes('Alex') && eyebrow.includes('Birthday'), 'recipient/occasion survive a reload');
-    const status = await page.locator('select[data-action="gift-status"]').first().inputValue();
-    assert(status === 'Given', 'status survives a reload');
-    const noteText = (await page.locator('.cartline p').first().textContent());
-    assert(noteText.includes('mentioned wanting'), 'note survives a reload');
+    assert(eyebrow.includes('Sam') && eyebrow.includes('Birthday'), 'recipient/occasion survive a reload');
+    assert((await page.locator('select[data-action="gift-status"]').first().inputValue()) === 'Given', 'status survives a reload');
+    const note = (await page.locator('.cartline p').first().textContent());
+    assert(note.includes('mentioned wanting'), 'note survives a reload');
   });
 
-  // --- Remove and empty state -------------------------------------------------------
+  // --- Remove and empty state -----------------------------------------------------------
   await record('Removing the item empties the Gift Cabinet with the correct empty state', async () => {
     await page.click('.cartline button.danger');
     await page.waitForTimeout(100);
@@ -197,36 +228,103 @@ async function run() {
     assert(await page.locator('.empty:has-text("No gift ideas yet.")').count() === 1, 'empty state persists after navigating away and back');
   });
 
+  // --- Keyboard: Tab through the capture modal -------------------------------------------
+  await record('Tab moves Recipient -> Occasion -> Note -> Cancel -> Save inside the capture modal, and wraps (focus trap)', async () => {
+    await openProductDetail();
+    await openGiftModalFromDetail();
+    await page.locator('#giftModalRecipient').focus();
+    const seq = [];
+    for (let i = 0; i < 5; i++) {
+      seq.push(await page.evaluate(() => {
+        const el = document.activeElement;
+        return el.id || el.getAttribute('data-action') || el.tagName;
+      }));
+      await page.keyboard.press('Tab');
+    }
+    assert(JSON.stringify(seq) === JSON.stringify(['giftModalRecipient', 'giftModalOccasion', 'giftModalNote', 'close-gift-modal', 'confirm-gift-modal']),
+      `Tab order is Recipient -> Occasion -> Note -> Cancel -> Save (got ${JSON.stringify(seq)})`);
+    const afterLast = await page.evaluate(() => document.activeElement.id || document.activeElement.getAttribute('data-action'));
+    assert(afterLast === 'giftModalRecipient', `Tab from the last control wraps back to Recipient, trapped inside the modal (got "${afterLast}")`);
+    await cancelGiftModal();
+  });
+
+  await record('Shift+Tab from the first field in the capture modal wraps to the last control', async () => {
+    await openProductDetail();
+    await openGiftModalFromDetail();
+    await page.locator('#giftModalRecipient').focus();
+    await page.keyboard.press('Shift+Tab');
+    const el = await page.evaluate(() => document.activeElement.getAttribute('data-action'));
+    assert(el === 'confirm-gift-modal', `Shift+Tab from Recipient wraps to Save (got "${el}")`);
+    await cancelGiftModal();
+  });
+
+  // --- Keyboard: Escape closes the capture modal -------------------------------------------
+  await record('Escape closes the capture modal, creates nothing, and returns focus sensibly', async () => {
+    await fresh();
+    await openProductDetail();
+    await openGiftModalFromDetail();
+    await page.fill('#giftModalRecipient', 'Should be discarded');
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(100);
+    assert(await page.locator('#giftModal').count() === 0, 'Escape closes the modal');
+    const focused = await page.evaluate(() => document.activeElement?.getAttribute('data-action'));
+    assert(focused === 'open-gift-modal', `focus returns to the Gift idea button (got data-action="${focused}")`);
+    await goNav(page, 'gifts');
+    assert(await page.locator('.empty').count() === 1, 'Escape created no Gift Cabinet item');
+  });
+
+  // --- THE REGRESSION TEST: Tab through the Gift Cabinet edit form -------------------------
+  await record('Tab moves through the Gift Cabinet edit form fields without jumping to page navigation (regression for the Tab bug)', async () => {
+    await fresh();
+    await saveFirstProductToGifts({ person: 'Alex', occasion: 'Birthday', note: 'A note' });
+    await goNav(page, 'gifts');
+    await page.click('button[data-action="gift-edit-toggle"]');
+    await page.waitForTimeout(80);
+    await page.locator('input[data-action="gift-recipient"]').focus();
+    await page.keyboard.type('Jordan');
+    // Exactly 4 real form controls follow Recipient in this single-item fixture
+    // (Occasion, Note, Status, Remove); a 5th Tab press runs off the end of the
+    // document, which is normal browser behavior unrelated to the bug, so it's
+    // intentionally not probed here.
+    const stops = [];
+    for (let i = 0; i < 4; i++) {
+      await page.keyboard.press('Tab');
+      stops.push(await page.evaluate(() => {
+        const el = document.activeElement;
+        if (el === document.body) return 'BODY';
+        return el.getAttribute('data-action') || el.tagName;
+      }));
+    }
+    assert(!stops.includes('BODY'), `focus never falls back to <body> mid-sequence (got ${JSON.stringify(stops)})`);
+    assert(!stops.includes('go'), `Tab never lands on a nav pill while moving through the edit form (got ${JSON.stringify(stops)})`);
+    assert(JSON.stringify(stops) === JSON.stringify(['gift-occasion', 'gift-note', 'gift-status', 'remove-gift']),
+      `Tab order is Occasion -> Note -> Status -> Remove (got ${JSON.stringify(stops)})`);
+    // the recipient edit committed correctly despite no full re-render on change
+    const eyebrow = (await page.locator('.cartline .eyebrow').first().textContent());
+    assert(eyebrow.includes('Jordan'), `the typed recipient was actually saved (got "${eyebrow}")`);
+    assert(page.url() && (await page.locator('h2:has-text("Gift Cabinet")').count()) === 1, 'still on the Gift Cabinet page after tabbing through the form');
+  });
+
   // --- XSS safety on the new free-text fields -----------------------------------------
   await record('Recipient/occasion/note fields render injected markup as inert text', async () => {
     await fresh();
     let xssFired = false;
     await page.exposeFunction('__giftXssMarker', () => { xssFired = true; });
     const payload = `"><img src=x onerror="window.__giftXssMarker()">`;
-    await saveFirstProductToGifts();
+    await saveFirstProductToGifts({ person: payload, occasion: payload, note: payload });
     await goNav(page, 'gifts');
+    assert(!xssFired, 'no injected script executed from recipient/occasion/note captured via the modal');
+    let html = await page.locator('.cartline').first().innerHTML();
+    assert(!/<img[^>]*onerror=/i.test(html), 'no live <img onerror> tag exists after saving via the modal');
+    // also re-verify editing the fields afterward stays safe
     await page.click('button[data-action="gift-edit-toggle"]');
     await page.waitForTimeout(80);
     await page.fill('input[data-action="gift-recipient"]', payload);
     await page.locator('input[data-action="gift-recipient"]').blur();
     await page.waitForTimeout(100);
-    if (await page.locator('input[data-action="gift-occasion"]').count() === 0) {
-      await page.click('button[data-action="gift-edit-toggle"]');
-      await page.waitForTimeout(80);
-    }
-    await page.fill('input[data-action="gift-occasion"]', payload);
-    await page.locator('input[data-action="gift-occasion"]').blur();
-    await page.waitForTimeout(100);
-    if (await page.locator('textarea[data-action="gift-note"]').count() === 0) {
-      await page.click('button[data-action="gift-edit-toggle"]');
-      await page.waitForTimeout(80);
-    }
-    await page.fill('textarea[data-action="gift-note"]', payload);
-    await page.locator('textarea[data-action="gift-note"]').blur();
-    await page.waitForTimeout(100);
-    assert(!xssFired, 'no injected script executed from recipient/occasion/note');
-    const html = await page.locator('.cartline').first().innerHTML();
-    assert(!/<img[^>]*onerror=/i.test(html), 'no live <img onerror> tag exists in the rendered Gift Cabinet card');
+    assert(!xssFired, 'no injected script executed from editing recipient afterward');
+    html = await page.locator('.cartline').first().innerHTML();
+    assert(!/<img[^>]*onerror=/i.test(html), 'no live <img onerror> tag exists after editing');
   });
 
   // --- Legacy state tolerance --------------------------------------------------------

@@ -146,9 +146,12 @@ async function run() {
     await page.waitForSelector('.detail');
     let dialogFired = false;
     page.once('dialog', d => { dialogFired = true; d.dismiss(); });
-    await page.click('button[data-action="save-gift-idea"]');
+    await page.click('button[data-action="open-gift-modal"]');
+    await page.waitForSelector('#giftModal');
+    await page.click('button[data-action="confirm-gift-modal"]');
     await page.waitForTimeout(120);
     assert(!dialogFired, 'saving to the Gift Cabinet does not prompt for any metadata');
+    assert(await page.locator('#giftModal').count() === 0, 'the capture modal closes after saving');
     await goNav(page, 'gifts');
     assert(await page.locator('.cartline').count() === 1, 'exactly one entry in populated gift cabinet');
     const eyebrow = (await page.locator('.cartline .eyebrow').first().textContent());
