@@ -78,7 +78,7 @@ function renderHeader(){
 
 function go(p){page=p;selected=null;render();window.scrollTo({top:0,behavior:'smooth'})}
 
-function productCard(p){const wished=state.wishlist.includes(p.id);return `<article class="card" data-action="open-product" data-id="${esc(p.id)}"><div class="art">${photo(p)}<div class="art-label">${esc(p.cat)}</div><button class="heart ${wished?'on':''}" data-action="toggle-wish" data-id="${esc(p.id)}">${wished?'♥':'♡'}</button></div><div class="cardbody"><div><span class="discovery-badge">${esc(p.marketBadge)}</span>${p.limited?'<span class="discovery-badge">Limited</span>':''}</div><h3>${esc(p.name)}</h3><div class="rating">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} reviews</div><p>${esc(p.desc)}</p><div class="stockline">${forageStock(p)}</div><div class="actions" style="margin-top:10px"><button class="secondary" data-action="open-product" data-id="${esc(p.id)}">Details →</button></div><div class="price">${money(p.price)} ${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div></div></article>`}
+function productCard(p){const wished=state.wishlist.includes(p.id);return `<article class="card" data-action="open-product" data-id="${esc(p.id)}"><div class="art">${photo(p)}<div class="art-label">${esc(displayCat(p))}</div><button class="heart ${wished?'on':''}" data-action="toggle-wish" data-id="${esc(p.id)}">${wished?'♥':'♡'}</button></div><div class="cardbody"><div><span class="discovery-badge">${esc(p.marketBadge)}</span>${p.limited?'<span class="discovery-badge">Limited</span>':''}</div><h3>${esc(p.name)}</h3>${p.realBook?`<p class="sub" style="margin:2px 0 8px">${esc(p.author)} · ${esc(p.bookTopic)}</p>`:''}<div class="rating">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} reviews</div><p>${esc(p.desc)}</p><div class="stockline">${forageStock(p)}</div><div class="actions" style="margin-top:10px"><button class="secondary" data-action="open-product" data-id="${esc(p.id)}">Details →</button></div><div class="price">${money(p.price)} ${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div></div></article>`}
 function toggleWish(id){const i=state.wishlist.indexOf(id);if(i>=0){state.wishlist.splice(i,1);toast('Removed from wishlist')}else{state.wishlist.push(id);toast('Saved for later')}save();render()}
 function viewProduct(id){selected=PRODUCTS.find(p=>p.id===id);page='detail';render();window.scrollTo({top:0,behavior:'smooth'})}
 function selectedOption(p){if(p.sizes?.length)return document.getElementById('sizeSelect')?.value||p.sizes[0];if(p.variants?.length)return document.getElementById('variantSelect')?.value||p.variants[0];return null}
@@ -168,6 +168,9 @@ function displayCat(p){return p.realBook?'Books':p.cat}
 
 
 function amazonBook(p){
+ // Search handoff, not a verified product link: we only know title/author, not a
+ // confirmed ASIN or listing, so a search URL is the honest representation.
+ if(!p)return;
  const q=encodeURIComponent(`${p.name} ${p.author||''}`);
  window.open(`https://www.amazon.com/s?k=${q}`,'_blank','noopener,noreferrer');
 }
@@ -176,7 +179,7 @@ function saveReading(id){
  const p=PRODUCTS.find(x=>x.id===id);if(!p)return;
  state.readingList=state.readingList||[];
  if(state.readingList.some(x=>x.id===id)){toast("Already in Reading List");return;}
- state.readingList.unshift({id,name:p.name,format:(p.formats||["Any"])[0],formats:p.formats||["Any"],status:"Want to Read"});
+ state.readingList.unshift({id,name:p.name,status:"Want to Read"});
  save();toast("Saved to Reading List");
 }
 function saveGiftIdea(id,meta){
@@ -207,23 +210,41 @@ function confirmGiftModal(id){
  saveGiftIdea(id,{person,occasion,note});
  closeGiftModal();
 }
+const READING_STATUSES=['Want to Read','Read'];
 function normalizeReadingList(){
   if(!Array.isArray(state.readingList))state.readingList=[];
   state.readingList=state.readingList.map(x=>{
     if(typeof x==='string'){
       const p=PRODUCTS.find(p=>p.id===x);
-      return p?{id:p.id,name:p.name,format:(p.formats||['Any'])[0],formats:p.formats||['Any'],status:'Want to Read'}:null;
+      return p?{id:p.id,name:p.name,status:'Want to Read'}:null;
     }
     if(!x||typeof x!=='object')return null;
     const p=PRODUCTS.find(p=>p.id===x.id);
-    const formats=Array.isArray(x.formats)&&x.formats.length?x.formats:(p?.formats||['Any']);
-    return {id:x.id||p?.id||'',name:x.name||p?.name||'Untitled book',format:x.format||formats[0]||'Any',formats,status:x.status||'Want to Read'};
+    const id=typeof x.id==='string'?x.id:(p?.id||'');
+    if(!id)return null;
+    const name=typeof x.name==='string'&&x.name?x.name:(p?.name||'Untitled book');
+    let status=typeof x.status==='string'?x.status:'Want to Read';
+    if(!READING_STATUSES.includes(status))status='Want to Read';
+    return {id,name,status};
   }).filter(Boolean);
+}
+function readingEntrySub(x,p){
+  // Author/topic/format facts are read live from the catalog, never invented here.
+  if(!p)return'Details no longer available';
+  const parts=[esc(p.author),esc(p.bookTopic)].filter(Boolean);
+  return parts.join(' · ');
+}
+function readingEntryFormats(p){
+  if(!p||!Array.isArray(p.formats)||!p.formats.length)return'Format info not available';
+  return esc(p.formats.join(' · '));
 }
 function renderReading(){
  normalizeReadingList();
  const xs=state.readingList;
- return `<div class="section-head"><div><h2>📚 Reading List</h2><p>Books worth keeping within reach.</p></div></div>${xs.length?xs.map((x,i)=>`<div class="cartline"><div class="miniart">📚</div><div><strong>${esc(x.name)}</strong><div class="eyebrow">${esc(x.status)} · ${esc(x.format)}</div></div><div><select data-action="reading-format" data-index="${i}">${x.formats.map(f=>`<option ${x.format===f?'selected':''}>${esc(f)}</option>`).join('')}</select><select data-action="reading-status" data-index="${i}"><option ${x.status==='Want to Read'?'selected':''}>Want to Read</option><option ${x.status==='Already Own'?'selected':''}>Already Own</option><option ${x.status==='Know & Love'?'selected':''}>Know & Love</option><option ${x.status==='Used Regularly'?'selected':''}>Used Regularly</option><option ${x.status==='Fictionally Purchased'?'selected':''}>Fictionally Purchased</option><option ${x.status==='Read'?'selected':''}>Read</option></select><button class="danger" data-action="remove-reading" data-index="${i}">Remove</button></div></div>`).join(''):`<div class="empty">No books saved yet. The shelves are waiting.</div>`}`;
+ return `<div class="section-head"><div><h2>📚 Reading List</h2><p>Books worth keeping within reach.</p></div></div>${xs.length?xs.map((x,i)=>{
+   const p=PRODUCTS.find(pr=>pr.id===x.id);
+   return `<div class="cartline"><div class="miniart">📚</div><div><strong>${esc(x.name)}</strong><div class="eyebrow">${readingEntrySub(x,p)}</div><div class="eyebrow">${readingEntryFormats(p)}</div></div><div><select data-action="reading-status" data-index="${i}"><option ${x.status==='Want to Read'?'selected':''}>Want to Read</option><option ${x.status==='Read'?'selected':''}>Read</option></select>${p?`<button class="secondary" data-action="open-product" data-id="${esc(p.id)}">Details →</button><button class="secondary" data-action="amazon-book" data-id="${esc(p.id)}">↗ Amazon</button>`:''}<button class="danger" data-action="remove-reading" data-index="${i}">Remove</button></div></div>`;
+ }).join(''):`<div class="empty">No books saved yet. The shelves are waiting.</div>`}`;
 }
 const GIFT_STATUSES=['Idea','Purchased','Given'];
 function normalizeGiftIdeas(){
@@ -434,7 +455,7 @@ const CLICK_ACTIONS={
   'open-gift-modal':(el)=>openGiftModal(el.dataset.id),
   'close-gift-modal':()=>closeGiftModal(),
   'confirm-gift-modal':(el)=>confirmGiftModal(el.dataset.id),
-  'amazon-book':()=>amazonBook(selected),
+  'amazon-book':(el)=>amazonBook(el.dataset.id?PRODUCTS.find(p=>p.id===el.dataset.id):selected),
   'remove-reading':(el)=>{state.readingList.splice(Number(el.dataset.index),1);save();render()},
   'remove-gift':(el)=>{const idx=Number(el.dataset.index);openGiftEdits.delete(state.giftIdeas[idx]?.id);state.giftIdeas.splice(idx,1);save();render()},
   'gift-edit-toggle':(el)=>{const id=el.dataset.id;if(openGiftEdits.has(id))openGiftEdits.delete(id);else openGiftEdits.add(id);render()},
@@ -446,8 +467,10 @@ const CLICK_ACTIONS={
 };
 const CHANGE_ACTIONS={
   'toggle-gift':()=>toggleGift(),
-  'reading-format':(el)=>{state.readingList[Number(el.dataset.index)].format=el.value;save();render()},
-  'reading-status':(el)=>{state.readingList[Number(el.dataset.index)].status=el.value;save();render()},
+  'reading-status':(el)=>{
+    state.readingList[Number(el.dataset.index)].status=el.value;save();
+    const card=el.closest('.cartline');if(card)card.style.opacity=el.value==='Read'?'.6':'';
+  },
   'gift-status':(el)=>{
     state.giftIdeas[Number(el.dataset.index)].status=el.value;save();
     const card=el.closest('.cartline');if(card)card.style.opacity=el.value==='Given'?'.6':'';
