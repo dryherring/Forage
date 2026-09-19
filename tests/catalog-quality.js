@@ -28,6 +28,30 @@ function baseName(name) { return name.replace(/\s+[A-Z][a-z]+\s\d+$/, '').trim()
 
 const TEMPLATE_CATEGORIES = ['Pottery', 'Craft', 'Korea', 'Music', 'Style', 'Home', 'Kitchen', 'Travel', 'Adventure', 'Cats', 'Stationery & Paper'];
 
+// The 8 real product types per templated category (see issue #15's
+// description rewrite and the image-cleanup pass that removed mismatched
+// placeholder photos). Used below to catch an image being reused across
+// products that aren't actually the same real-world object.
+const PRODUCT_TYPES = {
+  Pottery: ['Brush Set', 'Carving Set', 'Clay Stamp', 'Glaze Pair', 'Rib Set', 'Tea Ware Bat', 'Trimming Tool', 'Yunomi Mold'],
+  Craft: ['Button Pack', 'Detail Scissors', 'Fineliner Set', 'Iridescent Thread Set', 'Rhinestone Mix', 'Stencil Kit', 'Washi Tape Set', 'Zipper Pull Kit'],
+  Korea: ['Cafe Pencil Case', 'Gel Pen Pack', 'Hangul Label Set', 'Index Tab Kit', 'Morning Field Notes', 'Notebook Trio', 'Transit Sticker Pack', 'Travel Journal'],
+  Music: ['Battery Caddy', 'Concert Hat Kit', 'Concert Utility Pouch', 'Earplug Case', 'Freebie Organizer', 'Light Stick Sling', 'Photo Card Folio', 'Ticket Wallet'],
+  Style: ['Canvas Sneaker', 'Leather Crossbody', 'Oversized Shirt', 'Petite Watch', 'Relaxed Jean', 'Slim Belt', 'Soft Cargo Pant', 'Travel Cardigan'],
+  Home: ['Cat Tunnel', 'Catchall Tray', 'Desk Shelf', 'Floor Basket', 'Photo Frame', 'Reading Lamp', 'Window Perch', 'Wool Throw'],
+  Kitchen: ['Matcha Bowl', 'Mini Steamer', 'Noodle Bowl', 'Ramen Pot', 'Tea Tray', 'Condiment Jar Set', 'Egg Marinating Jar', 'Rice Bowl Pair'],
+  Travel: ['Cable Roll', 'Daypack', 'Packing Cube', 'Packing Folder', 'Passport Wallet', 'Seatback Organizer', 'Tech Pouch', 'Toiletry Case'],
+  Adventure: ['Backroad Route Pack', 'Micro Adventure Deck', 'Mystery Day Trip', 'Overlook Field Guide', 'Scenic Detour Map', 'Small Town Quest', 'Trail Lunch Box', 'Waterfall Hunt'],
+  Cats: ['Ceramic Water Bowl', 'Feather Wand', 'Scratch Lounge', 'Slow Feeder', 'Treat Puzzle', 'Tunnel Cube', 'Window Hammock', 'Wool Mouse Set'],
+  'Stationery & Paper': ['Annotation Kit', 'Book Weight', 'Desk Notebook', 'Field Journal', 'Index Card Box', 'Page Flag Set', 'Reading Log', 'Research Card Set'],
+};
+function productType(p) {
+  const types = PRODUCT_TYPES[p.cat];
+  if (!types) return null; // Moto, Gifts & Curiosities, real books, bespoke items: no shared type
+  const base = baseName(p.name);
+  return types.find(t => base.endsWith(t)) || null;
+}
+
 // --- No empty or malformed descriptions -------------------------------------
 record('Every product has a non-empty, substantive description', () => {
   const bad = catalog.filter(p => !p.desc || typeof p.desc !== 'string' || p.desc.trim().length < 10);
@@ -183,6 +207,39 @@ record('Kitchen redesigned types no longer carry rejected materials or stale des
     }
   });
   assert(offenders.length === 0, `${offenders.length} coherence issue(s): ${offenders.slice(0, 5).join(' | ')}`);
+});
+
+// --- No product image reused across mismatched products ---------------------
+// The catalog previously shipped 7 placeholder/scaffolding images (e.g. a
+// cowboy hat, a cat bed) each reused across hundreds of unrelated products in
+// unrelated categories, with no visual relationship to what they were
+// attached to. A cleanup pass removed every assignment that didn't genuinely
+// depict the product (verified by inspecting each image against the
+// product's real type and specs.Material) and left the handful of genuine
+// matches in place. This guards against that regressing: any image used by
+// 2+ products must be used only by products that are actually the same
+// real-world type (siblings across flavor-prefix/color are expected and
+// fine); an image used by products of different categories, or different
+// types within one templated category, is exactly the failure mode this
+// guards against. A bespoke/no-type product (Moto, Gifts & Curiosities, real
+// books, or an individually-authored item within a templated category) is
+// expected to have its own image, not share one.
+record('No product image is shared across genuinely different product types', () => {
+  const byImage = new Map();
+  catalog.forEach(p => {
+    if (!p.image) return;
+    if (!byImage.has(p.image)) byImage.set(p.image, []);
+    byImage.get(p.image).push(p);
+  });
+  const offenders = [];
+  byImage.forEach((users, image) => {
+    if (users.length < 2) return;
+    const identities = new Set(users.map(p => `${p.cat}::${productType(p) || `bespoke:${p.id}`}`));
+    if (identities.size > 1) {
+      offenders.push(`${image} used by mismatched products: ${[...identities].slice(0, 6).join(', ')}`);
+    }
+  });
+  assert(offenders.length === 0, `cross-type/category image reuse found: ${offenders.slice(0, 5).join(' | ')}`);
 });
 
 // --- catalog.json / CATALOG.md drift -----------------------------------------
