@@ -1667,7 +1667,7 @@ A small tray for the keys, coins, and unopened mail that otherwise colonize a co
 
 ### Little Ramen Night Tea Tray
 `p0392` · Kitchen · **Ƶ 16**  
-A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.  
+A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.  
 
 ### One-Night Adventure Toiletry Case
 `p0393` · Travel · **Ƶ 54**  
@@ -1718,7 +1718,7 @@ A small tray for the keys, coins, and unopened mail that otherwise colonize a co
 
 ### Kitchen Window Tea Tray
 `p0404` · Kitchen · **Ƶ 26**  
-A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.  
+A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.  
 
 ### Gate 23 Toiletry Case
 `p0405` · Travel · **Ƶ 62**  
@@ -1769,7 +1769,7 @@ A small tray for the keys, coins, and unopened mail that otherwise colonize a co
 
 ### Tea Break Tea Tray
 `p0416` · Kitchen · **Ƶ 34**  
-A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.  
+A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.  
 
 ### Window Seat Toiletry Case
 `p0417` · Travel · **Ƶ 72**  
@@ -1820,7 +1820,7 @@ A small tray for the keys, coins, and unopened mail that otherwise colonize a co
 
 ### Weeknight Tea Tray
 `p0428` · Kitchen · **Ƶ 44**  
-A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.  
+A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.  
 
 ### Carry-On Only Toiletry Case
 `p0429` · Travel · **Ƶ 80**  
@@ -1871,7 +1871,7 @@ A small tray for the keys, coins, and unopened mail that otherwise colonize a co
 
 ### Small Batch Tea Tray
 `p0440` · Kitchen · **Ƶ 52**  
-A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.  
+A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.  
 
 ### Red-Eye Toiletry Case
 `p0441` · Travel · **Ƶ 90**  
@@ -1922,7 +1922,7 @@ A small tray for the keys, coins, and unopened mail that otherwise colonize a co
 
 ### Morning Matcha Tea Tray
 `p0452` · Kitchen · **Ƶ 62**  
-A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.  
+A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.  
 
 ### Weekend Away Toiletry Case
 `p0453` · Travel · **Ƶ 98**  
@@ -1973,7 +1973,7 @@ A small tray for the keys, coins, and unopened mail that otherwise colonize a co
 
 ### Comfort Bowl Tea Tray
 `p0464` · Kitchen · **Ƶ 70**  
-A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.  
+A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.  
 
 ### Small Escape Toiletry Case
 `p0465` · Travel · **Ƶ 108**  
@@ -2024,7 +2024,7 @@ A small tray for the keys, coins, and unopened mail that otherwise colonize a co
 
 ### Home Cafe Tea Tray
 `p0476` · Kitchen · **Ƶ 80**  
-A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.  
+A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.  
 
 ### Road Atlas Toiletry Case
 `p0477` · Travel · **Ƶ 116**  
@@ -2891,7 +2891,7 @@ A basket big enough for blankets, laundry, or the toys that migrate to the middl
 
 ### Little Ramen Night Condiment Jar Set
 `p0680` · Kitchen · **Ƶ 88**  
-A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
+Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
 
 ### One-Night Adventure Packing Folder
 `p0681` · Travel · **Ƶ 124**  
@@ -2942,7 +2942,7 @@ A basket big enough for blankets, laundry, or the toys that migrate to the middl
 
 ### Kitchen Window Condiment Jar Set
 `p0692` · Kitchen · **Ƶ 96**  
-A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
+Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
 
 ### Gate 23 Packing Folder
 `p0693` · Travel · **Ƶ 134**  
@@ -2993,7 +2993,7 @@ A basket big enough for blankets, laundry, or the toys that migrate to the middl
 
 ### Tea Break Condiment Jar Set
 `p0704` · Kitchen · **Ƶ 106**  
-A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
+Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
 
 ### Window Seat Packing Folder
 `p0705` · Travel · **Ƶ 142**  
@@ -3044,7 +3044,7 @@ A basket big enough for blankets, laundry, or the toys that migrate to the middl
 
 ### Weeknight Condiment Jar Set
 `p0716` · Kitchen · **Ƶ 114**  
-A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
+Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
 
 ### Carry-On Only Packing Folder
 `p0717` · Travel · **Ƶ 152**  
@@ -3095,7 +3095,7 @@ A basket big enough for blankets, laundry, or the toys that migrate to the middl
 
 ### Small Batch Condiment Jar Set
 `p0728` · Kitchen · **Ƶ 124**  
-A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
+Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
 
 ### Red-Eye Packing Folder
 `p0729` · Travel · **Ƶ 16**  
@@ -3146,7 +3146,7 @@ A basket big enough for blankets, laundry, or the toys that migrate to the middl
 
 ### Morning Matcha Condiment Jar Set
 `p0740` · Kitchen · **Ƶ 132**  
-A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
+Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
 
 ### Weekend Away Packing Folder
 `p0741` · Travel · **Ƶ 24**  
@@ -3197,7 +3197,7 @@ A basket big enough for blankets, laundry, or the toys that migrate to the middl
 
 ### Comfort Bowl Condiment Jar Set
 `p0752` · Kitchen · **Ƶ 142**  
-A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
+Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
 
 ### Small Escape Packing Folder
 `p0753` · Travel · **Ƶ 34**  
@@ -3248,7 +3248,7 @@ A basket big enough for blankets, laundry, or the toys that migrate to the middl
 
 ### Home Cafe Condiment Jar Set
 `p0764` · Kitchen · **Ƶ 150**  
-A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
+Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.  
 
 ### Road Atlas Packing Folder
 `p0765` · Travel · **Ƶ 42**  

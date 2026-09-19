@@ -400,7 +400,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Enameled cast iron",
+      "Material": "Stoneware",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Small batch"
@@ -445,7 +445,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0009",
@@ -1100,7 +1100,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Enameled cast iron",
+      "Material": "Stoneware",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -1145,7 +1145,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0021",
@@ -1849,7 +1849,7 @@
         "stars": 5
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0033",
@@ -2504,7 +2504,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Enameled cast iron",
+      "Material": "Stoneware",
       "Finish": "Natural",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -2549,7 +2549,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0045",
@@ -3204,7 +3204,7 @@
       "Black"
     ],
     "specs": {
-      "Material": "Enameled cast iron",
+      "Material": "Stoneware",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Small batch"
@@ -3249,7 +3249,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0057",
@@ -3904,7 +3904,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Enameled cast iron",
+      "Material": "Stoneware",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Small batch"
@@ -3949,7 +3949,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0069",
@@ -4653,7 +4653,7 @@
         "stars": 3
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0081",
@@ -5312,7 +5312,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Enameled cast iron",
+      "Material": "Stoneware",
       "Finish": "Matte",
       "Use": "Daily",
       "Edition": "Workshop series"
@@ -5357,7 +5357,7 @@
         "stars": 4
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0093",
@@ -6009,7 +6009,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Borosilicate glass",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -6054,7 +6054,7 @@
         "stars": 3
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0105",
@@ -6710,7 +6710,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Borosilicate glass",
       "Finish": "Matte",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -6755,7 +6755,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0117",
@@ -7456,7 +7456,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0129",
@@ -8153,7 +8153,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0141",
@@ -8805,7 +8805,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Borosilicate glass",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Small batch"
@@ -8850,7 +8850,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0153",
@@ -9551,7 +9551,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0165",
@@ -10252,7 +10252,7 @@
         "stars": 3
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0177",
@@ -10949,7 +10949,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0189",
@@ -11656,7 +11656,7 @@
         "stars": 5
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/rice-bowl-pair.webp"
   },
   {
     "id": "p0201",
@@ -12314,7 +12314,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Porcelain",
       "Finish": "Matte",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -12359,7 +12359,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/kitchen/rice-bowl-pair.webp"
   },
   {
     "id": "p0213",
@@ -13062,7 +13062,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/rice-bowl-pair.webp"
   },
   {
     "id": "p0225",
@@ -13765,7 +13765,7 @@
         "stars": 5
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/rice-bowl-pair.webp"
   },
   {
     "id": "p0237",
@@ -14427,7 +14427,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Porcelain",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -14472,7 +14472,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/kitchen/rice-bowl-pair.webp"
   },
   {
     "id": "p0249",
@@ -15179,7 +15179,7 @@
         "stars": 4
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/rice-bowl-pair.webp"
   },
   {
     "id": "p0261",
@@ -15837,7 +15837,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Porcelain",
       "Finish": "Natural",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -15882,7 +15882,7 @@
         "stars": 4
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/rice-bowl-pair.webp"
   },
   {
     "id": "p0273",
@@ -16544,7 +16544,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Porcelain",
       "Finish": "Satin",
       "Use": "Daily",
       "Edition": "Workshop series"
@@ -16589,7 +16589,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/rice-bowl-pair.webp"
   },
   {
     "id": "p0285",
@@ -17247,7 +17247,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Stainless steel",
+      "Material": "Glazed stoneware",
       "Finish": "Matte",
       "Use": "Daily",
       "Edition": "Workshop series"
@@ -17292,7 +17292,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/kitchen/mini-steamer.webp"
   },
   {
     "id": "p0297",
@@ -17950,7 +17950,7 @@
       "Cobalt"
     ],
     "specs": {
-      "Material": "Stainless steel",
+      "Material": "Glazed stoneware",
       "Finish": "Satin",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -17995,7 +17995,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/mini-steamer.webp"
   },
   {
     "id": "p0309",
@@ -18653,7 +18653,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Glazed stoneware",
       "Finish": "Satin",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -18698,7 +18698,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/mini-steamer.webp"
   },
   {
     "id": "p0321",
@@ -19360,7 +19360,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Glazed stoneware",
       "Finish": "Matte",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -19405,7 +19405,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/mini-steamer.webp"
   },
   {
     "id": "p0333",
@@ -20067,7 +20067,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Glazed stoneware",
       "Finish": "Satin",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -20112,7 +20112,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/kitchen/mini-steamer.webp"
   },
   {
     "id": "p0345",
@@ -20770,7 +20770,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Stainless steel",
+      "Material": "Glazed stoneware",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Small batch"
@@ -20815,7 +20815,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/mini-steamer.webp"
   },
   {
     "id": "p0357",
@@ -21477,7 +21477,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Glazed stoneware",
       "Finish": "Satin",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -21522,7 +21522,7 @@
         "stars": 5
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/mini-steamer.webp"
   },
   {
     "id": "p0369",
@@ -22180,7 +22180,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Stainless steel",
+      "Material": "Glazed stoneware",
       "Finish": "Satin",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -22225,7 +22225,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/mini-steamer.webp"
   },
   {
     "id": "p0381",
@@ -22869,7 +22869,7 @@
     "reviews": 324,
     "stock": 14,
     "rarity": "New",
-    "desc": "A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.",
+    "desc": "A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.",
     "sizes": null,
     "variants": [
       "Charcoal",
@@ -22877,7 +22877,7 @@
       "Indigo"
     ],
     "specs": {
-      "Material": "Acacia wood",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Natural",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -22922,7 +22922,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/tea-tray.webp"
   },
   {
     "id": "p0393",
@@ -23570,11 +23570,11 @@
     "reviews": 749,
     "stock": 9,
     "rarity": "Tiny treasure",
-    "desc": "A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.",
+    "desc": "A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Acacia wood",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Matte",
       "Use": "Daily",
       "Edition": "Workshop series"
@@ -23619,7 +23619,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/tea-tray.webp"
   },
   {
     "id": "p0405",
@@ -24271,11 +24271,11 @@
     "reviews": 1197,
     "stock": 13,
     "rarity": "New",
-    "desc": "A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.",
+    "desc": "A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Acacia wood",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -24320,7 +24320,7 @@
         "stars": 5
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/tea-tray.webp"
   },
   {
     "id": "p0417",
@@ -24972,11 +24972,11 @@
     "reviews": 1466,
     "stock": 14,
     "rarity": "Tiny treasure",
-    "desc": "A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.",
+    "desc": "A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Glazed stoneware & bamboo",
       "Finish": "Natural",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -25021,7 +25021,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/tea-tray.webp"
   },
   {
     "id": "p0429",
@@ -25669,11 +25669,11 @@
     "reviews": 1441,
     "stock": 28,
     "rarity": "New",
-    "desc": "A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.",
+    "desc": "A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Acacia wood",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -25718,7 +25718,7 @@
         "stars": 5
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/tea-tray.webp"
   },
   {
     "id": "p0441",
@@ -26370,11 +26370,11 @@
     "reviews": 7,
     "stock": 3,
     "rarity": "Tiny treasure",
-    "desc": "A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.",
+    "desc": "A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Glazed stoneware & bamboo",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -26419,7 +26419,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/tea-tray.webp"
   },
   {
     "id": "p0453",
@@ -27071,11 +27071,11 @@
     "reviews": 471,
     "stock": 17,
     "rarity": "New",
-    "desc": "A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.",
+    "desc": "A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Glazed stoneware & bamboo",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Small batch"
@@ -27120,7 +27120,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/kitchen/tea-tray.webp"
   },
   {
     "id": "p0465",
@@ -27764,7 +27764,7 @@
     "reviews": 60,
     "stock": 7,
     "rarity": "Tiny treasure",
-    "desc": "A tray that catches spills, corrals cups, and turns making tea into something closer to a small ceremony than a chore.",
+    "desc": "A dark catch basin holds a fitted slatted-wood insert, so spills and drips land below the cups instead of on the table—the difference between a tea tray and a flat board with delusions of one.",
     "sizes": null,
     "variants": [
       "Clay",
@@ -27772,7 +27772,7 @@
       "Black"
     ],
     "specs": {
-      "Material": "Acacia wood",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Satin",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -27817,7 +27817,7 @@
         "stars": 4
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/tea-tray.webp"
   },
   {
     "id": "p0477",
@@ -28475,7 +28475,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Porcelain",
+      "Material": "Glazed stoneware",
       "Finish": "Satin",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -28520,7 +28520,7 @@
         "stars": 4
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/matcha-bowl.webp"
   },
   {
     "id": "p0489",
@@ -29182,7 +29182,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Porcelain",
+      "Material": "Glazed stoneware",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Small batch"
@@ -29227,7 +29227,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/matcha-bowl.webp"
   },
   {
     "id": "p0501",
@@ -29889,7 +29889,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Porcelain",
+      "Material": "Glazed stoneware",
       "Finish": "Matte",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -29934,7 +29934,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/matcha-bowl.webp"
   },
   {
     "id": "p0513",
@@ -30637,7 +30637,7 @@
         "stars": 3
       }
     ],
-    "image": null
+    "image": "images/kitchen/matcha-bowl.webp"
   },
   {
     "id": "p0525",
@@ -31344,7 +31344,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/matcha-bowl.webp"
   },
   {
     "id": "p0537",
@@ -32047,7 +32047,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/matcha-bowl.webp"
   },
   {
     "id": "p0549",
@@ -32750,7 +32750,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/kitchen/matcha-bowl.webp"
   },
   {
     "id": "p0561",
@@ -33408,7 +33408,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Porcelain",
+      "Material": "Glazed stoneware",
       "Finish": "Satin",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -33453,7 +33453,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/kitchen/matcha-bowl.webp"
   },
   {
     "id": "p0573",
@@ -34160,7 +34160,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/kitchen/noodle-bowl.webp"
   },
   {
     "id": "p0585",
@@ -34822,7 +34822,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Porcelain",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Small batch"
@@ -34867,7 +34867,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/noodle-bowl.webp"
   },
   {
     "id": "p0597",
@@ -35525,7 +35525,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Porcelain",
       "Finish": "Satin",
       "Use": "Home",
       "Edition": "Small batch"
@@ -35570,7 +35570,7 @@
         "stars": 5
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/noodle-bowl.webp"
   },
   {
     "id": "p0609",
@@ -36232,7 +36232,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Porcelain",
       "Finish": "Matte",
       "Use": "Daily",
       "Edition": "Workshop series"
@@ -36277,7 +36277,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/noodle-bowl.webp"
   },
   {
     "id": "p0621",
@@ -36935,7 +36935,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Porcelain",
       "Finish": "Matte",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -36980,7 +36980,7 @@
         "stars": 3
       }
     ],
-    "image": null
+    "image": "images/kitchen/noodle-bowl.webp"
   },
   {
     "id": "p0633",
@@ -37683,7 +37683,7 @@
         "stars": 4
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/noodle-bowl.webp"
   },
   {
     "id": "p0645",
@@ -38341,7 +38341,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Porcelain",
       "Finish": "Satin",
       "Use": "Home",
       "Edition": "Small batch"
@@ -38386,7 +38386,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/noodle-bowl.webp"
   },
   {
     "id": "p0657",
@@ -39093,7 +39093,7 @@
         "stars": 5
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/noodle-bowl.webp"
   },
   {
     "id": "p0669",
@@ -39751,11 +39751,11 @@
     "reviews": 48,
     "stock": 6,
     "rarity": "New",
-    "desc": "A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
+    "desc": "Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Borosilicate glass",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Satin",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -39800,7 +39800,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/condiment-jar-set.webp"
   },
   {
     "id": "p0681",
@@ -40454,11 +40454,11 @@
     "reviews": 1414,
     "stock": 29,
     "rarity": "Tiny treasure",
-    "desc": "A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
+    "desc": "Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Borosilicate glass",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Natural",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -40503,7 +40503,7 @@
         "stars": 4
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/condiment-jar-set.webp"
   },
   {
     "id": "p0693",
@@ -41161,11 +41161,11 @@
     "reviews": 189,
     "stock": 26,
     "rarity": "New",
-    "desc": "A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
+    "desc": "Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Borosilicate glass",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Small batch"
@@ -41210,7 +41210,7 @@
         "stars": 5
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/condiment-jar-set.webp"
   },
   {
     "id": "p0705",
@@ -41864,11 +41864,11 @@
     "reviews": 468,
     "stock": 17,
     "rarity": "Tiny treasure",
-    "desc": "A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
+    "desc": "Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -41913,7 +41913,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/kitchen/condiment-jar-set.webp"
   },
   {
     "id": "p0717",
@@ -42563,7 +42563,7 @@
     "reviews": 1560,
     "stock": 27,
     "rarity": "New",
-    "desc": "A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
+    "desc": "Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
     "sizes": null,
     "variants": [
       "Black",
@@ -42571,7 +42571,7 @@
       "Cobalt"
     ],
     "specs": {
-      "Material": "Borosilicate glass",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Natural",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -42616,7 +42616,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/condiment-jar-set.webp"
   },
   {
     "id": "p0729",
@@ -43270,11 +43270,11 @@
     "reviews": 916,
     "stock": 24,
     "rarity": "Tiny treasure",
-    "desc": "A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
+    "desc": "Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Borosilicate glass",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Satin",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -43319,7 +43319,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/kitchen/condiment-jar-set.webp"
   },
   {
     "id": "p0741",
@@ -43977,11 +43977,11 @@
     "reviews": 124,
     "stock": 24,
     "rarity": "New",
-    "desc": "A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
+    "desc": "Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Satin",
       "Use": "Daily",
       "Edition": "Workshop series"
@@ -44026,7 +44026,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/kitchen/condiment-jar-set.webp"
   },
   {
     "id": "p0753",
@@ -44684,11 +44684,11 @@
     "reviews": 1249,
     "stock": 9,
     "rarity": "Tiny treasure",
-    "desc": "A matched set of small jars for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
+    "desc": "Three small glazed pots on a fitted wooden tray, each with its own lid and its own small wooden spoon, for the sauces and seasonings that otherwise live in mismatched containers at the back of a fridge shelf.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Borosilicate glass",
+      "Material": "Glazed stoneware & acacia wood",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Small batch"
@@ -44733,7 +44733,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/condiment-jar-set.webp"
   },
   {
     "id": "p0765",
@@ -45388,7 +45388,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Enameled cast iron",
+      "Material": "Stoneware",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -45433,7 +45433,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0777",
@@ -46137,7 +46137,7 @@
         "stars": 4
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0789",
@@ -46837,7 +46837,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0801",
@@ -47537,7 +47537,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0813",
@@ -48192,7 +48192,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Enameled cast iron",
+      "Material": "Stoneware",
       "Finish": "Matte",
       "Use": "Daily",
       "Edition": "Workshop series"
@@ -48237,7 +48237,7 @@
         "stars": 4
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0825",
@@ -48896,7 +48896,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Enameled cast iron",
+      "Material": "Stoneware",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Small batch"
@@ -48941,7 +48941,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0837",
@@ -49600,7 +49600,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Enameled cast iron",
+      "Material": "Stoneware",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -49645,7 +49645,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0849",
@@ -50345,7 +50345,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/ramen-pot.webp"
   },
   {
     "id": "p0861",
@@ -51001,7 +51001,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Borosilicate glass",
       "Finish": "Satin",
       "Use": "Daily",
       "Edition": "Workshop series"
@@ -51046,7 +51046,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0873",
@@ -51684,7 +51684,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0885",
@@ -52318,7 +52318,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0897",
@@ -52952,7 +52952,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0909",
@@ -53590,7 +53590,7 @@
         "stars": 5
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0921",
@@ -54179,7 +54179,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Borosilicate glass",
       "Finish": "Matte",
       "Use": "Daily",
       "Edition": "Small batch"
@@ -54224,7 +54224,7 @@
         "stars": 4
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0933",
@@ -54858,7 +54858,7 @@
         "stars": 5
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0945",
@@ -55496,7 +55496,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/kitchen/egg-marinating-jar.webp"
   },
   {
     "id": "p0957",
@@ -56091,7 +56091,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Glazed stoneware",
+      "Material": "Porcelain",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -56136,7 +56136,7 @@
         "stars": 5
       }
     ],
-    "image": "images/wool-cat-cave.webp"
+    "image": "images/kitchen/rice-bowl-pair.webp"
   },
   {
     "id": "p0969",
@@ -56839,7 +56839,7 @@
         "stars": 4
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/rice-bowl-pair.webp"
   },
   {
     "id": "p0981",
@@ -57542,7 +57542,7 @@
         "stars": 5
       }
     ],
-    "image": "images/starry-cowboy-hat.webp"
+    "image": "images/kitchen/rice-bowl-pair.webp"
   },
   {
     "id": "p0993",
