@@ -139,6 +139,76 @@ record('Products of the same real-world type share one consistent description', 
   assert(inconsistent.length === 0, `inconsistent same-type descriptions: ${inconsistent.slice(0, 5).join(' | ')}`);
 });
 
+// --- Kitchen visual pilot: image-to-type mapping ----------------------------
+// Every Kitchen SKU should carry its real-world type's one approved image
+// (siblings across flavor-prefix/color share it, per the approved image
+// strategy) -- never null, never a different type's file, and the file must
+// actually exist on disk.
+const KITCHEN_IMAGE_BY_TYPE = {
+  'Ramen Pot': 'images/kitchen/ramen-pot.webp',
+  'Egg Marinating Jar': 'images/kitchen/egg-marinating-jar.webp',
+  'Rice Bowl Pair': 'images/kitchen/rice-bowl-pair.webp',
+  'Noodle Bowl': 'images/kitchen/noodle-bowl.webp',
+  'Matcha Bowl': 'images/kitchen/matcha-bowl.webp',
+  'Mini Steamer': 'images/kitchen/mini-steamer.webp',
+  'Tea Tray': 'images/kitchen/tea-tray.webp',
+  'Condiment Jar Set': 'images/kitchen/condiment-jar-set.webp',
+};
+function kitchenType(p) {
+  const base = baseName(p.name);
+  return Object.keys(KITCHEN_IMAGE_BY_TYPE).find(t => base.endsWith(t)) || null;
+}
+
+record('Every Kitchen SKU has its type\'s approved image, and the file exists', () => {
+  const kitchen = catalog.filter(p => p.cat === 'Kitchen');
+  assert(kitchen.length > 0, 'catalog has Kitchen products');
+  const mismatched = [];
+  kitchen.forEach(p => {
+    const type = kitchenType(p);
+    if (!type) { mismatched.push(`${p.id} (${p.name}): unrecognized Kitchen type`); return; }
+    const expected = KITCHEN_IMAGE_BY_TYPE[type];
+    if (p.image !== expected) mismatched.push(`${p.id} (${p.name}): expected ${expected}, got ${p.image}`);
+  });
+  assert(mismatched.length === 0, `${mismatched.length} mismatched Kitchen image assignment(s): ${mismatched.slice(0, 5).join(' | ')}`);
+
+  const missingFiles = Object.values(KITCHEN_IMAGE_BY_TYPE).filter(rel => !fs.existsSync(path.join(ROOT, rel)));
+  assert(missingFiles.length === 0, `missing Kitchen image file(s) on disk: ${missingFiles.join(', ')}`);
+});
+
+// --- Kitchen visual pilot: redesigned material/description coherence -------
+// The pilot rejected specific materials for three types (a Ramen Pot that's
+// visually ceramic can't be "Enameled cast iron"; a redesigned all-ceramic
+// Mini Steamer can't be "Stainless steel" or "Bamboo"; a redesigned Tea
+// Tray/Condiment Jar Set with a stoneware component can't be pure wood or
+// pure glass). This catches a future edit reintroducing a rejected value, or
+// applying the Tea Tray/Condiment Jar Set description to the wrong product.
+record('Kitchen redesigned types no longer carry rejected materials or stale descriptions', () => {
+  const offenders = [];
+  const REJECTED = {
+    'Ramen Pot': ['Enameled cast iron'],
+    'Mini Steamer': ['Stainless steel', 'Bamboo'],
+  };
+  catalog.filter(p => p.cat === 'Kitchen').forEach(p => {
+    const type = kitchenType(p);
+    if (REJECTED[type] && REJECTED[type].includes(p.specs.Material)) {
+      offenders.push(`${p.id}: ${type} still specs Material "${p.specs.Material}"`);
+    }
+    if (type === 'Tea Tray' && !/^Glazed stoneware & /.test(p.specs.Material)) {
+      offenders.push(`${p.id}: Tea Tray Material "${p.specs.Material}" is missing the glazed-stoneware basin`);
+    }
+    if (type === 'Condiment Jar Set' && p.specs.Material !== 'Glazed stoneware & acacia wood') {
+      offenders.push(`${p.id}: Condiment Jar Set Material "${p.specs.Material}" does not match the approved ceramic-and-tray design`);
+    }
+    if (type === 'Tea Tray' && !/^A dark catch basin holds a fitted slatted-wood insert/.test(p.desc)) {
+      offenders.push(`${p.id}: Tea Tray description does not match the approved redesign copy`);
+    }
+    if (type === 'Condiment Jar Set' && !/^Three small glazed pots on a fitted wooden tray/.test(p.desc)) {
+      offenders.push(`${p.id}: Condiment Jar Set description does not match the approved redesign copy`);
+    }
+  });
+  assert(offenders.length === 0, `${offenders.length} coherence issue(s): ${offenders.slice(0, 5).join(' | ')}`);
+});
+
 // --- No product image reused across mismatched products ---------------------
 // The catalog previously shipped 7 placeholder/scaffolding images (e.g. a
 // cowboy hat, a cat bed) each reused across hundreds of unrelated products in
