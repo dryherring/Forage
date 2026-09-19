@@ -1,0 +1,59 @@
+{
+  "_readme": "Provenance for catalog product photography. Forage is a fictional shopping app; every image here is AI-generated/illustrative, never a real product photo. This file (not per-product catalog fields) is the source of truth for which tool/method produced each asset, per path relative to /images. Add an entry here whenever a new generated image is added to the catalog.",
+  "images/kitchen/ramen-pot.webp": {
+    "source": "generated",
+    "method": "CG-generated",
+    "project": "Kitchen visual pilot",
+    "approvedFor": ["Kitchen :: Ramen Pot"],
+    "dateAdded": "2026-09-19"
+  },
+  "images/kitchen/egg-marinating-jar.webp": {
+    "source": "generated",
+    "method": "CG-generated",
+    "project": "Kitchen visual pilot",
+    "approvedFor": ["Kitchen :: Egg Marinating Jar"],
+    "dateAdded": "2026-09-19"
+  },
+  "images/kitchen/rice-bowl-pair.webp": {
+    "source": "generated",
+    "method": "Midjourney",
+    "project": "Kitchen visual pilot",
+    "approvedFor": ["Kitchen :: Rice Bowl Pair"],
+    "dateAdded": "2026-09-19"
+  },
+  "images/kitchen/noodle-bowl.webp": {
+    "source": "generated",
+    "method": "Midjourney",
+    "project": "Kitchen visual pilot",
+    "approvedFor": ["Kitchen :: Noodle Bowl"],
+    "dateAdded": "2026-09-19"
+  },
+  "images/kitchen/matcha-bowl.webp": {
+    "source": "generated",
+    "method": "Midjourney",
+    "project": "Kitchen visual pilot",
+    "approvedFor": ["Kitchen :: Matcha Bowl"],
+    "dateAdded": "2026-09-19"
+  },
+  "images/kitchen/mini-steamer.webp": {
+    "source": "generated",
+    "method": "CG-generated",
+    "project": "Kitchen visual pilot",
+    "approvedFor": ["Kitchen :: Mini Steamer"],
+    "dateAdded": "2026-09-19"
+  },
+  "images/kitchen/tea-tray.webp": {
+    "source": "generated",
+    "method": "CG-generated",
+    "project": "Kitchen visual pilot",
+    "approvedFor": ["Kitchen :: Tea Tray"],
+    "dateAdded": "2026-09-19"
+  },
+  "images/kitchen/condiment-jar-set.webp": {
+    "source": "generated",
+    "method": "CG-generated",
+    "project": "Kitchen visual pilot",
+    "approvedFor": ["Kitchen :: Condiment Jar Set"],
+    "dateAdded": "2026-09-19"
+  }
+}
