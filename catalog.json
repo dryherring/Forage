@@ -61912,5 +61912,732 @@
     "desc": "A practical ceramics reference focused on glaze chemistry, testing, recipes, and firing in the mid-range.",
     "reviewSnippets": [],
     "deepReviews": []
+  },
+  {
+    "id": "great-transformation-polanyi",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Great Transformation",
+    "author": "Karl Polanyi",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 24,
+    "rating": 4.5,
+    "reviews": 410,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100016,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Karl Polanyi",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A historical account of how nineteenth-century market economies emerged, arguing that land, labor, and money are treated as commodities only through deliberate social engineering, with lasting costs.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "the-gift-mauss",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Gift",
+    "author": "Marcel Mauss",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook"
+    ],
+    "price": 19,
+    "rating": 4.3,
+    "reviews": 260,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100017,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook"
+    ],
+    "specs": {
+      "Author": "Marcel Mauss",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook"
+    },
+    "desc": "A foundational anthropological study of gift exchange in archaic and traditional societies, arguing that giving, receiving, and repaying form a system of obligation distinct from market trade.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "stone-age-economics",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Stone Age Economics",
+    "author": "Marshall Sahlins",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook"
+    ],
+    "price": 26,
+    "rating": 4.4,
+    "reviews": 190,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100018,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook"
+    ],
+    "specs": {
+      "Author": "Marshall Sahlins",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook"
+    },
+    "desc": "An anthropological argument that hunter-gatherer societies achieved a form of affluence by limiting wants rather than maximizing output, challenging assumptions built into conventional economics.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "sweetness-and-power",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Sweetness and Power",
+    "author": "Sidney W. Mintz",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 21,
+    "rating": 4.6,
+    "reviews": 520,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100019,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Sidney W. Mintz",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A history of sugar tracing how a colonial luxury built on slave labor became an everyday commodity, reshaping diet, industry, and the global economy in the process.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "debt-first-5000-years-graeber",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Debt: The First 5,000 Years",
+    "author": "David Graeber",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 23,
+    "rating": 4.6,
+    "reviews": 1240,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100020,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "David Graeber",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "An anthropological history of debt and money arguing that credit and obligation, not barter, are the deeper foundation of economic life across human societies.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "economic-anthropology-hann-hart",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Economic Anthropology",
+    "author": "Chris Hann and Keith Hart",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook"
+    ],
+    "price": 25,
+    "rating": 4.2,
+    "reviews": 95,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100021,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook"
+    ],
+    "specs": {
+      "Author": "Chris Hann and Keith Hart",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook"
+    },
+    "desc": "A survey of economic anthropology's history and central debates, tracing how the field has interpreted development, socialism, and global capitalism.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "small-is-beautiful",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Small Is Beautiful: Economics as if People Mattered",
+    "author": "E. F. Schumacher",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 20,
+    "rating": 4.5,
+    "reviews": 480,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100022,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "E. F. Schumacher",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A collection of essays proposing human-scale, decentralized economics organized around sufficiency and human wellbeing rather than growth for its own sake.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "buddhist-economics-brown",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Buddhist Economics: An Enlightened Approach to the Dismal Science",
+    "author": "Clair Brown",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 22,
+    "rating": 4.3,
+    "reviews": 150,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100023,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Clair Brown",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "An economist's proposal for measuring economic wellbeing through sustainability, shared prosperity, and quality of life rather than income and output alone.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "mutual-causality-macy",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Mutual Causality in Buddhism and General Systems Theory: The Dharma of Natural Systems",
+    "author": "Joanna Macy",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook"
+    ],
+    "price": 27,
+    "rating": 4.4,
+    "reviews": 60,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100024,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook"
+    ],
+    "specs": {
+      "Author": "Joanna Macy",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook"
+    },
+    "desc": "A scholarly comparison of the Buddhist teaching of dependent co-arising and general systems theory, arguing both describe a world of mutual rather than linear causality.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "thinking-in-systems",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Thinking in Systems: A Primer",
+    "author": "Donella H. Meadows",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 19,
+    "rating": 4.7,
+    "reviews": 890,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100025,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Donella H. Meadows",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "An introduction to systems thinking covering feedback loops, stocks and flows, and why complex systems behave in ways simple linear reasoning tends to miss.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "systems-view-of-life",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Systems View of Life: A Unifying Vision",
+    "author": "Fritjof Capra and Pier Luigi Luisi",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook"
+    ],
+    "price": 55,
+    "rating": 4.5,
+    "reviews": 130,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100026,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook"
+    ],
+    "specs": {
+      "Author": "Fritjof Capra and Pier Luigi Luisi",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook"
+    },
+    "desc": "A synthesis of systems biology, complexity, and cognition proposing a unified framework for understanding living systems across scales, from cells to ecosystems.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "web-of-life-capra",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Web of Life: A New Scientific Understanding of Living Systems",
+    "author": "Fritjof Capra",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 21,
+    "rating": 4.5,
+    "reviews": 310,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100027,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Fritjof Capra",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "An account of systems and complexity theory applied to biology, tracing how living systems self-organize and sustain themselves through networks of relationship.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "active-hope",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Active Hope: How to Face the Mess We're in with Unexpected Resilience and Creative Power",
+    "author": "Joanna Macy and Chris Johnstone",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 20,
+    "rating": 4.6,
+    "reviews": 610,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100028,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Joanna Macy and Chris Johnstone",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A framework for responding to ecological and social crisis that moves through acknowledging difficulty, seeing new possibilities, and taking grounded action.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "the-serviceberry",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Serviceberry: Abundance and Reciprocity in the Natural World",
+    "author": "Robin Wall Kimmerer",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 18,
+    "rating": 4.7,
+    "reviews": 340,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100029,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Robin Wall Kimmerer",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "An essay on gift economies and reciprocity, using the serviceberry plant's relationship with foragers and birds to consider alternatives to market exchange.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "finding-the-mother-tree",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Finding the Mother Tree: Discovering the Wisdom of the Forest",
+    "author": "Suzanne Simard",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 22,
+    "rating": 4.7,
+    "reviews": 720,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100030,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Suzanne Simard",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A forest ecologist's account of research showing how trees recognize neighbors and share resources through underground fungal networks.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "doughnut-economics",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Doughnut Economics: Seven Ways to Think Like a 21st-Century Economist",
+    "author": "Kate Raworth",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 21,
+    "rating": 4.6,
+    "reviews": 680,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100031,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Kate Raworth",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A proposal to replace growth-centered economics with a model bounded by social foundations and ecological limits, visualized as a doughnut-shaped safe operating space.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "sacred-economics",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Sacred Economics",
+    "author": "Charles Eisenstein",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 20,
+    "rating": 4.2,
+    "reviews": 220,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100032,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Charles Eisenstein",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "A speculative critique of scarcity-based money, tracing currency from gift economies to modern capitalism and proposing alternatives; a provocative work to think with rather than a scholarly consensus account.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "mushroom-end-of-world",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "The Mushroom at the End of the World: On the Possibility of Life in Capitalist Ruins",
+    "author": "Anna Lowenhaupt Tsing",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "price": 24,
+    "rating": 4.4,
+    "reviews": 380,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100033,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Print",
+      "eBook",
+      "Audiobook"
+    ],
+    "specs": {
+      "Author": "Anna Lowenhaupt Tsing",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Print · eBook · Audiobook"
+    },
+    "desc": "An ethnography of the matsutake mushroom trade, following an unlikely global commodity chain through capitalist ruins, precarity, and multispecies collaboration.",
+    "reviewSnippets": [],
+    "deepReviews": []
+  },
+  {
+    "id": "feral-atlas",
+    "cat": "Stationery & Paper",
+    "emoji": "📚",
+    "name": "Feral Atlas: The More-Than-Human Anthropocene",
+    "author": "Anna Lowenhaupt Tsing, Jennifer Deger, Alder Keleman Saxena, and Feifei Zhou",
+    "bookTopic": "Interdependence, Value & Systems",
+    "realBook": true,
+    "formats": [
+      "Digital"
+    ],
+    "price": 18,
+    "rating": 4.5,
+    "reviews": 40,
+    "stock": 20,
+    "marketBadge": "Real book",
+    "rarity": "Book find",
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 100034,
+    "image": null,
+    "sizes": [],
+    "variants": [
+      "Digital"
+    ],
+    "specs": {
+      "Author": "Anna Lowenhaupt Tsing, Jennifer Deger, Alder Keleman Saxena, and Feifei Zhou",
+      "Topic": "Interdependence, Value & Systems",
+      "Formats": "Digital"
+    },
+    "desc": "A born-digital, open-access collection of field reports, essays, and artwork mapping the \"feral\" ecologies produced by human infrastructure across the Anthropocene.",
+    "reviewSnippets": [],
+    "deepReviews": []
   }
 ]

@@ -275,6 +275,27 @@ record('Real book descriptions remain present and are not generic templates', ()
   assert(offenders.length === 0, `real book(s) with templated desc: ${offenders.map(p => p.id).join(', ')}`);
 });
 
+// The "Interdependence, Value & Systems" collection: 19 new real books added
+// alongside the pre-existing Braiding Sweetgrass, unified under one bookTopic
+// so the existing search (which matches name/author/bookTopic/desc) surfaces
+// them together as a collection without any new schema.
+record('Interdependence, Value & Systems collection is present, complete, and coherent', () => {
+  const TOPIC = 'Interdependence, Value & Systems';
+  const collection = catalog.filter(p => p.realBook && p.bookTopic === TOPIC);
+  assert(collection.length === 19, `collection has all 19 new books (got ${collection.length})`);
+  const ids = collection.map(p => p.id);
+  assert(new Set(ids).size === ids.length, 'no duplicate ids within the collection');
+  for (const b of collection) {
+    assert(typeof b.author === 'string' && b.author, `${b.id} has an author`);
+    assert(Array.isArray(b.formats) && b.formats.length > 0, `${b.id} has known formats`);
+    assert(typeof b.desc === 'string' && b.desc.length > 20, `${b.id} has a substantive description`);
+    assert(!/\bPerfect for\b|\bmust-have\b|\byou'll love\b/i.test(b.desc), `${b.id} description avoids marketing copy`);
+  }
+  const braidingSweetgrass = catalog.find(p => p.id === 'braiding-sweetgrass');
+  assert(braidingSweetgrass && braidingSweetgrass.bookTopic !== TOPIC,
+    'the pre-existing Braiding Sweetgrass entry was left untouched, not folded into the new collection');
+});
+
 console.log('\n=== CATALOG QUALITY SUITE SUMMARY ===');
 const failed = results.filter(r => !r.pass);
 console.log(`${results.length - failed.length}/${results.length} passed`);
