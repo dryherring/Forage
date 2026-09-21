@@ -79,6 +79,28 @@ async function run() {
     await page.waitForTimeout(80);
     return name;
   }
+  async function filteredResultsCount() {
+    const meta = (await page.locator('#resultsMeta').textContent()) || '';
+    const match = meta.match(/^([\d,]+)\s+products/);
+    assert(match, `resultsMeta text is parseable (got "${meta}")`);
+    return Number(match[1].replace(/,/g, ''));
+  }
+  // Searches the currently rendered page of cards for one matching `name`,
+  // advancing through pagination (Discover shows 24 per page) if not found.
+  async function clickCardByName(name) {
+    for (let i = 0; i < 20; i++) {
+      const cards = await page.locator('.card').all();
+      for (const c of cards) {
+        const h3 = (await c.locator('h3').textContent()).trim();
+        if (h3 === name) { await c.click(); return true; }
+      }
+      const nextBtn = page.locator('[data-action="page-next"]');
+      if (await nextBtn.count() === 0 || (await nextBtn.getAttribute('disabled')) !== null) return false;
+      await nextBtn.click();
+      await page.waitForTimeout(80);
+    }
+    return false;
+  }
 
   // --- Catalog data sanity (backs the BOOK DATA AUDIT in the PR report) ---------
   await record('Catalog contains real books with author/topic/formats and no duplicate titles', async () => {
@@ -96,7 +118,7 @@ async function run() {
   await record('Books filter displays real books', async () => {
     await fresh();
     await openBooksFilter();
-    const count = await page.locator('.card').count();
+    const count = await filteredResultsCount();
     assert(count === realBooks.length, `Books filter shows exactly the ${realBooks.length} real books (got ${count})`);
   });
 
@@ -315,12 +337,7 @@ async function run() {
     await goNav(page, 'shop');
     await page.click('[data-filter="Books"]');
     await page.waitForTimeout(80);
-    const cards = await page.locator('.card').all();
-    let found = false;
-    for (const c of cards) {
-      const h3 = (await c.locator('h3').textContent()).trim();
-      if (h3 === book.name) { await c.click(); found = true; break; }
-    }
+    const found = await clickCardByName(book.name);
     assert(found, 'the target book is present in Discover');
     await page.waitForSelector('.detail');
     await page.click('button[data-action="save-reading"]');
