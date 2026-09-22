@@ -210,17 +210,17 @@ record('Kitchen redesigned types no longer carry rejected materials or stale des
 });
 
 // --- Pottery visual reconciliation: image-to-type mapping -------------------
-// 5 of the 8 Pottery types received approved images and reconciled specs in
-// this pass (Trimming Tool, Brush Set, Glaze Pair, Carving Set, and the
-// Clay Stamp -> Clay Texture Rolling Pin Set replacement). Rib Set, Yunomi
-// Mold, and Tea Ware Bat were intentionally left untouched this pass (Rib
-// Set's approved image wasn't supplied yet; Yunomi Mold and Tea Ware Bat are
-// deferred product decisions) -- they're deliberately absent from this map.
+// 6 of the 8 Pottery types now have approved images and reconciled specs
+// (Trimming Tool, Brush Set, Glaze Pair, Carving Set, Rib Set, and the
+// Clay Stamp -> Clay Texture Rolling Pin Set replacement). Yunomi Mold and
+// Tea Ware Bat remain deferred product decisions with no replacement yet --
+// they're deliberately absent from this map.
 const POTTERY_IMAGE_BY_TYPE = {
   'Trimming Tool': 'images/pottery/trimming-tool.webp',
   'Brush Set': 'images/pottery/brush-set.webp',
   'Glaze Pair': 'images/pottery/glaze-pair.webp',
   'Carving Set': 'images/pottery/carving-set.webp',
+  'Rib Set': 'images/pottery/rib-set.webp',
   'Clay Texture Rolling Pin Set': 'images/pottery/clay-texture-rolling-pin-set.webp',
 };
 function potteryType(p) {
@@ -270,6 +270,13 @@ record('Clay Texture Rolling Pin Set fully replaces the retired Clay Stamp ident
 
   const throwingGauge = catalog.filter(p => /Throwing Gauge/i.test(p.name) || /Throwing Gauge/i.test(p.desc) || /Throwing Gauge/i.test(JSON.stringify(p.specs)));
   assert(throwingGauge.length === 0, `${throwingGauge.length} product(s) unexpectedly reference a deferred "Throwing Gauge" identity`);
+});
+
+record('Rib Set reflects the approved mixed-material redesign, not the retired rubber/silicone-only concept', () => {
+  const ribs = catalog.filter(p => baseName(p.name).endsWith('Rib Set'));
+  assert(ribs.length === 16, `expected 16 Rib Set SKUs (got ${ribs.length})`);
+  const offenders = ribs.filter(p => p.specs.Material !== 'Wood, metal & rubber');
+  assert(offenders.length === 0, `${offenders.length} Rib Set SKU(s) not on the approved Material value: ${offenders.map(p => `${p.id}: "${p.specs.Material}"`).slice(0, 5).join(' | ')}`);
 });
 
 // --- No product image reused across mismatched products ---------------------

@@ -89,6 +89,14 @@
     "method": "AI-generated",
     "project": "Pottery visual reconciliation",
     "approvedFor": ["Pottery :: Clay Texture Rolling Pin Set"],
+    "dateAdded": "2026-09-22",
+    "note": "Replaces an earlier labeled reference-sheet version of this asset with a clean, caption-free product photo of the same three rollers; same file path, no product identity change."
+  },
+  "images/pottery/rib-set.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Pottery visual reconciliation",
+    "approvedFor": ["Pottery :: Rib Set"],
     "dateAdded": "2026-09-22"
   }
 }
