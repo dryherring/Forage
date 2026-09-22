@@ -2049,9 +2049,9 @@ A trail jersey cut to fit over body armor without turning into a sail. Mesh side
 A jersey should fit over armor, vent heat, and avoid becoming a flag. Cobalt arrived because dirt gear need not dress exclusively as gravel.  
 *“Cobalt is a safety feature because I said so.” — Frankie*  
 
-### Rain-on-Stone Clay Stamp
+### Rain-on-Stone Clay Texture Rolling Pin Set
 `p0482` · Pottery · **Ƶ 156**  
-Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.  
+Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.  
 
 ### Northern Lights Button Pack
 `p0483` · Craft · **Ƶ 48**  
@@ -2100,9 +2100,9 @@ A merino-blend layer for cool starts and variable mountain weather. It manages s
 Cool mornings, ferry waits, and sudden wind made the case for merino. Flat seams followed one tester finding exactly one irritating seam under armor.  
 *“Sheepishly excellent.” — Nora*  
 
-### Cloudline Clay Stamp
+### Cloudline Clay Texture Rolling Pin Set
 `p0494` · Pottery · **Ƶ 20**  
-Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.  
+Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.  
 
 ### Hidden Constellation Button Pack
 `p0495` · Craft · **Ƶ 58**  
@@ -2151,9 +2151,9 @@ A compact organizer for the tools you actually carry rather than a prefilled kit
 A prefilled kit arrived with twelve tools and only four that fit the motorcycle. The team kept the roll and removed the optimism.  
 *“No mystery wrench. Five stars for restraint.” — Cal*  
 
-### Moss Window Clay Stamp
+### Moss Window Clay Texture Rolling Pin Set
 `p0506` · Pottery · **Ƶ 30**  
-Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.  
+Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.  
 
 ### Midnight Spark Button Pack
 `p0507` · Craft · **Ƶ 66**  
@@ -2202,9 +2202,9 @@ A metric roadside kit built around common motorcycle fasteners instead of a gene
 A roadside repair produced three household tool kits and still lacked the right metric socket. Every included tool now has to justify its weight.  
 *“Wheelie prepared. Sadly I still had to fix the wheel.” — Max*  
 
-### Quiet Kiln Clay Stamp
+### Quiet Kiln Clay Texture Rolling Pin Set
 `p0518` · Pottery · **Ƶ 38**  
-Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.  
+Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.  
 
 ### Prism Field Button Pack
 `p0519` · Craft · **Ƶ 76**  
@@ -2253,9 +2253,9 @@ A small torque tool for the fasteners riders are most tempted to overtighten. Th
 Born from the sound of a small fastener becoming a much smaller problem. The torque range covers hardware often tightened by feel and eventual regret.  
 *“A measured response to my ‘snug-ish’ torque specification.” — Ev*  
 
-### Riverbed Clay Stamp
+### Riverbed Clay Texture Rolling Pin Set
 `p0530` · Pottery · **Ƶ 48**  
-Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.  
+Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.  
 
 ### Tiny Orbit Button Pack
 `p0531` · Craft · **Ƶ 84**  
@@ -2304,9 +2304,9 @@ A genuinely packable compressor for airing back up after a dirt section or deali
 The first rule of airing down is remembering pavement eventually returns. Anything requiring heroic patience or its own pannier was rejected.  
 *“Inflated my tire and my sense of preparedness.” — Ro*  
 
-### Moon Jar Clay Stamp
+### Moon Jar Clay Texture Rolling Pin Set
 `p0542` · Pottery · **Ƶ 56**  
-Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.  
+Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.  
 
 ### Concert Night Button Pack
 `p0543` · Craft · **Ƶ 94**  
@@ -2355,9 +2355,9 @@ A true short-inseam adventure pant rather than a full-length pant pretending a c
 The first sample went to a rider tired of hemming gear made for somebody else’s legs. Her field report ended: “THE KNEE ARMOR IS ON MY KNEE.” We considered the brief fulfilled.  
 *“Twenty-nine inches. I nearly sent a thank-you note with my actual inseam.” — Jo*  
 
-### Celadon Field Clay Stamp
+### Celadon Field Clay Texture Rolling Pin Set
 `p0554` · Pottery · **Ƶ 66**  
-Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.  
+Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.  
 
 ### Studio Pocket Button Pack
 `p0555` · Craft · **Ƶ 102**  
@@ -2406,9 +2406,9 @@ Hot-weather riding pants built around airflow, not wishful thinking. Large mesh 
 An early prototype was described as having “the ventilation strategy of a casserole dish.” The next one got considerably more mesh.  
 *“Air! On my legs! Revolutionary.” — Cam*  
 
-### Iron Speckle Clay Stamp
+### Iron Speckle Clay Texture Rolling Pin Set
 `p0566` · Pottery · **Ƶ 74**  
-Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.  
+Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.  
 
 ### Afterglow Button Pack
 `p0567` · Craft · **Ƶ 112**  

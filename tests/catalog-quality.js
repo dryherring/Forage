@@ -33,7 +33,7 @@ const TEMPLATE_CATEGORIES = ['Pottery', 'Craft', 'Korea', 'Music', 'Style', 'Hom
 // placeholder photos). Used below to catch an image being reused across
 // products that aren't actually the same real-world object.
 const PRODUCT_TYPES = {
-  Pottery: ['Brush Set', 'Carving Set', 'Clay Stamp', 'Glaze Pair', 'Rib Set', 'Tea Ware Bat', 'Trimming Tool', 'Yunomi Mold'],
+  Pottery: ['Brush Set', 'Carving Set', 'Clay Texture Rolling Pin Set', 'Glaze Pair', 'Rib Set', 'Tea Ware Bat', 'Trimming Tool', 'Yunomi Mold'],
   Craft: ['Button Pack', 'Detail Scissors', 'Fineliner Set', 'Iridescent Thread Set', 'Rhinestone Mix', 'Stencil Kit', 'Washi Tape Set', 'Zipper Pull Kit'],
   Korea: ['Cafe Pencil Case', 'Gel Pen Pack', 'Hangul Label Set', 'Index Tab Kit', 'Morning Field Notes', 'Notebook Trio', 'Transit Sticker Pack', 'Travel Journal'],
   Music: ['Battery Caddy', 'Concert Hat Kit', 'Concert Utility Pouch', 'Earplug Case', 'Freebie Organizer', 'Light Stick Sling', 'Photo Card Folio', 'Ticket Wallet'],
@@ -207,6 +207,76 @@ record('Kitchen redesigned types no longer carry rejected materials or stale des
     }
   });
   assert(offenders.length === 0, `${offenders.length} coherence issue(s): ${offenders.slice(0, 5).join(' | ')}`);
+});
+
+// --- Pottery visual reconciliation: image-to-type mapping -------------------
+// 6 of the 8 Pottery types now have approved images and reconciled specs
+// (Trimming Tool, Brush Set, Glaze Pair, Carving Set, Rib Set, and the
+// Clay Stamp -> Clay Texture Rolling Pin Set replacement). Yunomi Mold and
+// Tea Ware Bat remain deferred product decisions with no replacement yet --
+// they're deliberately absent from this map.
+const POTTERY_IMAGE_BY_TYPE = {
+  'Trimming Tool': 'images/pottery/trimming-tool.webp',
+  'Brush Set': 'images/pottery/brush-set.webp',
+  'Glaze Pair': 'images/pottery/glaze-pair.webp',
+  'Carving Set': 'images/pottery/carving-set.webp',
+  'Rib Set': 'images/pottery/rib-set.webp',
+  'Clay Texture Rolling Pin Set': 'images/pottery/clay-texture-rolling-pin-set.webp',
+};
+function potteryType(p) {
+  const base = baseName(p.name);
+  return Object.keys(POTTERY_IMAGE_BY_TYPE).find(t => base.endsWith(t)) || null;
+}
+
+record('Every reconciled Pottery SKU has its type\'s approved image, and the file exists', () => {
+  const reconciled = catalog.filter(p => p.cat === 'Pottery' && potteryType(p));
+  assert(reconciled.length > 0, 'catalog has reconciled Pottery products');
+  const mismatched = [];
+  reconciled.forEach(p => {
+    const type = potteryType(p);
+    const expected = POTTERY_IMAGE_BY_TYPE[type];
+    if (p.image !== expected) mismatched.push(`${p.id} (${p.name}): expected ${expected}, got ${p.image}`);
+  });
+  assert(mismatched.length === 0, `${mismatched.length} mismatched Pottery image assignment(s): ${mismatched.slice(0, 5).join(' | ')}`);
+
+  const missingFiles = Object.values(POTTERY_IMAGE_BY_TYPE).filter(rel => !fs.existsSync(path.join(ROOT, rel)));
+  assert(missingFiles.length === 0, `missing Pottery image file(s) on disk: ${missingFiles.join(', ')}`);
+});
+
+record('Yunomi Mold and Tea Ware Bat remain unassigned pending their own deferred redesigns', () => {
+  const deferred = catalog.filter(p => {
+    const base = baseName(p.name);
+    return p.cat === 'Pottery' && (base.endsWith('Yunomi Mold') || base.endsWith('Tea Ware Bat'));
+  });
+  assert(deferred.length === 16, `expected 16 Yunomi Mold + Tea Ware Bat SKUs untouched (got ${deferred.length})`);
+  const withImage = deferred.filter(p => p.image !== null);
+  assert(withImage.length === 0, `${withImage.length} deferred SKU(s) unexpectedly carry an image: ${withImage.map(p => p.id).join(', ')}`);
+});
+
+record('Clay Texture Rolling Pin Set fully replaces the retired Clay Stamp identity', () => {
+  const rollers = catalog.filter(p => baseName(p.name).endsWith('Clay Texture Rolling Pin Set'));
+  assert(rollers.length === 8, `expected 8 Clay Texture Rolling Pin Set SKUs (got ${rollers.length})`);
+  const offenders = [];
+  rollers.forEach(p => {
+    if (p.specs.Material !== 'Wood') offenders.push(`${p.id}: Material "${p.specs.Material}" (expected "Wood")`);
+    if (p.specs.Finish !== 'Natural') offenders.push(`${p.id}: Finish "${p.specs.Finish}" (expected "Natural")`);
+    if (p.variants.length !== 0) offenders.push(`${p.id}: still carries variants ${JSON.stringify(p.variants)}`);
+    if (!/^Three wooden texture rollers/.test(p.desc)) offenders.push(`${p.id}: description does not match the approved copy`);
+  });
+  assert(offenders.length === 0, `${offenders.length} coherence issue(s): ${offenders.slice(0, 5).join(' | ')}`);
+
+  const staleIdentity = catalog.filter(p => /Clay Stamp/.test(p.name) || /Clay Stamp/.test(p.desc));
+  assert(staleIdentity.length === 0, `${staleIdentity.length} product(s) still carry a "Clay Stamp" identity: ${staleIdentity.map(p => p.id).join(', ')}`);
+
+  const throwingGauge = catalog.filter(p => /Throwing Gauge/i.test(p.name) || /Throwing Gauge/i.test(p.desc) || /Throwing Gauge/i.test(JSON.stringify(p.specs)));
+  assert(throwingGauge.length === 0, `${throwingGauge.length} product(s) unexpectedly reference a deferred "Throwing Gauge" identity`);
+});
+
+record('Rib Set reflects the approved mixed-material redesign, not the retired rubber/silicone-only concept', () => {
+  const ribs = catalog.filter(p => baseName(p.name).endsWith('Rib Set'));
+  assert(ribs.length === 16, `expected 16 Rib Set SKUs (got ${ribs.length})`);
+  const offenders = ribs.filter(p => p.specs.Material !== 'Wood, metal & rubber');
+  assert(offenders.length === 0, `${offenders.length} Rib Set SKU(s) not on the approved Material value: ${offenders.map(p => `${p.id}: "${p.specs.Material}"`).slice(0, 5).join(' | ')}`);
 });
 
 // --- No product image reused across mismatched products ---------------------
