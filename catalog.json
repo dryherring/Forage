@@ -15,7 +15,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Hardened steel",
+      "Material": "Bamboo & steel",
       "Finish": "Matte",
       "Use": "Studio",
       "Edition": "Workshop series"
@@ -60,7 +60,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0003",
@@ -719,7 +719,7 @@
       "Clay"
     ],
     "specs": {
-      "Material": "Hardened steel",
+      "Material": "Bamboo & steel",
       "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Small batch"
@@ -764,7 +764,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0015",
@@ -1419,7 +1419,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Hardened steel",
+      "Material": "Bamboo & steel",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -1464,7 +1464,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0027",
@@ -2123,7 +2123,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Hardened steel",
+      "Material": "Bamboo & steel",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -2168,7 +2168,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0039",
@@ -2819,7 +2819,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Bamboo & steel",
       "Finish": "Matte",
       "Use": "Studio",
       "Edition": "Small batch"
@@ -2864,7 +2864,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0051",
@@ -3519,7 +3519,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Bamboo & steel",
       "Finish": "Satin",
       "Use": "Studio",
       "Edition": "Small batch"
@@ -3564,7 +3564,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0063",
@@ -4223,7 +4223,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Bamboo & steel",
       "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Workshop series"
@@ -4268,7 +4268,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0075",
@@ -4927,7 +4927,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Bamboo & steel",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -4972,7 +4972,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0087",
@@ -11224,7 +11224,7 @@
     "variants": [],
     "specs": {
       "Material": "Stoneware glaze",
-      "Finish": "Matte",
+      "Finish": "Matte & Satin",
       "Use": "Studio",
       "Edition": "Small batch"
     },
@@ -11268,7 +11268,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/glaze-pair.webp"
   },
   {
     "id": "p0195",
@@ -11931,7 +11931,7 @@
     "variants": [],
     "specs": {
       "Material": "Stoneware glaze",
-      "Finish": "Natural",
+      "Finish": "Matte & Satin",
       "Use": "Studio",
       "Edition": "Workshop series"
     },
@@ -11975,7 +11975,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/glaze-pair.webp"
   },
   {
     "id": "p0207",
@@ -12630,7 +12630,7 @@
     "variants": [],
     "specs": {
       "Material": "Ceramic glaze",
-      "Finish": "Natural",
+      "Finish": "Matte & Satin",
       "Use": "Studio",
       "Edition": "Small batch"
     },
@@ -12674,7 +12674,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/glaze-pair.webp"
   },
   {
     "id": "p0219",
@@ -13333,7 +13333,7 @@
     "variants": [],
     "specs": {
       "Material": "Stoneware glaze",
-      "Finish": "Natural",
+      "Finish": "Matte & Satin",
       "Use": "Home",
       "Edition": "Small batch"
     },
@@ -13377,7 +13377,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/glaze-pair.webp"
   },
   {
     "id": "p0231",
@@ -14040,7 +14040,7 @@
     "variants": [],
     "specs": {
       "Material": "Stoneware glaze",
-      "Finish": "Satin",
+      "Finish": "Matte & Satin",
       "Use": "Studio",
       "Edition": "Small batch"
     },
@@ -14084,7 +14084,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/glaze-pair.webp"
   },
   {
     "id": "p0243",
@@ -14747,7 +14747,7 @@
     "variants": [],
     "specs": {
       "Material": "Stoneware glaze",
-      "Finish": "Natural",
+      "Finish": "Matte & Satin",
       "Use": "Studio",
       "Edition": "Small batch"
     },
@@ -14791,7 +14791,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/glaze-pair.webp"
   },
   {
     "id": "p0255",
@@ -15454,7 +15454,7 @@
     ],
     "specs": {
       "Material": "Stoneware glaze",
-      "Finish": "Satin",
+      "Finish": "Matte & Satin",
       "Use": "Home",
       "Edition": "Small batch"
     },
@@ -15498,7 +15498,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/glaze-pair.webp"
   },
   {
     "id": "p0267",
@@ -16157,7 +16157,7 @@
     "variants": [],
     "specs": {
       "Material": "Ceramic glaze",
-      "Finish": "Matte",
+      "Finish": "Matte & Satin",
       "Use": "Studio",
       "Edition": "Small batch"
     },
@@ -16201,7 +16201,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/glaze-pair.webp"
   },
   {
     "id": "p0279",
@@ -22495,7 +22495,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Hog bristle",
+      "Material": "Bamboo & synthetic fiber",
       "Finish": "Matte",
       "Use": "Studio",
       "Edition": "Workshop series"
@@ -22540,7 +22540,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/brush-set.webp"
   },
   {
     "id": "p0387",
@@ -23192,7 +23192,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo handle",
+      "Material": "Bamboo & synthetic fiber",
       "Finish": "Satin",
       "Use": "Studio",
       "Edition": "Workshop series"
@@ -23237,7 +23237,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/brush-set.webp"
   },
   {
     "id": "p0399",
@@ -23893,7 +23893,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo handle",
+      "Material": "Bamboo & synthetic fiber",
       "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Small batch"
@@ -23938,7 +23938,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/brush-set.webp"
   },
   {
     "id": "p0411",
@@ -24594,7 +24594,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Hog bristle",
+      "Material": "Bamboo & synthetic fiber",
       "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Small batch"
@@ -24639,7 +24639,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/brush-set.webp"
   },
   {
     "id": "p0423",
@@ -25295,7 +25295,7 @@
       "Clay"
     ],
     "specs": {
-      "Material": "Bamboo handle",
+      "Material": "Bamboo & synthetic fiber",
       "Finish": "Satin",
       "Use": "Studio",
       "Edition": "Small batch"
@@ -25340,7 +25340,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/brush-set.webp"
   },
   {
     "id": "p0435",
@@ -25992,7 +25992,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Hog bristle",
+      "Material": "Bamboo & synthetic fiber",
       "Finish": "Satin",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -26037,7 +26037,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/brush-set.webp"
   },
   {
     "id": "p0447",
@@ -26693,7 +26693,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo handle",
+      "Material": "Bamboo & synthetic fiber",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -26738,7 +26738,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/brush-set.webp"
   },
   {
     "id": "p0459",
@@ -27390,7 +27390,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo handle",
+      "Material": "Bamboo & synthetic fiber",
       "Finish": "Satin",
       "Use": "Home",
       "Edition": "Small batch"
@@ -27435,7 +27435,7 @@
         "stars": 3
       }
     ],
-    "image": null
+    "image": "images/pottery/brush-set.webp"
   },
   {
     "id": "p0471",
@@ -28076,19 +28076,19 @@
     "seed": 482,
     "cat": "Pottery",
     "emoji": "🏺",
-    "name": "Rain-on-Stone Clay Stamp",
+    "name": "Rain-on-Stone Clay Texture Rolling Pin Set",
     "price": 156,
     "oldPrice": null,
     "rating": 4.2,
     "reviews": 10,
     "stock": 3,
     "rarity": "Maker pick",
-    "desc": "Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.",
+    "desc": "Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Resin",
-      "Finish": "Matte",
+      "Material": "Wood",
+      "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Workshop series"
     },
@@ -28132,7 +28132,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/clay-texture-rolling-pin-set.webp"
   },
   {
     "id": "p0483",
@@ -28783,18 +28783,18 @@
     "seed": 494,
     "cat": "Pottery",
     "emoji": "🏺",
-    "name": "Cloudline Clay Stamp",
+    "name": "Cloudline Clay Texture Rolling Pin Set",
     "price": 20,
     "oldPrice": null,
     "rating": 4.2,
     "reviews": 203,
     "stock": 12,
     "rarity": "Quiet favorite",
-    "desc": "Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.",
+    "desc": "Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Fired clay",
+      "Material": "Wood",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -28839,7 +28839,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/clay-texture-rolling-pin-set.webp"
   },
   {
     "id": "p0495",
@@ -29490,19 +29490,19 @@
     "seed": 506,
     "cat": "Pottery",
     "emoji": "🏺",
-    "name": "Moss Window Clay Stamp",
+    "name": "Moss Window Clay Texture Rolling Pin Set",
     "price": 30,
     "oldPrice": null,
     "rating": 3.9,
     "reviews": 679,
     "stock": 20,
     "rarity": "Maker pick",
-    "desc": "Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.",
+    "desc": "Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Resin",
-      "Finish": "Satin",
+      "Material": "Wood",
+      "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Workshop series"
     },
@@ -29546,7 +29546,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/clay-texture-rolling-pin-set.webp"
   },
   {
     "id": "p0507",
@@ -30193,22 +30193,18 @@
     "seed": 518,
     "cat": "Pottery",
     "emoji": "🏺",
-    "name": "Quiet Kiln Clay Stamp",
+    "name": "Quiet Kiln Clay Texture Rolling Pin Set",
     "price": 38,
     "oldPrice": null,
     "rating": 4.2,
     "reviews": 1252,
     "stock": 27,
     "rarity": "Quiet favorite",
-    "desc": "Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.",
+    "desc": "Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.",
     "sizes": null,
-    "variants": [
-      "Black",
-      "Cream",
-      "Cobalt"
-    ],
+    "variants": [],
     "specs": {
-      "Material": "Fired clay",
+      "Material": "Wood",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -30253,7 +30249,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/clay-texture-rolling-pin-set.webp"
   },
   {
     "id": "p0519",
@@ -30900,18 +30896,18 @@
     "seed": 530,
     "cat": "Pottery",
     "emoji": "🏺",
-    "name": "Riverbed Clay Stamp",
+    "name": "Riverbed Clay Texture Rolling Pin Set",
     "price": 48,
     "oldPrice": null,
     "rating": 4.8,
     "reviews": 339,
     "stock": 14,
     "rarity": "Maker pick",
-    "desc": "Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.",
+    "desc": "Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Resin",
+      "Material": "Wood",
       "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Small batch"
@@ -30956,7 +30952,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/clay-texture-rolling-pin-set.webp"
   },
   {
     "id": "p0531",
@@ -31607,19 +31603,19 @@
     "seed": 542,
     "cat": "Pottery",
     "emoji": "🏺",
-    "name": "Moon Jar Clay Stamp",
+    "name": "Moon Jar Clay Texture Rolling Pin Set",
     "price": 56,
     "oldPrice": null,
     "rating": 4.1,
     "reviews": 1350,
     "stock": 28,
     "rarity": "Quiet favorite",
-    "desc": "Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.",
+    "desc": "Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Resin",
-      "Finish": "Matte",
+      "Material": "Wood",
+      "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Small batch"
     },
@@ -31663,7 +31659,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/clay-texture-rolling-pin-set.webp"
   },
   {
     "id": "p0543",
@@ -32306,19 +32302,19 @@
     "seed": 554,
     "cat": "Pottery",
     "emoji": "🏺",
-    "name": "Celadon Field Clay Stamp",
+    "name": "Celadon Field Clay Texture Rolling Pin Set",
     "price": 66,
     "oldPrice": null,
     "rating": 4.9,
     "reviews": 1564,
     "stock": 15,
     "rarity": "Maker pick",
-    "desc": "Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.",
+    "desc": "Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Resin",
-      "Finish": "Satin",
+      "Material": "Wood",
+      "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Small batch"
     },
@@ -32362,7 +32358,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/clay-texture-rolling-pin-set.webp"
   },
   {
     "id": "p0555",
@@ -33009,19 +33005,19 @@
     "seed": 566,
     "cat": "Pottery",
     "emoji": "🏺",
-    "name": "Iron Speckle Clay Stamp",
+    "name": "Iron Speckle Clay Texture Rolling Pin Set",
     "price": 74,
     "oldPrice": null,
     "rating": 3.8,
     "reviews": 725,
     "stock": 18,
     "rarity": "Quiet favorite",
-    "desc": "Presses a repeatable mark into clay without the wobble of doing it freehand. The kind of tool a potter buys after making the same motif badly six times by hand.",
+    "desc": "Three wooden texture rollers — Sky, Land, and Sea — carry raised designs that leave repeating recessed impressions in clay: the Big Dipper, dragonflies through grasses, and flowing waves.",
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Fired clay",
-      "Finish": "Satin",
+      "Material": "Wood",
+      "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Small batch"
     },
@@ -33065,7 +33061,7 @@
         "stars": 3
       }
     ],
-    "image": null
+    "image": "images/pottery/clay-texture-rolling-pin-set.webp"
   },
   {
     "id": "p0567",
@@ -33727,7 +33723,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Carbon steel",
+      "Material": "Wood & steel",
       "Finish": "Satin",
       "Use": "Studio",
       "Edition": "Workshop series"
@@ -33772,7 +33768,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/carving-set.webp"
   },
   {
     "id": "p0579",
@@ -34434,7 +34430,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Carbon steel",
+      "Material": "Wood & steel",
       "Finish": "Satin",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -34479,7 +34475,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/carving-set.webp"
   },
   {
     "id": "p0591",
@@ -35141,7 +35137,7 @@
       "Indigo"
     ],
     "specs": {
-      "Material": "Stainless steel",
+      "Material": "Wood & steel",
       "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Small batch"
@@ -35186,7 +35182,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/carving-set.webp"
   },
   {
     "id": "p0603",
@@ -35844,7 +35840,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Carbon steel",
+      "Material": "Wood & steel",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -35889,7 +35885,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/carving-set.webp"
   },
   {
     "id": "p0615",
@@ -36551,7 +36547,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Carbon steel",
+      "Material": "Wood & steel",
       "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Workshop series"
@@ -36596,7 +36592,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/carving-set.webp"
   },
   {
     "id": "p0627",
@@ -37250,7 +37246,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Stainless steel",
+      "Material": "Wood & steel",
       "Finish": "Matte",
       "Use": "Studio",
       "Edition": "Small batch"
@@ -37295,7 +37291,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/carving-set.webp"
   },
   {
     "id": "p0639",
@@ -37953,7 +37949,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Carbon steel",
+      "Material": "Wood & steel",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Small batch"
@@ -37998,7 +37994,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/carving-set.webp"
   },
   {
     "id": "p0651",
@@ -38660,7 +38656,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Carbon steel",
+      "Material": "Wood & steel",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Small batch"
@@ -38705,7 +38701,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/carving-set.webp"
   },
   {
     "id": "p0663",
@@ -45007,7 +45003,7 @@
       "Charcoal"
     ],
     "specs": {
-      "Material": "Hardened steel",
+      "Material": "Bamboo & steel",
       "Finish": "Natural",
       "Use": "Studio",
       "Edition": "Small batch"
@@ -45052,7 +45048,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0771",
@@ -45707,7 +45703,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Bamboo & steel",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -45752,7 +45748,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0783",
@@ -46411,7 +46407,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Hardened steel",
+      "Material": "Bamboo & steel",
       "Finish": "Matte",
       "Use": "Home",
       "Edition": "Small batch"
@@ -46456,7 +46452,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0795",
@@ -47107,7 +47103,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Hardened steel",
+      "Material": "Bamboo & steel",
       "Finish": "Matte",
       "Use": "Studio",
       "Edition": "Small batch"
@@ -47152,7 +47148,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0807",
@@ -47807,7 +47803,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Bamboo & steel",
       "Finish": "Natural",
       "Use": "Home",
       "Edition": "Workshop series"
@@ -47852,7 +47848,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0819",
@@ -48511,7 +48507,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Hardened steel",
+      "Material": "Bamboo & steel",
       "Finish": "Matte",
       "Use": "Studio",
       "Edition": "Workshop series"
@@ -48556,7 +48552,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0831",
@@ -49215,7 +49211,7 @@
     "sizes": null,
     "variants": [],
     "specs": {
-      "Material": "Hardened steel",
+      "Material": "Bamboo & steel",
       "Finish": "Satin",
       "Use": "Studio",
       "Edition": "Workshop series"
@@ -49260,7 +49256,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0843",
@@ -49919,7 +49915,7 @@
       "Clay"
     ],
     "specs": {
-      "Material": "Bamboo",
+      "Material": "Bamboo & steel",
       "Finish": "Matte",
       "Use": "Studio",
       "Edition": "Small batch"
@@ -49964,7 +49960,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/trimming-tool.webp"
   },
   {
     "id": "p0855",
@@ -55708,7 +55704,7 @@
     "variants": [],
     "specs": {
       "Material": "Stoneware glaze",
-      "Finish": "Matte",
+      "Finish": "Matte & Satin",
       "Use": "Home",
       "Edition": "Workshop series"
     },
@@ -55752,7 +55748,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/glaze-pair.webp"
   },
   {
     "id": "p0963",
@@ -56407,7 +56403,7 @@
     "variants": [],
     "specs": {
       "Material": "Ceramic glaze",
-      "Finish": "Matte",
+      "Finish": "Matte & Satin",
       "Use": "Home",
       "Edition": "Small batch"
     },
@@ -56451,7 +56447,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/glaze-pair.webp"
   },
   {
     "id": "p0975",
@@ -57110,7 +57106,7 @@
     "variants": [],
     "specs": {
       "Material": "Stoneware glaze",
-      "Finish": "Natural",
+      "Finish": "Matte & Satin",
       "Use": "Home",
       "Edition": "Small batch"
     },
@@ -57154,7 +57150,7 @@
         "stars": 5
       }
     ],
-    "image": null
+    "image": "images/pottery/glaze-pair.webp"
   },
   {
     "id": "p0987",
@@ -57817,7 +57813,7 @@
     "variants": [],
     "specs": {
       "Material": "Stoneware glaze",
-      "Finish": "Matte",
+      "Finish": "Matte & Satin",
       "Use": "Studio",
       "Edition": "Small batch"
     },
@@ -57861,7 +57857,7 @@
         "stars": 4
       }
     ],
-    "image": null
+    "image": "images/pottery/glaze-pair.webp"
   },
   {
     "id": "p0999",

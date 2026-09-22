@@ -55,5 +55,40 @@
     "project": "Kitchen visual pilot",
     "approvedFor": ["Kitchen :: Condiment Jar Set"],
     "dateAdded": "2026-09-19"
+  },
+  "images/pottery/trimming-tool.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Pottery visual reconciliation",
+    "approvedFor": ["Pottery :: Trimming Tool"],
+    "dateAdded": "2026-09-22"
+  },
+  "images/pottery/brush-set.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Pottery visual reconciliation",
+    "approvedFor": ["Pottery :: Brush Set"],
+    "dateAdded": "2026-09-22"
+  },
+  "images/pottery/glaze-pair.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Pottery visual reconciliation",
+    "approvedFor": ["Pottery :: Glaze Pair"],
+    "dateAdded": "2026-09-22"
+  },
+  "images/pottery/carving-set.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Pottery visual reconciliation",
+    "approvedFor": ["Pottery :: Carving Set"],
+    "dateAdded": "2026-09-22"
+  },
+  "images/pottery/clay-texture-rolling-pin-set.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Pottery visual reconciliation",
+    "approvedFor": ["Pottery :: Clay Texture Rolling Pin Set"],
+    "dateAdded": "2026-09-22"
   }
 }
