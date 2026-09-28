@@ -62322,5 +62322,31 @@
     "reviewSnippets": [],
     "deepReviews": [],
     "rarity": ""
+  },
+  {
+    "id": "ube-matcha-swiss-roll",
+    "cat": "Deli",
+    "name": "Ube–Matcha Swiss Roll",
+    "price": 7.5,
+    "emoji": "🍥",
+    "desc": "A rolled sponge cake with ube-purple sponge on the outside and matcha-green cream spiraled inside. A modern fusion — Filipino ube, Japanese matcha — not a traditional dish from either.",
+    "marketBadge": "New arrival",
+    "rating": 4.6,
+    "reviews": 141,
+    "stock": 13,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 465019283,
+    "image": "images/deli/ube-matcha-swiss-roll.webp",
+    "sizes": [],
+    "variants": ["Slice", "Whole roll"],
+    "specs": {
+      "Unit": "Slice (whole roll also available, Ƶ38)",
+      "Contains": "Egg, dairy, wheat"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
   }
 ]

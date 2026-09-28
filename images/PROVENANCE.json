@@ -203,5 +203,12 @@
     "project": "Deli category launch",
     "approvedFor": ["Deli :: Tamago Sando"],
     "dateAdded": "2026-09-28"
+  },
+  "images/deli/ube-matcha-swiss-roll.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Ube–Matcha Swiss Roll"],
+    "dateAdded": "2026-09-28"
   }
 }

@@ -349,14 +349,9 @@ record('Real book descriptions remain present and are not generic templates', ()
 // template pattern -- one image per product (never shared), no leftover
 // identity from any superseded product name/construction, and no stale
 // "no sandwiches" language leaking into anything customer-facing.
-//
-// The category is currently 15 of its locked 16 products: Ube-Matcha Swiss
-// Roll is intentionally not yet in the catalog, pending a still-missing
-// price/unit fact -- this count is expected to become 16 once that's
-// resolved, not a bug to "fix" by inventing a price here.
-record('Deli category: 15 of 16 locked products present, individually authored, correctly imaged', () => {
+record('Deli category: all 16 locked products present, individually authored, correctly imaged', () => {
   const deli = catalog.filter(p => p.cat === 'Deli');
-  assert(deli.length === 15, `expected 15 active Deli products pending Ube-Matcha Swiss Roll's price (got ${deli.length})`);
+  assert(deli.length === 16, `expected 16 active Deli products (got ${deli.length})`);
 
   const ids = deli.map(p => p.id);
   assert(new Set(ids).size === ids.length, 'no duplicate Deli ids');
