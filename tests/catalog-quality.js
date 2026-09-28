@@ -382,6 +382,73 @@ record('Deli category: all 16 locked products present, individually authored, co
   assert(/snow-skin/i.test(mooncake.desc), 'Mooncake Assortment describes both the baked and snow-skin styles');
 });
 
+// --- Variant-aware pricing: object-form priced options must be well-formed --
+// Runtime (optionPrice in app.js) is deliberately forgiving of malformed or
+// missing option pricing -- it falls back to the product's base price rather
+// than crashing or mischarging. This check is the strict half of that pair:
+// the repository itself should never *ship* a malformed priced option, even
+// though the app would survive one. Plain string variants/sizes (every
+// product outside this feature) are untouched by this check.
+record('Object-form priced variants/sizes have a real label and a valid positive price', () => {
+  const offenders = [];
+  catalog.forEach(p => {
+    ['variants', 'sizes'].forEach(field => {
+      if (!Array.isArray(p[field])) return;
+      p[field].forEach((v, i) => {
+        if (!v || typeof v !== 'object') return; // plain string entries are out of scope here
+        if (typeof v.label !== 'string' || !v.label.trim()) {
+          offenders.push(`${p.id}.${field}[${i}]: missing/empty label`);
+        }
+        if (!Number.isFinite(v.price) || v.price <= 0) {
+          offenders.push(`${p.id}.${field}[${i}] (${v.label || 'no label'}): price must be a finite number > 0, got ${JSON.stringify(v.price)}`);
+        }
+      });
+    });
+  });
+  assert(offenders.length === 0, `${offenders.length} malformed priced option(s): ${offenders.slice(0, 8).join(' | ')}`);
+});
+
+record('The 9 migrated Deli products expose object-form priced variants with the approved prices', () => {
+  const EXPECTED = {
+    'chocolate-obsession': [['Slice', 9.5], ['Whole cake', 62]],
+    'prinsesstarta': [['Slice', 8], ['Whole cake', 40]],
+    'verdens-beste': [['Slice', 7.5], ['Whole cake', 36]],
+    'cantonese-egg-tart': [['Individual', 3], ['Box of 6', 16]],
+    'jian-dui-sesame-balls': [['Individual', 2.5], ['Box of 6', 13]],
+    'strawberry-daifuku': [['Individual', 3.5], ['Box of 6', 18]],
+    'wienerbrod-spandauer': [['Individual', 4.5], ['Box of 6', 24]],
+    'rugbrod': [['Whole loaf', 9], ['Half loaf', 5]],
+    'ube-matcha-swiss-roll': [['Slice', 7.5], ['Whole roll', 38]],
+  };
+  const offenders = [];
+  Object.entries(EXPECTED).forEach(([id, expected]) => {
+    const p = catalog.find(x => x.id === id);
+    if (!p) { offenders.push(`${id}: product not found`); return; }
+    const actual = (p.variants || []).map(v => [v && v.label, v && v.price]);
+    if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+      offenders.push(`${id}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+    }
+    if (/also available/i.test(p.specs.Unit || '')) {
+      offenders.push(`${id}: specs.Unit still duplicates alternate-option pricing text: "${p.specs.Unit}"`);
+    }
+  });
+  assert(offenders.length === 0, offenders.join(' | '));
+});
+
+// --- No unrelated product was migrated to object-form variants --------------
+record('Only the 9 approved Deli products use object-form priced variants; everything else stays plain strings', () => {
+  const MIGRATED = new Set(['chocolate-obsession', 'prinsesstarta', 'verdens-beste', 'cantonese-egg-tart', 'jian-dui-sesame-balls', 'strawberry-daifuku', 'wienerbrod-spandauer', 'rugbrod', 'ube-matcha-swiss-roll']);
+  const offenders = [];
+  catalog.forEach(p => {
+    if (MIGRATED.has(p.id)) return;
+    ['variants', 'sizes'].forEach(field => {
+      if (!Array.isArray(p[field])) return;
+      if (p[field].some(v => v && typeof v === 'object')) offenders.push(`${p.id}.${field}`);
+    });
+  });
+  assert(offenders.length === 0, `unexpected object-form option(s) outside the approved 9: ${offenders.join(', ')}`);
+});
+
 console.log('\n=== CATALOG QUALITY SUITE SUMMARY ===');
 const failed = results.filter(r => !r.pass);
 console.log(`${results.length - failed.length}/${results.length} passed`);

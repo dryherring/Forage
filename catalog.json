@@ -61927,11 +61927,17 @@
     "image": "images/deli/chocolate-obsession.webp",
     "sizes": [],
     "variants": [
-      "Slice",
-      "Whole cake"
+      {
+        "label": "Slice",
+        "price": 9.5
+      },
+      {
+        "label": "Whole cake",
+        "price": 62
+      }
     ],
     "specs": {
-      "Unit": "Slice (whole cake also available, Ƶ62)",
+      "Unit": "Slice or whole cake",
       "Contains": "Egg, dairy, wheat"
     },
     "reviewSnippets": [],
@@ -61956,11 +61962,17 @@
     "image": "images/deli/prinsesstarta.webp",
     "sizes": [],
     "variants": [
-      "Slice",
-      "Whole cake"
+      {
+        "label": "Slice",
+        "price": 8
+      },
+      {
+        "label": "Whole cake",
+        "price": 40
+      }
     ],
     "specs": {
-      "Unit": "Slice (whole cake also available, Ƶ40)",
+      "Unit": "Slice or whole cake",
       "Contains": "Egg, dairy, wheat, almond"
     },
     "reviewSnippets": [],
@@ -61985,11 +61997,17 @@
     "image": "images/deli/verdens-beste.webp",
     "sizes": [],
     "variants": [
-      "Slice",
-      "Whole cake"
+      {
+        "label": "Slice",
+        "price": 7.5
+      },
+      {
+        "label": "Whole cake",
+        "price": 36
+      }
     ],
     "specs": {
-      "Unit": "Slice (whole cake also available, Ƶ36)",
+      "Unit": "Slice or whole cake",
       "Contains": "Egg, dairy, wheat, almond"
     },
     "reviewSnippets": [],
@@ -62014,11 +62032,17 @@
     "image": "images/deli/cantonese-egg-tart.webp",
     "sizes": [],
     "variants": [
-      "Individual",
-      "Box of 6"
+      {
+        "label": "Individual",
+        "price": 3
+      },
+      {
+        "label": "Box of 6",
+        "price": 16
+      }
     ],
     "specs": {
-      "Unit": "Individual (box of 6 also available, Ƶ16)",
+      "Unit": "Individual or box of 6",
       "Contains": "Egg, dairy, wheat"
     },
     "reviewSnippets": [],
@@ -62095,11 +62119,17 @@
     "image": "images/deli/jian-dui-sesame-balls.webp",
     "sizes": [],
     "variants": [
-      "Individual",
-      "Box of 6"
+      {
+        "label": "Individual",
+        "price": 2.5
+      },
+      {
+        "label": "Box of 6",
+        "price": 13
+      }
     ],
     "specs": {
-      "Unit": "Individual (box of 6 also available, Ƶ13)",
+      "Unit": "Individual or box of 6",
       "Contains": "Sesame, soy"
     },
     "reviewSnippets": [],
@@ -62176,11 +62206,17 @@
     "image": "images/deli/strawberry-daifuku.webp",
     "sizes": [],
     "variants": [
-      "Individual",
-      "Box of 6"
+      {
+        "label": "Individual",
+        "price": 3.5
+      },
+      {
+        "label": "Box of 6",
+        "price": 18
+      }
     ],
     "specs": {
-      "Unit": "Individual (box of 6 also available, Ƶ18)",
+      "Unit": "Individual or box of 6",
       "Contains": "Soy"
     },
     "reviewSnippets": [],
@@ -62257,11 +62293,17 @@
     "image": "images/deli/wienerbrod-spandauer.webp",
     "sizes": [],
     "variants": [
-      "Individual",
-      "Box of 6"
+      {
+        "label": "Individual",
+        "price": 4.5
+      },
+      {
+        "label": "Box of 6",
+        "price": 24
+      }
     ],
     "specs": {
-      "Unit": "Individual (box of 6 also available, Ƶ24)",
+      "Unit": "Individual or box of 6",
       "Contains": "Egg, dairy, wheat, almond"
     },
     "reviewSnippets": [],
@@ -62286,11 +62328,17 @@
     "image": "images/deli/rugbrod.webp",
     "sizes": [],
     "variants": [
-      "Whole loaf",
-      "Half loaf"
+      {
+        "label": "Whole loaf",
+        "price": 9
+      },
+      {
+        "label": "Half loaf",
+        "price": 5
+      }
     ],
     "specs": {
-      "Unit": "Whole loaf (half loaf also available, Ƶ5)",
+      "Unit": "Whole loaf or half loaf",
       "Contains": "Wheat/rye, seeds"
     },
     "reviewSnippets": [],
@@ -62340,9 +62388,18 @@
     "seed": 465019283,
     "image": "images/deli/ube-matcha-swiss-roll.webp",
     "sizes": [],
-    "variants": ["Slice", "Whole roll"],
+    "variants": [
+      {
+        "label": "Slice",
+        "price": 7.5
+      },
+      {
+        "label": "Whole roll",
+        "price": 38
+      }
+    ],
     "specs": {
-      "Unit": "Slice (whole roll also available, Ƶ38)",
+      "Unit": "Slice or whole roll",
       "Contains": "Egg, dairy, wheat"
     },
     "reviewSnippets": [],
