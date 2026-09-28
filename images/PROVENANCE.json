@@ -98,5 +98,110 @@
     "project": "Pottery visual reconciliation",
     "approvedFor": ["Pottery :: Rib Set"],
     "dateAdded": "2026-09-22"
+  },
+  "images/deli/chocolate-obsession.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Chocolate Obsession"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/prinsesstarta.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Prinsesstårta"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/verdens-beste.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Verdens beste (Kvæfjordkake)"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/cantonese-egg-tart.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Cantonese Egg Tart"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/lai-yau-bao.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Lai Yau Bao / Coconut Cream Bun"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/baked-char-siu-bao.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Baked Char Siu Bao"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/jian-dui-sesame-balls.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Jian Dui (Sesame Balls)"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/kimbap.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Kimbap"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/skolebrod.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Skolebrød"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/strawberry-daifuku.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Strawberry Daifuku"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/flower-fruit-sando.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Flower Fruit Sando"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/mooncake-assortment.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Mooncake Assortment"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/wienerbrod-spandauer.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Wienerbrød (Spandauer)"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/rugbrod.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Rugbrød"],
+    "dateAdded": "2026-09-28"
+  },
+  "images/deli/tamago-sando.webp": {
+    "source": "generated",
+    "method": "AI-generated",
+    "project": "Deli category launch",
+    "approvedFor": ["Deli :: Tamago Sando"],
+    "dateAdded": "2026-09-28"
   }
 }

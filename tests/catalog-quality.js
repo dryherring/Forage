@@ -345,6 +345,48 @@ record('Real book descriptions remain present and are not generic templates', ()
   assert(offenders.length === 0, `real book(s) with templated desc: ${offenders.map(p => p.id).join(', ')}`);
 });
 
+// --- Deli category launch: individually authored, not the flavor-prefix
+// template pattern -- one image per product (never shared), no leftover
+// identity from any superseded product name/construction, and no stale
+// "no sandwiches" language leaking into anything customer-facing.
+//
+// The category is currently 15 of its locked 16 products: Ube-Matcha Swiss
+// Roll is intentionally not yet in the catalog, pending a still-missing
+// price/unit fact -- this count is expected to become 16 once that's
+// resolved, not a bug to "fix" by inventing a price here.
+record('Deli category: 15 of 16 locked products present, individually authored, correctly imaged', () => {
+  const deli = catalog.filter(p => p.cat === 'Deli');
+  assert(deli.length === 15, `expected 15 active Deli products pending Ube-Matcha Swiss Roll's price (got ${deli.length})`);
+
+  const ids = deli.map(p => p.id);
+  assert(new Set(ids).size === ids.length, 'no duplicate Deli ids');
+
+  const byImage = new Map();
+  deli.forEach(p => {
+    assert(typeof p.image === 'string' && p.image, `${p.id} has an assigned image`);
+    assert(fs.existsSync(path.join(ROOT, p.image)), `${p.id}'s image file exists on disk: ${p.image}`);
+    byImage.set(p.image, (byImage.get(p.image) || 0) + 1);
+  });
+  const shared = [...byImage.entries()].filter(([, n]) => n > 1);
+  assert(shared.length === 0, `Deli images must be one-per-product, never shared: ${shared.map(([img]) => img).join(', ')}`);
+
+  deli.forEach(p => {
+    assert(typeof p.price === 'number' && p.price > 0, `${p.id} has a real price`);
+    assert(p.specs && typeof p.specs.Unit === 'string' && p.specs.Unit, `${p.id} has a Unit spec`);
+  });
+
+  const staleNames = /\bMilk Bun\b|\bGao Naik Bao\b|\bConcha\b|Canel[eé] de Bordeaux|\bPineapple Bun\b/i;
+  const staleOffenders = catalog.filter(p => staleNames.test(p.name) || staleNames.test(p.desc));
+  assert(staleOffenders.length === 0, `superseded Deli product identity still present: ${staleOffenders.map(p => `${p.id} (${p.name})`).join(', ')}`);
+
+  const steamedCharSiu = deli.find(p => p.id === 'baked-char-siu-bao');
+  assert(steamedCharSiu && !/steamed/i.test(steamedCharSiu.desc), 'Char Siu Bao describes the approved baked construction, not the superseded steamed one');
+
+  const mooncake = deli.find(p => p.id === 'mooncake-assortment');
+  assert(mooncake, 'Mooncake Assortment (not a single baked-only Mooncake) is present');
+  assert(/snow-skin/i.test(mooncake.desc), 'Mooncake Assortment describes both the baked and snow-skin styles');
+});
+
 console.log('\n=== CATALOG QUALITY SUITE SUMMARY ===');
 const failed = results.filter(r => !r.pass);
 console.log(`${results.length - failed.length}/${results.length} passed`);
