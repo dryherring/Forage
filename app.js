@@ -1,5 +1,5 @@
 let PRODUCTS=[];
-const CATS=["All", "Moto", "Pottery", "Craft", "Korea", "Music", "Style", "Home", "Kitchen", "Travel", "Adventure", "Cats", 'Books','Stationery & Paper','Gifts & Curiosities'];
+const CATS=["All", "Moto", "Pottery", "Craft", "Korea", "Music", "Style", "Home", "Kitchen", "Deli", "Travel", "Adventure", "Cats", 'Books','Stationery & Paper','Gifts & Curiosities'];
 async function loadCatalog(){const r=await fetch('catalog.json',{cache:'no-store'});if(!r.ok)throw new Error('catalog.json could not be loaded');PRODUCTS=await r.json();}
 function forageStars(n){return'★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n))}
 function forageStock(p){if(p.stock<=3)return`Only ${p.stock} left today`;if(p.limited)return`Limited batch · ${p.stock} available`;if(p.stock<=8)return`${p.stock} available`;return'In stock'}
@@ -65,7 +65,7 @@ let page='shop',selected=null;
 let openGiftEdits=new Set();
 function save(){localStorage.setItem('forageV2State',JSON.stringify(state));renderHeader()}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function money(n){return 'Ƶ '+Number(n).toLocaleString()}
+function money(n){n=Number(n);const opts=Number.isInteger(n)?{}:{minimumFractionDigits:2,maximumFractionDigits:2};return 'Ƶ '+n.toLocaleString(undefined,opts)}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1700)}
 function deliveryDate(days=3){const d=new Date();d.setDate(d.getDate()+days);return d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})}
 function daySeed(){const d=new Date();return Number(`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`)}
@@ -81,7 +81,27 @@ function go(p){page=p;selected=null;render();window.scrollTo({top:0,behavior:'sm
 function productCard(p){const wished=state.wishlist.includes(p.id);return `<article class="card" data-action="open-product" data-id="${esc(p.id)}"><div class="art">${photo(p)}<div class="art-label">${esc(displayCat(p))}</div><button class="heart ${wished?'on':''}" data-action="toggle-wish" data-id="${esc(p.id)}">${wished?'♥':'♡'}</button></div><div class="cardbody"><div><span class="discovery-badge">${esc(p.marketBadge)}</span>${p.limited?'<span class="discovery-badge">Limited</span>':''}</div><h3>${esc(p.name)}</h3>${p.realBook?`<p class="sub" style="margin:2px 0 8px">${esc(p.author)} · ${esc(p.bookTopic)}</p>`:''}<div class="rating">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} reviews</div><p>${esc(p.desc)}</p><div class="stockline">${forageStock(p)}</div><div class="actions" style="margin-top:10px"><button class="secondary" data-action="open-product" data-id="${esc(p.id)}">Details →</button></div><div class="price">${money(p.price)} ${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div></div></article>`}
 function toggleWish(id){const i=state.wishlist.indexOf(id);if(i>=0){state.wishlist.splice(i,1);toast('Removed from wishlist')}else{state.wishlist.push(id);toast('Saved for later')}save();render()}
 function viewProduct(id){selected=PRODUCTS.find(p=>p.id===id);page='detail';render();window.scrollTo({top:0,behavior:'smooth'})}
-function selectedOption(p){if(p.sizes?.length)return document.getElementById('sizeSelect')?.value||p.sizes[0];if(p.variants?.length)return document.getElementById('variantSelect')?.value||p.variants[0];return null}
+function optionLabel(v){return (v&&typeof v==='object')?v.label:v}
+// Resolves the price for a selected variant/size label. Object-form entries
+// ({label, price}) override the base price; plain strings and anything
+// malformed or unmatched (stale persisted option, missing/non-numeric/zero
+// price) fall back to the product's own base price rather than throwing or
+// charging a bad amount.
+function optionPrice(p,option){
+  const findIn=arr=>Array.isArray(arr)?arr.find(v=>optionLabel(v)===option):null;
+  const match=findIn(p.sizes)||findIn(p.variants);
+  if(match&&typeof match==='object'&&Number.isFinite(Number(match.price))&&Number(match.price)>0)return Number(match.price);
+  return p.price;
+}
+function selectedOption(p){if(p.sizes?.length)return document.getElementById('sizeSelect')?.value||optionLabel(p.sizes[0]);if(p.variants?.length)return document.getElementById('variantSelect')?.value||optionLabel(p.variants[0]);return null}
+// <option> value is always the plain label (what's stored as line.option);
+// only the visible text gains a price suffix for priced (object-form) entries.
+function optionChoiceHtml(v){
+  const label=optionLabel(v);
+  const priced=v&&typeof v==='object'&&Number.isFinite(Number(v.price))&&Number(v.price)>0;
+  const text=priced?`${label} — ${money(Number(v.price))}`:label;
+  return `<option value="${esc(label)}">${esc(text)}</option>`;
+}
 function addCart(id){const p=PRODUCTS.find(x=>x.id===id),qty=Math.max(1,parseInt(document.getElementById('qtySelect')?.value||'1')),option=selectedOption(p),existing=state.cart.find(x=>x.id===id&&x.option===option);if(existing)existing.qty+=qty;else state.cart.push({id,qty,option});save();toast(`Added ${qty} to basket`);render()}
 function removeCart(i){state.cart.splice(i,1);save();render()}
 function filteredProducts(){
@@ -281,14 +301,14 @@ function renderGifts(){
    return `<div class="cartline"${x.status==='Given'?' style="opacity:.6"':''}><div class="miniart">🎁</div><div><strong>${esc(x.name)}</strong><div class="eyebrow">${esc(giftSummary(x))}</div>${!editing&&x.note?`<p>${esc(x.note)}</p>`:''}<button class="size-link" data-action="gift-edit-toggle" data-id="${esc(x.id)}">${editing?'Hide details':'Edit details →'}</button>${editing?`<div class="form-grid" style="margin-top:8px"><label class="full">Recipient<input value="${esc(x.person)}" placeholder="Who's it for?" data-action="gift-recipient" data-index="${i}"></label><label class="full">Occasion<input value="${esc(x.occasion)}" placeholder="Birthday, just because…" data-action="gift-occasion" data-index="${i}"></label><label class="full">Notes<textarea placeholder="Why you saved this" data-action="gift-note" data-index="${i}">${esc(x.note)}</textarea></label></div>`:''}</div><div><select data-action="gift-status" data-index="${i}">${GIFT_STATUSES.map(s=>`<option ${x.status===s?'selected':''}>${s}</option>`).join('')}</select><button class="danger" data-action="remove-gift" data-index="${i}">Remove</button></div></div>`;
  }).join(''):`<div class="empty">No gift ideas yet.</div>`}`;
 }
-function renderDetail(){const p=selected;if(!p)return'';const optionControl=p.sizes?.length?`<div><label>Size<select id="sizeSelect">${p.sizes.map(s=>`<option>${esc(s)}</option>`).join('')}</select></label><button class="size-link" data-action="show-size-guide">Size guide →</button></div>`:p.variants?.length?`<div><label>Variant<select id="variantSelect">${p.variants.map(s=>`<option>${esc(s)}</option>`).join('')}</select></label></div>`:'';const maxQty=Math.max(1,Math.min(5,p.stock));return `<button class="secondary" data-action="go" data-page="shop" style="margin-bottom:14px">← Back to hunting</button><div class="detail">${photo(p,true)}<div><div class="eyebrow">${esc(displayCat(p))}${p.rarity?` · ${esc(p.rarity)}`:''}</div><div><span class="discovery-badge">${esc(p.marketBadge)}</span>${p.limited?'<span class="discovery-badge">Limited batch</span>':''}</div><h1>${esc(p.name)}</h1>${p.realBook?`<p class="sub"><strong>${esc(p.author)}</strong> · ${esc(p.bookTopic)}</p>`:''}<div style="font-size:26px;font-weight:900">${money(p.price)}${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div><div class="rating" style="margin-top:6px">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} ratings</div><div class="stockline">${forageStock(p)}</div><p>${esc(p.desc)}</p>${fieldNotes(p)}<div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div class="spec"><div class="eyebrow">${esc(k)}</div><strong>${esc(v)}</strong></div>`).join('')}</div><div class="selectors">${optionControl}<div><label>Quantity<select id="qtySelect">${Array.from({length:maxQty},(_,i)=>i+1).map(q=>`<option value="${q}">${q}</option>`).join('')}</select></label></div></div><div class="actions">${p.realBook?`<button class="secondary" data-action="save-reading" data-id="${esc(p.id)}">📚 Reading List</button><button class="secondary" data-action="amazon-book">↗ View on Amazon</button>`:''}<button class="secondary" data-action="open-gift-modal" data-id="${esc(p.id)}">🎁 Gift idea</button><button class="secondary" data-action="toggle-wish" data-id="${esc(p.id)}">${state.wishlist.includes(p.id)?'♥ Saved':'♡ Save'}</button><button class="primary" data-action="add-cart" data-id="${esc(p.id)}">Add to basket</button></div><section style="margin-top:24px"><div class="section-head" style="margin-bottom:4px"><div><h2 style="font-size:20px">What foragers are saying</h2><p>Fictional reviews · comparison is part of the hunt.</p></div></div>${p.deepReviews.map(r=>`<div class="review-card"><div class="review-head"><strong>${esc(r.title)}</strong><span>${forageStars(r.stars)}</span></div><div><strong>${esc(r.name)}</strong> <span class="verified">✓ Verified fictional purchase</span></div><p>${esc(r.text)}</p></div>`).join('')}</section></div></div>`}
+function renderDetail(){const p=selected;if(!p)return'';const optionControl=p.sizes?.length?`<div><label>Size<select id="sizeSelect" data-action="option-change">${p.sizes.map(optionChoiceHtml).join('')}</select></label><button class="size-link" data-action="show-size-guide">Size guide →</button></div>`:p.variants?.length?`<div><label>Variant<select id="variantSelect" data-action="option-change">${p.variants.map(optionChoiceHtml).join('')}</select></label></div>`:'';const maxQty=Math.max(1,Math.min(5,p.stock));return `<button class="secondary" data-action="go" data-page="shop" style="margin-bottom:14px">← Back to hunting</button><div class="detail">${photo(p,true)}<div><div class="eyebrow">${esc(displayCat(p))}${p.rarity?` · ${esc(p.rarity)}`:''}</div><div><span class="discovery-badge">${esc(p.marketBadge)}</span>${p.limited?'<span class="discovery-badge">Limited batch</span>':''}</div><h1>${esc(p.name)}</h1>${p.realBook?`<p class="sub"><strong>${esc(p.author)}</strong> · ${esc(p.bookTopic)}</p>`:''}<div id="detailPrice" style="font-size:26px;font-weight:900">${money(optionPrice(p,selectedOption(p)))}${p.oldPrice?`<span class="old">${money(p.oldPrice)}</span>`:''}</div><div class="rating" style="margin-top:6px">${forageStars(p.rating)} ${p.rating.toFixed(1)} · ${p.reviews.toLocaleString()} ratings</div><div class="stockline">${forageStock(p)}</div><p>${esc(p.desc)}</p>${fieldNotes(p)}<div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div class="spec"><div class="eyebrow">${esc(k)}</div><strong>${esc(v)}</strong></div>`).join('')}</div><div class="selectors">${optionControl}<div><label>Quantity<select id="qtySelect">${Array.from({length:maxQty},(_,i)=>i+1).map(q=>`<option value="${q}">${q}</option>`).join('')}</select></label></div></div><div class="actions">${p.realBook?`<button class="secondary" data-action="save-reading" data-id="${esc(p.id)}">📚 Reading List</button><button class="secondary" data-action="amazon-book">↗ View on Amazon</button>`:''}<button class="secondary" data-action="open-gift-modal" data-id="${esc(p.id)}">🎁 Gift idea</button><button class="secondary" data-action="toggle-wish" data-id="${esc(p.id)}">${state.wishlist.includes(p.id)?'♥ Saved':'♡ Save'}</button><button class="primary" data-action="add-cart" data-id="${esc(p.id)}">Add to basket</button></div><section style="margin-top:24px"><div class="section-head" style="margin-bottom:4px"><div><h2 style="font-size:20px">What foragers are saying</h2><p>Fictional reviews · comparison is part of the hunt.</p></div></div>${p.deepReviews.map(r=>`<div class="review-card"><div class="review-head"><strong>${esc(r.title)}</strong><span>${forageStars(r.stars)}</span></div><div><strong>${esc(r.name)}</strong> <span class="verified">✓ Verified fictional purchase</span></div><p>${esc(r.text)}</p></div>`).join('')}</section></div></div>`}
 function renderWishlist(){const items=state.wishlist.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);return `<div class="section-head"><div><h2>Wishlist</h2><p>The promising ones you were not ready to commit to.</p></div></div>${items.length?`<div class="grid">${items.map(productCard).join('')}</div>`:`<div class="empty">Nothing saved yet.</div>`}`}
 function addressText(a){return [a.recipient,a.line1,a.line2,a.city,a.region,a.postal].filter(Boolean).join(', ')}
 function renderCart(){
-  const items=state.cart.map((line,i)=>({line,p:PRODUCTS.find(p=>p.id===line.id),i})).filter(x=>x.p),total=items.reduce((s,x)=>s+x.p.price*x.line.qty,0);
+  const items=state.cart.map((line,i)=>({line,p:PRODUCTS.find(p=>p.id===line.id),i})).filter(x=>x.p),total=items.reduce((s,x)=>s+optionPrice(x.p,x.line.option)*x.line.qty,0);
   const methods=state.profile.paymentMethods||[];
   return `<div class="section-head"><div><h2>Your basket</h2><p>The point where interesting becomes mine.</p></div></div>
-  ${items.length?items.map(({p,line,i})=>`<div class="cartline"><div class="miniart">${p.emoji}</div><div><strong>${esc(p.name)}</strong><div class="eyebrow">${esc(p.cat)}${line.option?` · ${esc(line.option)}`:''} · Qty ${line.qty}</div></div><div style="text-align:right"><strong>${money(p.price*line.qty)}</strong><br><button class="danger" data-action="remove-cart" data-index="${i}">Remove</button></div></div>`).join(''):`<div class="empty">Your basket is empty.</div>`}
+  ${items.length?items.map(({p,line,i})=>`<div class="cartline"><div class="miniart">${p.emoji}</div><div><strong>${esc(p.name)}</strong><div class="eyebrow">${esc(p.cat)}${line.option?` · ${esc(line.option)}`:''} · Qty ${line.qty}</div></div><div style="text-align:right"><strong>${money(optionPrice(p,line.option)*line.qty)}</strong><br><button class="danger" data-action="remove-cart" data-index="${i}">Remove</button></div></div>`).join(''):`<div class="empty">Your basket is empty.</div>`}
   ${items.length?`<div class="summary">
     <div class="summary-row"><span>Merchandise</span><strong>${money(total)}</strong></div>
     <div class="summary-row"><span>Shipping</span><strong>Ƶ 0</strong></div>
@@ -330,7 +350,7 @@ function toggleGift(){
 }
 function checkout(){
   const validLines=state.cart.filter(line=>PRODUCTS.some(p=>p.id===line.id));
-  const total=validLines.reduce((s,line)=>s+PRODUCTS.find(p=>p.id===line.id).price*line.qty,0);
+  const total=validLines.reduce((s,line)=>{const p=PRODUCTS.find(p=>p.id===line.id);return s+optionPrice(p,line.option)*line.qty;},0);
   if(!validLines.length)return;
   if(total>state.balance){toast('Not enough forage funds');return}
   const ship=document.getElementById('ship').value,days=ship==='express'?1:ship==='slow'?5:3;
@@ -467,6 +487,12 @@ const CLICK_ACTIONS={
 };
 const CHANGE_ACTIONS={
   'toggle-gift':()=>toggleGift(),
+  'option-change':()=>{
+    if(!selected)return;
+    const el=document.getElementById('detailPrice');
+    if(!el)return;
+    el.innerHTML=`${money(optionPrice(selected,selectedOption(selected)))}${selected.oldPrice?`<span class="old">${money(selected.oldPrice)}</span>`:''}`;
+  },
   'reading-status':(el)=>{
     state.readingList[Number(el.dataset.index)].status=el.value;save();
     const card=el.closest('.cartline');if(card)card.style.opacity=el.value==='Read'?'.6':'';

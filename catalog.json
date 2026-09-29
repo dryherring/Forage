@@ -61908,5 +61908,502 @@
     "desc": "A practical ceramics reference focused on glaze chemistry, testing, recipes, and firing in the mid-range.",
     "reviewSnippets": [],
     "deepReviews": []
+  },
+  {
+    "id": "chocolate-obsession",
+    "cat": "Deli",
+    "name": "Chocolate Obsession",
+    "price": 9.5,
+    "emoji": "🍰",
+    "desc": "Six layers of dark chocolate cake, alternating dark chocolate ganache and white chocolate filling, wrapped in milk chocolate buttercream and finished with a black cocoa drip. Cut it and count the layers.",
+    "marketBadge": "Case favorite",
+    "rating": 4.7,
+    "reviews": 612,
+    "stock": 14,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 384920156,
+    "image": "images/deli/chocolate-obsession.webp",
+    "sizes": [],
+    "variants": [
+      {
+        "label": "Slice",
+        "price": 9.5
+      },
+      {
+        "label": "Whole cake",
+        "price": 62
+      }
+    ],
+    "specs": {
+      "Unit": "Slice or whole cake",
+      "Contains": "Egg, dairy, wheat"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "prinsesstarta",
+    "cat": "Deli",
+    "name": "Prinsesstårta",
+    "price": 8,
+    "emoji": "🎂",
+    "desc": "A domed Swedish celebration cake — sponge, pastry cream, and raspberry jam under a shell of pale green marzipan, topped with fresh raspberries.",
+    "marketBadge": "New arrival",
+    "rating": 4.6,
+    "reviews": 284,
+    "stock": 10,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 519028374,
+    "image": "images/deli/prinsesstarta.webp",
+    "sizes": [],
+    "variants": [
+      {
+        "label": "Slice",
+        "price": 8
+      },
+      {
+        "label": "Whole cake",
+        "price": 40
+      }
+    ],
+    "specs": {
+      "Unit": "Slice or whole cake",
+      "Contains": "Egg, dairy, wheat, almond"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "verdens-beste",
+    "cat": "Deli",
+    "name": "Verdens beste (Kvæfjordkake)",
+    "price": 7.5,
+    "emoji": "🍮",
+    "desc": "Norwegian sheet cake built from two soft layers and a baked almond-meringue top, with vanilla custard and cream between them. The name means 'world's best' and isn't shy about it.",
+    "marketBadge": "Worth a look",
+    "rating": 4.5,
+    "reviews": 197,
+    "stock": 12,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 728301945,
+    "image": "images/deli/verdens-beste.webp",
+    "sizes": [],
+    "variants": [
+      {
+        "label": "Slice",
+        "price": 7.5
+      },
+      {
+        "label": "Whole cake",
+        "price": 36
+      }
+    ],
+    "specs": {
+      "Unit": "Slice or whole cake",
+      "Contains": "Egg, dairy, wheat, almond"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "cantonese-egg-tart",
+    "cat": "Deli",
+    "name": "Cantonese Egg Tart",
+    "price": 3,
+    "emoji": "🥧",
+    "desc": "A flaky, laminated shell around a smooth egg custard, baked just until set. No browning on top — that’s correct, not underdone.",
+    "marketBadge": "Field favorite",
+    "rating": 4.7,
+    "reviews": 940,
+    "stock": 28,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 162738495,
+    "image": "images/deli/cantonese-egg-tart.webp",
+    "sizes": [],
+    "variants": [
+      {
+        "label": "Individual",
+        "price": 3
+      },
+      {
+        "label": "Box of 6",
+        "price": 16
+      }
+    ],
+    "specs": {
+      "Unit": "Individual or box of 6",
+      "Contains": "Egg, dairy, wheat"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "lai-yau-bao",
+    "cat": "Deli",
+    "name": "Lai Yau Bao / Coconut Cream Bun",
+    "price": 5.5,
+    "emoji": "🍞",
+    "desc": "A soft golden Chinese bakery bun split and filled with fluffy whipped cream, fine shredded coconut across the top.",
+    "marketBadge": "New arrival",
+    "rating": 4.5,
+    "reviews": 133,
+    "stock": 18,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 903847261,
+    "image": "images/deli/lai-yau-bao.webp",
+    "sizes": [],
+    "variants": [],
+    "specs": {
+      "Unit": "Individual",
+      "Contains": "Egg, dairy, wheat, coconut"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "baked-char-siu-bao",
+    "cat": "Deli",
+    "name": "Baked Char Siu Bao",
+    "price": 9,
+    "emoji": "🥟",
+    "desc": "A glossy baked bun with sesame seeds on top, filled with diced char siu in its own sticky-sweet sauce.",
+    "marketBadge": "Field favorite",
+    "rating": 4.6,
+    "reviews": 521,
+    "stock": 20,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 271849305,
+    "image": "images/deli/baked-char-siu-bao.webp",
+    "sizes": [],
+    "variants": [],
+    "specs": {
+      "Unit": "Pair (2 buns)",
+      "Contains": "Wheat, soy, sesame, pork"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "jian-dui-sesame-balls",
+    "cat": "Deli",
+    "name": "Jian Dui (Sesame Balls)",
+    "price": 2.5,
+    "emoji": "🍡",
+    "desc": "Fried glutinous rice balls rolled in sesame seeds, with a red bean paste center.",
+    "marketBadge": "Small-batch",
+    "rating": 4.4,
+    "reviews": 208,
+    "stock": 24,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 583920174,
+    "image": "images/deli/jian-dui-sesame-balls.webp",
+    "sizes": [],
+    "variants": [
+      {
+        "label": "Individual",
+        "price": 2.5
+      },
+      {
+        "label": "Box of 6",
+        "price": 13
+      }
+    ],
+    "specs": {
+      "Unit": "Individual or box of 6",
+      "Contains": "Sesame, soy"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "kimbap",
+    "cat": "Deli",
+    "name": "Kimbap",
+    "price": 11,
+    "emoji": "🍙",
+    "desc": "A seaweed-wrapped rice roll seasoned with sesame oil, not vinegar, filled with bulgogi, pickled radish, carrot, spinach, and egg, sliced into rounds.",
+    "marketBadge": "New arrival",
+    "rating": 4.6,
+    "reviews": 356,
+    "stock": 16,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 840273619,
+    "image": "images/deli/kimbap.webp",
+    "sizes": [],
+    "variants": [],
+    "specs": {
+      "Unit": "Whole roll, sliced",
+      "Contains": "Egg, sesame, soy, beef"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "skolebrod",
+    "cat": "Deli",
+    "name": "Skolebrød",
+    "price": 5.5,
+    "emoji": "🥯",
+    "desc": "A Norwegian custard bun with a coconut-dipped rim around an exposed vanilla custard center.",
+    "marketBadge": "Worth a look",
+    "rating": 4.5,
+    "reviews": 149,
+    "stock": 15,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 619283740,
+    "image": "images/deli/skolebrod.webp",
+    "sizes": [],
+    "variants": [],
+    "specs": {
+      "Unit": "Individual",
+      "Contains": "Egg, dairy, wheat, coconut"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "strawberry-daifuku",
+    "cat": "Deli",
+    "name": "Strawberry Daifuku",
+    "price": 3.5,
+    "emoji": "🍓",
+    "desc": "A whole strawberry wrapped in red bean paste, then in pounded mochi. Cut it in half before anyone asks what’s inside.",
+    "marketBadge": "Field favorite",
+    "rating": 4.7,
+    "reviews": 467,
+    "stock": 22,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 738291056,
+    "image": "images/deli/strawberry-daifuku.webp",
+    "sizes": [],
+    "variants": [
+      {
+        "label": "Individual",
+        "price": 3.5
+      },
+      {
+        "label": "Box of 6",
+        "price": 18
+      }
+    ],
+    "specs": {
+      "Unit": "Individual or box of 6",
+      "Contains": "Soy"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "flower-fruit-sando",
+    "cat": "Deli",
+    "name": "Flower Fruit Sando",
+    "price": 7.5,
+    "emoji": "🥪",
+    "desc": "Crustless milk bread and whipped cream, cut to reveal a clementine-and-grape arrangement shaped like a flower. Forage’s own design, not a copy of any one bakery’s.",
+    "marketBadge": "New arrival",
+    "rating": 4.5,
+    "reviews": 92,
+    "stock": 12,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 274619038,
+    "image": "images/deli/flower-fruit-sando.webp",
+    "sizes": [],
+    "variants": [],
+    "specs": {
+      "Unit": "Whole sando, cut into 2 triangles",
+      "Contains": "Dairy, wheat"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "mooncake-assortment",
+    "cat": "Deli",
+    "name": "Mooncake Assortment",
+    "price": 22,
+    "emoji": "🥮",
+    "desc": "A box of two — one baked mooncake with lotus seed paste and a salted egg yolk, one snow-skin mooncake with black sesame filling.",
+    "marketBadge": "Seasonal",
+    "rating": 4.6,
+    "reviews": 178,
+    "stock": 9,
+    "limited": true,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 918273645,
+    "image": "images/deli/mooncake-assortment.webp",
+    "sizes": [],
+    "variants": [],
+    "specs": {
+      "Unit": "Box of 2 (one baked, one snow-skin)",
+      "Contains": "Egg, gluten, sesame"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "wienerbrod-spandauer",
+    "cat": "Deli",
+    "name": "Wienerbrød (Spandauer)",
+    "price": 4.5,
+    "emoji": "🥐",
+    "desc": "A laminated Danish pastry with a remonce and vanilla custard center, sliced almonds, and a thin glaze. One real wienerbrød shape among several — this is the spandauer.",
+    "marketBadge": "Worth a look",
+    "rating": 4.5,
+    "reviews": 164,
+    "stock": 17,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 465728301,
+    "image": "images/deli/wienerbrod-spandauer.webp",
+    "sizes": [],
+    "variants": [
+      {
+        "label": "Individual",
+        "price": 4.5
+      },
+      {
+        "label": "Box of 6",
+        "price": 24
+      }
+    ],
+    "specs": {
+      "Unit": "Individual or box of 6",
+      "Contains": "Egg, dairy, wheat, almond"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "rugbrod",
+    "cat": "Deli",
+    "name": "Rugbrød",
+    "price": 9,
+    "emoji": "🍞",
+    "desc": "A dense, dark, heavily seeded Scandinavian rye loaf. Real everyday bread, not an artisan approximation.",
+    "marketBadge": "Small-batch",
+    "rating": 4.4,
+    "reviews": 121,
+    "stock": 13,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 837465192,
+    "image": "images/deli/rugbrod.webp",
+    "sizes": [],
+    "variants": [
+      {
+        "label": "Whole loaf",
+        "price": 9
+      },
+      {
+        "label": "Half loaf",
+        "price": 5
+      }
+    ],
+    "specs": {
+      "Unit": "Whole loaf or half loaf",
+      "Contains": "Wheat/rye, seeds"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "tamago-sando",
+    "cat": "Deli",
+    "name": "Tamago Sando",
+    "price": 7,
+    "emoji": "🍳",
+    "desc": "Crustless milk bread and a thick, soft egg filling, cut into two clean rectangles. The whole appeal is precision — pillowy bread, generous filling, nothing else competing for attention.",
+    "marketBadge": "New arrival",
+    "rating": 4.6,
+    "reviews": 203,
+    "stock": 16,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 192837465,
+    "image": "images/deli/tamago-sando.webp",
+    "sizes": [],
+    "variants": [],
+    "specs": {
+      "Unit": "Whole sando, cut into 2 rectangles",
+      "Contains": "Egg, dairy, wheat"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
+  },
+  {
+    "id": "ube-matcha-swiss-roll",
+    "cat": "Deli",
+    "name": "Ube–Matcha Swiss Roll",
+    "price": 7.5,
+    "emoji": "🍥",
+    "desc": "A rolled sponge cake with ube-purple sponge on the outside and matcha-green cream spiraled inside. A modern fusion — Filipino ube, Japanese matcha — not a traditional dish from either.",
+    "marketBadge": "New arrival",
+    "rating": 4.6,
+    "reviews": 141,
+    "stock": 13,
+    "limited": false,
+    "markdown": false,
+    "oldPrice": null,
+    "seed": 465019283,
+    "image": "images/deli/ube-matcha-swiss-roll.webp",
+    "sizes": [],
+    "variants": [
+      {
+        "label": "Slice",
+        "price": 7.5
+      },
+      {
+        "label": "Whole roll",
+        "price": 38
+      }
+    ],
+    "specs": {
+      "Unit": "Slice or whole roll",
+      "Contains": "Egg, dairy, wheat"
+    },
+    "reviewSnippets": [],
+    "deepReviews": [],
+    "rarity": ""
   }
 ]
