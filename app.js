@@ -137,7 +137,7 @@ function setFilter(c){
   renderProductResults();
 }
 function renderShop(){
-  return `<section class="hero"><div><div class="eyebrow" style="color:#e7efe9">Morning expedition</div><h1>Find something worth hunting for.</h1><p>One thousand fictional objects. Search, compare, inspect reviews, choose variants, and buy only what wins.</p></div><div class="hero-card"><strong>Today’s forage fund</strong><div style="font-size:38px;font-weight:900;margin:8px 0">${money(state.balance)}</div><div style="opacity:.85">Today’s Finds rotate every morning.</div></div></section><div id="shopArea"></div>`;
+  return `<section class="hero"><div><div class="eyebrow" style="color:#e7efe9">Morning expedition</div><h1>Explore.</h1><p>One thousand things, reshuffled every morning. Look around. Stay awhile. Take home what catches you.</p></div><div class="hero-card"><strong>Today’s forage fund</strong><div style="font-size:38px;font-weight:900;margin:8px 0">${money(state.balance)}</div><div style="opacity:.85">Today’s Finds rotate every morning.</div></div></section><div id="shopArea"></div>`;
 }
 function renderShopInto(){
   const root=document.getElementById('shopArea'); if(!root)return;
