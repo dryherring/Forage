@@ -1,0 +1,24 @@
+{
+  "name": "forage",
+  "version": "1.0.0",
+  "description": "Forage is a fictional shopping playground: hunt, inspect, wishlist, add to basket, purchase with imaginary currency, and anticipate fictional deliveries.",
+  "main": "sw.js",
+  "private": true,
+  "scripts": {
+    "test": "node tests/run.js && node tests/phase2-hardening.js && node tests/gift-cabinet.js && node tests/reading-list.js && node tests/catalog-quality.js && node tests/variant-pricing.js && node tests/forage-fund.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dryherring/Forage.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dryherring/Forage/issues"
+  },
+  "homepage": "https://github.com/dryherring/Forage#readme"
+}

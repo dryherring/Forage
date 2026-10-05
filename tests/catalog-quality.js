@@ -1,0 +1,461 @@
+// Data-quality regression coverage for issue #15 (catalog copy coherence).
+//
+// These checks are deliberately structural, not a snapshot of any specific
+// sentence: future copy editing should stay possible without breaking this
+// suite. What they guard against is the actual failure mode issue #15 fixed —
+// a small pool of generic, category-level paragraphs getting reused across
+// genuinely different product types (or even across categories), and a small
+// set of formulaic ecommerce phrasings creeping back in.
+//
+// Run with: node tests/catalog-quality.js  (or via `npm test`)
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = path.join(__dirname, '..');
+const catalog = JSON.parse(fs.readFileSync(path.join(ROOT, 'catalog.json'), 'utf8'));
+const catalogMd = fs.readFileSync(path.join(ROOT, 'CATALOG.md'), 'utf8');
+
+const results = [];
+function record(name, fn) {
+  try { fn(); results.push({ name, pass: true }); console.log('  PASS:', name); }
+  catch (err) { results.push({ name, pass: false, error: err.message }); console.log('  FAIL:', name, '-', err.message); }
+}
+function assert(cond, msg) { if (!cond) throw new Error(msg); }
+
+// Same name -> product-type derivation used to assign issue #15's descriptions:
+// strip a trailing " {Color} {digit}" variant suffix (e.g. "... Fog 2").
+function baseName(name) { return name.replace(/\s+[A-Z][a-z]+\s\d+$/, '').trim(); }
+
+const TEMPLATE_CATEGORIES = ['Pottery', 'Craft', 'Korea', 'Music', 'Style', 'Home', 'Kitchen', 'Travel', 'Adventure', 'Cats', 'Stationery & Paper'];
+
+// The 8 real product types per templated category (see issue #15's
+// description rewrite and the image-cleanup pass that removed mismatched
+// placeholder photos). Used below to catch an image being reused across
+// products that aren't actually the same real-world object.
+const PRODUCT_TYPES = {
+  Pottery: ['Brush Set', 'Carving Set', 'Clay Texture Rolling Pin Set', 'Glaze Pair', 'Rib Set', 'Tea Ware Bat', 'Trimming Tool', 'Yunomi Mold'],
+  Craft: ['Button Pack', 'Detail Scissors', 'Fineliner Set', 'Iridescent Thread Set', 'Rhinestone Mix', 'Stencil Kit', 'Washi Tape Set', 'Zipper Pull Kit'],
+  Korea: ['Cafe Pencil Case', 'Gel Pen Pack', 'Hangul Label Set', 'Index Tab Kit', 'Morning Field Notes', 'Notebook Trio', 'Transit Sticker Pack', 'Travel Journal'],
+  Music: ['Battery Caddy', 'Concert Hat Kit', 'Concert Utility Pouch', 'Earplug Case', 'Freebie Organizer', 'Light Stick Sling', 'Photo Card Folio', 'Ticket Wallet'],
+  Style: ['Canvas Sneaker', 'Leather Crossbody', 'Oversized Shirt', 'Petite Watch', 'Relaxed Jean', 'Slim Belt', 'Soft Cargo Pant', 'Travel Cardigan'],
+  Home: ['Cat Tunnel', 'Catchall Tray', 'Desk Shelf', 'Floor Basket', 'Photo Frame', 'Reading Lamp', 'Window Perch', 'Wool Throw'],
+  Kitchen: ['Matcha Bowl', 'Mini Steamer', 'Noodle Bowl', 'Ramen Pot', 'Tea Tray', 'Condiment Jar Set', 'Egg Marinating Jar', 'Rice Bowl Pair'],
+  Travel: ['Cable Roll', 'Daypack', 'Packing Cube', 'Packing Folder', 'Passport Wallet', 'Seatback Organizer', 'Tech Pouch', 'Toiletry Case'],
+  Adventure: ['Backroad Route Pack', 'Micro Adventure Deck', 'Mystery Day Trip', 'Overlook Field Guide', 'Scenic Detour Map', 'Small Town Quest', 'Trail Lunch Box', 'Waterfall Hunt'],
+  Cats: ['Ceramic Water Bowl', 'Feather Wand', 'Scratch Lounge', 'Slow Feeder', 'Treat Puzzle', 'Tunnel Cube', 'Window Hammock', 'Wool Mouse Set'],
+  'Stationery & Paper': ['Annotation Kit', 'Book Weight', 'Desk Notebook', 'Field Journal', 'Index Card Box', 'Page Flag Set', 'Reading Log', 'Research Card Set'],
+};
+function productType(p) {
+  const types = PRODUCT_TYPES[p.cat];
+  if (!types) return null; // Moto, Gifts & Curiosities, real books, bespoke items: no shared type
+  const base = baseName(p.name);
+  return types.find(t => base.endsWith(t)) || null;
+}
+
+// --- No empty or malformed descriptions -------------------------------------
+record('Every product has a non-empty, substantive description', () => {
+  const bad = catalog.filter(p => !p.desc || typeof p.desc !== 'string' || p.desc.trim().length < 10);
+  assert(bad.length === 0, `${bad.length} product(s) with empty/too-short desc: ${bad.slice(0, 5).map(p => p.id).join(', ')}`);
+});
+
+record('No description contains leftover template/placeholder artifacts', () => {
+  const badArtifacts = /\{\{|\}\}|TODO|Lorem ipsum|\bXXX\b|undefined|\[object Object\]/;
+  const bad = catalog.filter(p => badArtifacts.test(p.desc));
+  assert(bad.length === 0, `${bad.length} product(s) with placeholder artifacts: ${bad.slice(0, 5).map(p => p.id).join(', ')}`);
+});
+
+// --- No formulaic ecommerce phrasing (the pattern #15 was written against) --
+record('No description uses formulaic ecommerce phrasing', () => {
+  const badPhrases = [
+    /Designed for [^.]+ who value/i,
+    /\bPerfect for\b/i,
+    /\bIdeal for\b/i,
+    /Whether you.?re/i,
+    /Elevate your/i,
+    /This version pairs [^.]+ with [^.]+ finish/i,
+    /There are \d+ variants to compare before choosing/i,
+    /This is a small batch, so it may disappear from the market/i,
+    /It comes in \d+ size options?/i,
+  ];
+  const offenders = [];
+  catalog.forEach(p => { badPhrases.forEach(re => { if (re.test(p.desc)) offenders.push(`${p.id} matched ${re}`); }); });
+  assert(offenders.length === 0, `formulaic phrasing found: ${offenders.slice(0, 5).join(' | ')}`);
+});
+
+// --- No description text shared across different categories -----------------
+// A single paragraph describing products in two different categories is the
+// clearest sign of a generic, not-actually-specific-to-this-product blurb.
+record('No non-book description is reused across more than one category', () => {
+  const nonBooks = catalog.filter(p => !p.realBook);
+  const byDesc = new Map();
+  nonBooks.forEach(p => { if (!byDesc.has(p.desc)) byDesc.set(p.desc, new Set()); byDesc.get(p.desc).add(p.cat); });
+  const crossCategory = [...byDesc.entries()].filter(([, cats]) => cats.size > 1);
+  assert(crossCategory.length === 0,
+    `${crossCategory.length} description(s) shared across categories: ${crossCategory.slice(0, 3).map(([d, cats]) => `"${d.slice(0, 40)}..." in [${[...cats].join(', ')}]`).join(' | ')}`);
+});
+
+// --- Same product type -> same description, consistently -------------------
+// Within the 11 categories built from (flavor-prefix x product-type)
+// combinations, every product sharing the same real-world type (e.g. every
+// "Ramen Pot" regardless of its flavor prefix or color) should carry the same
+// description. Color/variant siblings and flavor-prefix siblings of one type
+// are allowed to share text (that's the same product); this catches the type
+// getting split across two inconsistent descriptions, or a type accidentally
+// drifting from its siblings during a future edit.
+record('Products of the same real-world type share one consistent description', () => {
+  const inconsistent = [];
+  TEMPLATE_CATEGORIES.forEach(catName => {
+    const items = catalog.filter(p => p.cat === catName && !p.realBook);
+    const byBase = new Map();
+    items.forEach(p => {
+      // Group by base name with the flavor-prefix left in; we only need to
+      // detect *within-type* drift, so group by the description-bearing
+      // suffix using the longest common suffix among items is overkill here —
+      // instead, rely on: any two items whose base names end with the same
+      // last 2+ words should match. We approximate "type" as the base name
+      // with the first word stripped, which holds for every prefix pattern
+      // used in this catalog (single-word or multi-word prefixes both leave
+      // the type as a stable multi-word tail).
+      const base = baseName(p.name);
+      const words = base.split(' ');
+      // try suffixes of length 2..4 words as candidate type keys, and bucket
+      // by the LONGEST suffix that at least one other item also has.
+      byBase.set(p.id, { p, words });
+    });
+    const all = [...byBase.values()];
+    for (let i = 0; i < all.length; i++) {
+      for (let j = i + 1; j < all.length; j++) {
+        const a = all[i], b = all[j];
+        for (let len = 2; len <= Math.min(a.words.length, b.words.length, 4); len++) {
+          const aSuffix = a.words.slice(-len).join(' ');
+          const bSuffix = b.words.slice(-len).join(' ');
+          if (aSuffix === bSuffix && a.p.desc !== b.p.desc) {
+            inconsistent.push(`${catName}: "${a.p.name}" (${a.p.id}) vs "${b.p.name}" (${b.p.id}) share type suffix "${aSuffix}" but differ in description`);
+          }
+        }
+      }
+    }
+  });
+  assert(inconsistent.length === 0, `inconsistent same-type descriptions: ${inconsistent.slice(0, 5).join(' | ')}`);
+});
+
+// --- Kitchen visual pilot: image-to-type mapping ----------------------------
+// Every Kitchen SKU should carry its real-world type's one approved image
+// (siblings across flavor-prefix/color share it, per the approved image
+// strategy) -- never null, never a different type's file, and the file must
+// actually exist on disk.
+const KITCHEN_IMAGE_BY_TYPE = {
+  'Ramen Pot': 'images/kitchen/ramen-pot.webp',
+  'Egg Marinating Jar': 'images/kitchen/egg-marinating-jar.webp',
+  'Rice Bowl Pair': 'images/kitchen/rice-bowl-pair.webp',
+  'Noodle Bowl': 'images/kitchen/noodle-bowl.webp',
+  'Matcha Bowl': 'images/kitchen/matcha-bowl.webp',
+  'Mini Steamer': 'images/kitchen/mini-steamer.webp',
+  'Tea Tray': 'images/kitchen/tea-tray.webp',
+  'Condiment Jar Set': 'images/kitchen/condiment-jar-set.webp',
+};
+function kitchenType(p) {
+  const base = baseName(p.name);
+  return Object.keys(KITCHEN_IMAGE_BY_TYPE).find(t => base.endsWith(t)) || null;
+}
+
+record('Every Kitchen SKU has its type\'s approved image, and the file exists', () => {
+  const kitchen = catalog.filter(p => p.cat === 'Kitchen');
+  assert(kitchen.length > 0, 'catalog has Kitchen products');
+  const mismatched = [];
+  kitchen.forEach(p => {
+    const type = kitchenType(p);
+    if (!type) { mismatched.push(`${p.id} (${p.name}): unrecognized Kitchen type`); return; }
+    const expected = KITCHEN_IMAGE_BY_TYPE[type];
+    if (p.image !== expected) mismatched.push(`${p.id} (${p.name}): expected ${expected}, got ${p.image}`);
+  });
+  assert(mismatched.length === 0, `${mismatched.length} mismatched Kitchen image assignment(s): ${mismatched.slice(0, 5).join(' | ')}`);
+
+  const missingFiles = Object.values(KITCHEN_IMAGE_BY_TYPE).filter(rel => !fs.existsSync(path.join(ROOT, rel)));
+  assert(missingFiles.length === 0, `missing Kitchen image file(s) on disk: ${missingFiles.join(', ')}`);
+});
+
+// --- Kitchen visual pilot: redesigned material/description coherence -------
+// The pilot rejected specific materials for three types (a Ramen Pot that's
+// visually ceramic can't be "Enameled cast iron"; a redesigned all-ceramic
+// Mini Steamer can't be "Stainless steel" or "Bamboo"; a redesigned Tea
+// Tray/Condiment Jar Set with a stoneware component can't be pure wood or
+// pure glass). This catches a future edit reintroducing a rejected value, or
+// applying the Tea Tray/Condiment Jar Set description to the wrong product.
+record('Kitchen redesigned types no longer carry rejected materials or stale descriptions', () => {
+  const offenders = [];
+  const REJECTED = {
+    'Ramen Pot': ['Enameled cast iron'],
+    'Mini Steamer': ['Stainless steel', 'Bamboo'],
+  };
+  catalog.filter(p => p.cat === 'Kitchen').forEach(p => {
+    const type = kitchenType(p);
+    if (REJECTED[type] && REJECTED[type].includes(p.specs.Material)) {
+      offenders.push(`${p.id}: ${type} still specs Material "${p.specs.Material}"`);
+    }
+    if (type === 'Tea Tray' && !/^Glazed stoneware & /.test(p.specs.Material)) {
+      offenders.push(`${p.id}: Tea Tray Material "${p.specs.Material}" is missing the glazed-stoneware basin`);
+    }
+    if (type === 'Condiment Jar Set' && p.specs.Material !== 'Glazed stoneware & acacia wood') {
+      offenders.push(`${p.id}: Condiment Jar Set Material "${p.specs.Material}" does not match the approved ceramic-and-tray design`);
+    }
+    if (type === 'Tea Tray' && !/^A dark catch basin holds a fitted slatted-wood insert/.test(p.desc)) {
+      offenders.push(`${p.id}: Tea Tray description does not match the approved redesign copy`);
+    }
+    if (type === 'Condiment Jar Set' && !/^Three small glazed pots on a fitted wooden tray/.test(p.desc)) {
+      offenders.push(`${p.id}: Condiment Jar Set description does not match the approved redesign copy`);
+    }
+  });
+  assert(offenders.length === 0, `${offenders.length} coherence issue(s): ${offenders.slice(0, 5).join(' | ')}`);
+});
+
+// --- Pottery visual reconciliation: image-to-type mapping -------------------
+// 6 of the 8 Pottery types now have approved images and reconciled specs
+// (Trimming Tool, Brush Set, Glaze Pair, Carving Set, Rib Set, and the
+// Clay Stamp -> Clay Texture Rolling Pin Set replacement). Yunomi Mold and
+// Tea Ware Bat remain deferred product decisions with no replacement yet --
+// they're deliberately absent from this map.
+const POTTERY_IMAGE_BY_TYPE = {
+  'Trimming Tool': 'images/pottery/trimming-tool.webp',
+  'Brush Set': 'images/pottery/brush-set.webp',
+  'Glaze Pair': 'images/pottery/glaze-pair.webp',
+  'Carving Set': 'images/pottery/carving-set.webp',
+  'Rib Set': 'images/pottery/rib-set.webp',
+  'Clay Texture Rolling Pin Set': 'images/pottery/clay-texture-rolling-pin-set.webp',
+};
+function potteryType(p) {
+  const base = baseName(p.name);
+  return Object.keys(POTTERY_IMAGE_BY_TYPE).find(t => base.endsWith(t)) || null;
+}
+
+record('Every reconciled Pottery SKU has its type\'s approved image, and the file exists', () => {
+  const reconciled = catalog.filter(p => p.cat === 'Pottery' && potteryType(p));
+  assert(reconciled.length > 0, 'catalog has reconciled Pottery products');
+  const mismatched = [];
+  reconciled.forEach(p => {
+    const type = potteryType(p);
+    const expected = POTTERY_IMAGE_BY_TYPE[type];
+    if (p.image !== expected) mismatched.push(`${p.id} (${p.name}): expected ${expected}, got ${p.image}`);
+  });
+  assert(mismatched.length === 0, `${mismatched.length} mismatched Pottery image assignment(s): ${mismatched.slice(0, 5).join(' | ')}`);
+
+  const missingFiles = Object.values(POTTERY_IMAGE_BY_TYPE).filter(rel => !fs.existsSync(path.join(ROOT, rel)));
+  assert(missingFiles.length === 0, `missing Pottery image file(s) on disk: ${missingFiles.join(', ')}`);
+});
+
+record('Yunomi Mold and Tea Ware Bat remain unassigned pending their own deferred redesigns', () => {
+  const deferred = catalog.filter(p => {
+    const base = baseName(p.name);
+    return p.cat === 'Pottery' && (base.endsWith('Yunomi Mold') || base.endsWith('Tea Ware Bat'));
+  });
+  assert(deferred.length === 16, `expected 16 Yunomi Mold + Tea Ware Bat SKUs untouched (got ${deferred.length})`);
+  const withImage = deferred.filter(p => p.image !== null);
+  assert(withImage.length === 0, `${withImage.length} deferred SKU(s) unexpectedly carry an image: ${withImage.map(p => p.id).join(', ')}`);
+});
+
+record('Clay Texture Rolling Pin Set fully replaces the retired Clay Stamp identity', () => {
+  const rollers = catalog.filter(p => baseName(p.name).endsWith('Clay Texture Rolling Pin Set'));
+  assert(rollers.length === 8, `expected 8 Clay Texture Rolling Pin Set SKUs (got ${rollers.length})`);
+  const offenders = [];
+  rollers.forEach(p => {
+    if (p.specs.Material !== 'Wood') offenders.push(`${p.id}: Material "${p.specs.Material}" (expected "Wood")`);
+    if (p.specs.Finish !== 'Natural') offenders.push(`${p.id}: Finish "${p.specs.Finish}" (expected "Natural")`);
+    if (p.variants.length !== 0) offenders.push(`${p.id}: still carries variants ${JSON.stringify(p.variants)}`);
+    if (!/^Three wooden texture rollers/.test(p.desc)) offenders.push(`${p.id}: description does not match the approved copy`);
+  });
+  assert(offenders.length === 0, `${offenders.length} coherence issue(s): ${offenders.slice(0, 5).join(' | ')}`);
+
+  const staleIdentity = catalog.filter(p => /Clay Stamp/.test(p.name) || /Clay Stamp/.test(p.desc));
+  assert(staleIdentity.length === 0, `${staleIdentity.length} product(s) still carry a "Clay Stamp" identity: ${staleIdentity.map(p => p.id).join(', ')}`);
+
+  const throwingGauge = catalog.filter(p => /Throwing Gauge/i.test(p.name) || /Throwing Gauge/i.test(p.desc) || /Throwing Gauge/i.test(JSON.stringify(p.specs)));
+  assert(throwingGauge.length === 0, `${throwingGauge.length} product(s) unexpectedly reference a deferred "Throwing Gauge" identity`);
+});
+
+record('Rib Set reflects the approved mixed-material redesign, not the retired rubber/silicone-only concept', () => {
+  const ribs = catalog.filter(p => baseName(p.name).endsWith('Rib Set'));
+  assert(ribs.length === 16, `expected 16 Rib Set SKUs (got ${ribs.length})`);
+  const offenders = ribs.filter(p => p.specs.Material !== 'Wood, metal & rubber');
+  assert(offenders.length === 0, `${offenders.length} Rib Set SKU(s) not on the approved Material value: ${offenders.map(p => `${p.id}: "${p.specs.Material}"`).slice(0, 5).join(' | ')}`);
+});
+
+// --- No product image reused across mismatched products ---------------------
+// The catalog previously shipped 7 placeholder/scaffolding images (e.g. a
+// cowboy hat, a cat bed) each reused across hundreds of unrelated products in
+// unrelated categories, with no visual relationship to what they were
+// attached to. A cleanup pass removed every assignment that didn't genuinely
+// depict the product (verified by inspecting each image against the
+// product's real type and specs.Material) and left the handful of genuine
+// matches in place. This guards against that regressing: any image used by
+// 2+ products must be used only by products that are actually the same
+// real-world type (siblings across flavor-prefix/color are expected and
+// fine); an image used by products of different categories, or different
+// types within one templated category, is exactly the failure mode this
+// guards against. A bespoke/no-type product (Moto, Gifts & Curiosities, real
+// books, or an individually-authored item within a templated category) is
+// expected to have its own image, not share one.
+record('No product image is shared across genuinely different product types', () => {
+  const byImage = new Map();
+  catalog.forEach(p => {
+    if (!p.image) return;
+    if (!byImage.has(p.image)) byImage.set(p.image, []);
+    byImage.get(p.image).push(p);
+  });
+  const offenders = [];
+  byImage.forEach((users, image) => {
+    if (users.length < 2) return;
+    const identities = new Set(users.map(p => `${p.cat}::${productType(p) || `bespoke:${p.id}`}`));
+    if (identities.size > 1) {
+      offenders.push(`${image} used by mismatched products: ${[...identities].slice(0, 6).join(', ')}`);
+    }
+  });
+  assert(offenders.length === 0, `cross-type/category image reuse found: ${offenders.slice(0, 5).join(' | ')}`);
+});
+
+// --- catalog.json / CATALOG.md drift -----------------------------------------
+record('CATALOG.md descriptions match catalog.json for every p#### product', () => {
+  const drift = [];
+  catalog.filter(p => /^p\d{4}$/.test(p.id)).forEach(p => {
+    const anchorIdx = catalogMd.indexOf('`' + p.id + '`');
+    if (anchorIdx === -1) { drift.push(`${p.id}: not found in CATALOG.md`); return; }
+    const afterAnchor = catalogMd.slice(anchorIdx);
+    const lines = afterAnchor.split('\n');
+    // line 0 is the `pXXXX` metadata line itself; line 1 is the description line.
+    const descLine = (lines[1] || '').replace(/ {2}$/, '');
+    if (descLine !== p.desc) drift.push(`${p.id}: CATALOG.md desc does not match catalog.json`);
+  });
+  assert(drift.length === 0, `${drift.length} drifted description(s): ${drift.slice(0, 5).join(' | ')}`);
+});
+
+// --- Moto: no fabricated safety/certification claims ------------------------
+record('Moto descriptions do not claim specific safety certifications or ratings', () => {
+  const badClaims = [/\bCE[\s-]?(rated|certified|approved)\b/i, /\bIPX?\d/i, /\bISO\s?\d/i, /\bmil-?spec\b/i, /certified\s+(water|impact|abrasion)proof/i, /\brating of \d/i, /\bANSI\b/i, /\bASTM\b/i];
+  const moto = catalog.filter(p => p.cat === 'Moto');
+  const offenders = [];
+  moto.forEach(p => badClaims.forEach(re => { if (re.test(p.desc)) offenders.push(`${p.id} matched ${re}`); }));
+  assert(offenders.length === 0, `fabricated certification language found: ${offenders.join(' | ')}`);
+});
+
+// --- Real books: description untouched by this pass, still book-specific ----
+record('Real book descriptions remain present and are not generic templates', () => {
+  const books = catalog.filter(p => p.realBook);
+  assert(books.length > 0, 'catalog has real books');
+  const badPhrases = [/This version pairs/i, /Designed for [^.]+ who value/i, /\bPerfect for\b/i];
+  const offenders = books.filter(p => badPhrases.some(re => re.test(p.desc)));
+  assert(offenders.length === 0, `real book(s) with templated desc: ${offenders.map(p => p.id).join(', ')}`);
+});
+
+// --- Deli category launch: individually authored, not the flavor-prefix
+// template pattern -- one image per product (never shared), no leftover
+// identity from any superseded product name/construction, and no stale
+// "no sandwiches" language leaking into anything customer-facing.
+record('Deli category: all 16 locked products present, individually authored, correctly imaged', () => {
+  const deli = catalog.filter(p => p.cat === 'Deli');
+  assert(deli.length === 16, `expected 16 active Deli products (got ${deli.length})`);
+
+  const ids = deli.map(p => p.id);
+  assert(new Set(ids).size === ids.length, 'no duplicate Deli ids');
+
+  const byImage = new Map();
+  deli.forEach(p => {
+    assert(typeof p.image === 'string' && p.image, `${p.id} has an assigned image`);
+    assert(fs.existsSync(path.join(ROOT, p.image)), `${p.id}'s image file exists on disk: ${p.image}`);
+    byImage.set(p.image, (byImage.get(p.image) || 0) + 1);
+  });
+  const shared = [...byImage.entries()].filter(([, n]) => n > 1);
+  assert(shared.length === 0, `Deli images must be one-per-product, never shared: ${shared.map(([img]) => img).join(', ')}`);
+
+  deli.forEach(p => {
+    assert(typeof p.price === 'number' && p.price > 0, `${p.id} has a real price`);
+    assert(p.specs && typeof p.specs.Unit === 'string' && p.specs.Unit, `${p.id} has a Unit spec`);
+  });
+
+  const staleNames = /\bMilk Bun\b|\bGao Naik Bao\b|\bConcha\b|Canel[eé] de Bordeaux|\bPineapple Bun\b/i;
+  const staleOffenders = catalog.filter(p => staleNames.test(p.name) || staleNames.test(p.desc));
+  assert(staleOffenders.length === 0, `superseded Deli product identity still present: ${staleOffenders.map(p => `${p.id} (${p.name})`).join(', ')}`);
+
+  const steamedCharSiu = deli.find(p => p.id === 'baked-char-siu-bao');
+  assert(steamedCharSiu && !/steamed/i.test(steamedCharSiu.desc), 'Char Siu Bao describes the approved baked construction, not the superseded steamed one');
+
+  const mooncake = deli.find(p => p.id === 'mooncake-assortment');
+  assert(mooncake, 'Mooncake Assortment (not a single baked-only Mooncake) is present');
+  assert(/snow-skin/i.test(mooncake.desc), 'Mooncake Assortment describes both the baked and snow-skin styles');
+});
+
+// --- Variant-aware pricing: object-form priced options must be well-formed --
+// Runtime (optionPrice in app.js) is deliberately forgiving of malformed or
+// missing option pricing -- it falls back to the product's base price rather
+// than crashing or mischarging. This check is the strict half of that pair:
+// the repository itself should never *ship* a malformed priced option, even
+// though the app would survive one. Plain string variants/sizes (every
+// product outside this feature) are untouched by this check.
+record('Object-form priced variants/sizes have a real label and a valid positive price', () => {
+  const offenders = [];
+  catalog.forEach(p => {
+    ['variants', 'sizes'].forEach(field => {
+      if (!Array.isArray(p[field])) return;
+      p[field].forEach((v, i) => {
+        if (!v || typeof v !== 'object') return; // plain string entries are out of scope here
+        if (typeof v.label !== 'string' || !v.label.trim()) {
+          offenders.push(`${p.id}.${field}[${i}]: missing/empty label`);
+        }
+        if (!Number.isFinite(v.price) || v.price <= 0) {
+          offenders.push(`${p.id}.${field}[${i}] (${v.label || 'no label'}): price must be a finite number > 0, got ${JSON.stringify(v.price)}`);
+        }
+      });
+    });
+  });
+  assert(offenders.length === 0, `${offenders.length} malformed priced option(s): ${offenders.slice(0, 8).join(' | ')}`);
+});
+
+record('The 9 migrated Deli products expose object-form priced variants with the approved prices', () => {
+  const EXPECTED = {
+    'chocolate-obsession': [['Slice', 9.5], ['Whole cake', 62]],
+    'prinsesstarta': [['Slice', 8], ['Whole cake', 40]],
+    'verdens-beste': [['Slice', 7.5], ['Whole cake', 36]],
+    'cantonese-egg-tart': [['Individual', 3], ['Box of 6', 16]],
+    'jian-dui-sesame-balls': [['Individual', 2.5], ['Box of 6', 13]],
+    'strawberry-daifuku': [['Individual', 3.5], ['Box of 6', 18]],
+    'wienerbrod-spandauer': [['Individual', 4.5], ['Box of 6', 24]],
+    'rugbrod': [['Whole loaf', 9], ['Half loaf', 5]],
+    'ube-matcha-swiss-roll': [['Slice', 7.5], ['Whole roll', 38]],
+  };
+  const offenders = [];
+  Object.entries(EXPECTED).forEach(([id, expected]) => {
+    const p = catalog.find(x => x.id === id);
+    if (!p) { offenders.push(`${id}: product not found`); return; }
+    const actual = (p.variants || []).map(v => [v && v.label, v && v.price]);
+    if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+      offenders.push(`${id}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+    }
+    if (/also available/i.test(p.specs.Unit || '')) {
+      offenders.push(`${id}: specs.Unit still duplicates alternate-option pricing text: "${p.specs.Unit}"`);
+    }
+  });
+  assert(offenders.length === 0, offenders.join(' | '));
+});
+
+// --- No unrelated product was migrated to object-form variants --------------
+record('Only the 9 approved Deli products use object-form priced variants; everything else stays plain strings', () => {
+  const MIGRATED = new Set(['chocolate-obsession', 'prinsesstarta', 'verdens-beste', 'cantonese-egg-tart', 'jian-dui-sesame-balls', 'strawberry-daifuku', 'wienerbrod-spandauer', 'rugbrod', 'ube-matcha-swiss-roll']);
+  const offenders = [];
+  catalog.forEach(p => {
+    if (MIGRATED.has(p.id)) return;
+    ['variants', 'sizes'].forEach(field => {
+      if (!Array.isArray(p[field])) return;
+      if (p[field].some(v => v && typeof v === 'object')) offenders.push(`${p.id}.${field}`);
+    });
+  });
+  assert(offenders.length === 0, `unexpected object-form option(s) outside the approved 9: ${offenders.join(', ')}`);
+});
+
+console.log('\n=== CATALOG QUALITY SUITE SUMMARY ===');
+const failed = results.filter(r => !r.pass);
+console.log(`${results.length - failed.length}/${results.length} passed`);
+if (failed.length) {
+  console.log('\n=== FAILURES ===');
+  failed.forEach(f => console.log(` - ${f.name}\n   ${f.error}`));
+  process.exitCode = 1;
+} else {
+  console.log('\nALL TESTS PASSED');
+}

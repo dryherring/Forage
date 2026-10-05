@@ -21,6 +21,7 @@ Create a Pages project and upload this folder as a static site. No build command
 - Purchases use fictional Ƶ currency.
 - Cart, wishlist, orders, and balance are stored locally in the browser.
 - Once hosted over HTTPS, Forage registers a service worker so previously visited content can work offline.
+- Product photography is AI-generated/illustrative; see `images/PROVENANCE.json` for the source/method behind each asset.
 
 * 🐛 Fix cart state inconsistency — cart badge can show an item while basket renders empty
 * ✨ Make Forage Fund interactive — clicking the ₴2,000 pill opens balance/spend information
