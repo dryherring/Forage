@@ -70,8 +70,28 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 function deliveryDate(days=3){const d=new Date();d.setDate(d.getDate()+days);return d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})}
 function daySeed(){const d=new Date();return Number(`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`)}
 function dailyScore(p){return ((p.seed*9301+daySeed()*49297)%233280)/233280}
+// Carried over from the prior production Fund popover: reconstructs a
+// "starting fund" figure since no startingBalance field is persisted.
+// Inherits the existing monthly-reset quirk (resetFunds() doesn't clear
+// state.spent) unchanged — flagged for later, not fixed here.
+function fundStartingAmount(){return Math.max(2000,Number(state.balance||0)+Number(state.spent||0))}
+function renderFundPanel(){
+  const panel=document.getElementById('fundPanel');
+  if(!panel)return;
+  panel.innerHTML=`<h3>Forage Fund</h3><p>Your fictional spending money for the hunt.</p><div class="fund-amount">${money(state.balance)}</div><div class="fund-row"><span>Starting fund</span><strong>${money(fundStartingAmount())}</strong></div><div class="fund-row"><span>Spent</span><strong>${money(state.spent)}</strong></div><div class="fund-row"><span>Remaining</span><strong>${money(state.balance)}</strong></div>`;
+}
+function toggleFund(event){
+  event?.stopPropagation();
+  const panel=document.getElementById('fundPanel'),button=document.getElementById('balanceBox');
+  const opening=panel.hidden;
+  if(opening)renderFundPanel();
+  panel.hidden=!opening;
+  button.setAttribute('aria-expanded',String(opening));
+}
+function closeFund(){const p=document.getElementById('fundPanel'),b=document.getElementById('balanceBox');if(p&&!p.hidden){p.hidden=true;b?.setAttribute('aria-expanded','false')}}
 function renderHeader(){
   document.getElementById('balanceBox').textContent=money(state.balance);
+  renderFundPanel();
   const items=[['shop','Discover'],['cart','Cart'],['orders','Orders'],['stats','Stats'],['gifts','🎁 Gift Cabinet'],['wishlist','Wishlist'],['reading','📚 Reading List'],['profile','Profile']];
   document.getElementById('nav').innerHTML=items.map(([id,label])=>`<button class="${page===id?'active':''} ${id==='gifts'?'nav-spacer':''}" data-action="go" data-page="${id}">${label}${id==='cart'&&state.cart.length?`<span class="badge">${state.cart.reduce((s,x)=>s+x.qty,0)}</span>`:''}</button>`).join('');
 }
@@ -469,6 +489,7 @@ const CLICK_ACTIONS={
   'page-prev':()=>{state.pageNo--;save();renderProductResults();window.scrollTo({top:430,behavior:'smooth'})},
   'page-next':()=>{state.pageNo++;save();renderProductResults();window.scrollTo({top:430,behavior:'smooth'})},
   'show-size-guide':()=>showSizeGuide(selected),
+  'toggle-fund':(el,e)=>toggleFund(e),
   'close-size-modal':()=>document.getElementById('sizeModal')?.remove(),
   'close-modal-backdrop':(el,e)=>{if(e.target!==el)return;if(el.id==='giftModal')closeGiftModal();else el.remove()},
   'save-reading':(el)=>saveReading(el.dataset.id),
@@ -513,9 +534,11 @@ const CHANGE_ACTIONS={
 };
 document.addEventListener('click',e=>{
   const el=e.target.closest('[data-action]');
-  if(!el)return;
-  const handler=CLICK_ACTIONS[el.dataset.action];
-  if(handler)handler(el,e);
+  if(el){
+    const handler=CLICK_ACTIONS[el.dataset.action];
+    if(handler)handler(el,e);
+  }
+  if(!e.target.closest('.fund-wrap'))closeFund();
 });
 document.addEventListener('change',e=>{
   const el=e.target.closest('[data-action]');
@@ -527,6 +550,7 @@ function focusableIn(container){
   return [...container.querySelectorAll('button, input, select, textarea, a[href]')].filter(el=>!el.disabled&&el.offsetParent!==null);
 }
 document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&!document.getElementById('fundPanel')?.hidden){closeFund();return}
   const modal=document.querySelector('.modalback');
   if(!modal)return;
   if(e.key==='Escape'){
