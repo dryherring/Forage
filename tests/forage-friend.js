@@ -332,6 +332,52 @@ async function run() {
     await page.setViewportSize({ width: 1280, height: 800 });
   });
 
+  await record('Short/realistic mobile viewport: the panel never runs off-screen and stays reachable', async () => {
+    // A full 844px-tall viewport (the previous mobile test) never reproduces
+    // this bug: it only shows up once the VISIBLE viewport is short, as on a
+    // real phone with Safari's dynamic toolbar expanded, a smaller device,
+    // or landscape orientation. 390x300 reliably forces the panel's natural
+    // content height past the available space below the header.
+    await page.setViewportSize({ width: 390, height: 300 });
+    await fresh();
+    await openFriendUI();
+    await startWanderUI();
+    await page.waitForTimeout(100);
+    const viewportHeight = 300;
+    const panelBox = await page.locator('#friendPanel').boundingBox();
+    assert(panelBox.y + panelBox.height <= viewportHeight + 1, `panel bottom edge stays within the ${viewportHeight}px viewport (got bottom=${panelBox.y + panelBox.height})`);
+    const isScrollable = await page.locator('#friendPanel').evaluate(el => el.scrollHeight > el.clientHeight);
+    assert(isScrollable, 'panel content exceeds its capped height, so it is internally scrollable (not just clipped)');
+    const lastButton = page.locator('.friend-actions button').last();
+    await lastButton.scrollIntoViewIfNeeded();
+    const buttonBox = await lastButton.boundingBox();
+    assert(buttonBox.y >= 0 && buttonBox.y + buttonBox.height <= viewportHeight + 1, 'the last action button is reachable within the viewport after scrolling inside the panel');
+    await lastButton.click();
+    await page.waitForTimeout(60);
+    assert(await page.locator('#friendPanel').getAttribute('hidden') !== null, 'the (scrolled-to) dismiss button is actually clickable, not just visible');
+    await page.setViewportSize({ width: 1280, height: 800 });
+  });
+
+  await record('The panel re-caps itself when the visible viewport shrinks while it is already open (Safari toolbar / keyboard)', async () => {
+    await page.setViewportSize({ width: 390, height: 800 });
+    await fresh();
+    await openFriendUI();
+    await startWanderUI();
+    await page.waitForTimeout(100);
+    const tallMaxHeight = await page.locator('#friendPanel').evaluate(el => parseFloat(el.style.maxHeight));
+    // Simulate Safari's toolbar expanding (or the keyboard opening), which
+    // shrinks window.innerHeight/visualViewport.height without a page
+    // navigation - the exact scenario a fixed-viewport test would miss.
+    await page.setViewportSize({ width: 390, height: 320 });
+    await page.evaluate(() => window.dispatchEvent(new Event('resize')));
+    await page.waitForTimeout(100);
+    const shortMaxHeight = await page.locator('#friendPanel').evaluate(el => parseFloat(el.style.maxHeight));
+    assert(shortMaxHeight < tallMaxHeight, `panel's max-height shrinks when the visible viewport shrinks while open (tall=${tallMaxHeight}, short=${shortMaxHeight})`);
+    const panelBox = await page.locator('#friendPanel').boundingBox();
+    assert(panelBox.y + panelBox.height <= 320 + 1, 'panel stays within the new, shorter viewport after re-capping');
+    await page.setViewportSize({ width: 1280, height: 800 });
+  });
+
   await browser.close();
   server.close();
 

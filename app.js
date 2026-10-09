@@ -182,12 +182,33 @@ function renderFriendPanel(){
   const{mode,product}=friendCurrent;
   panel.innerHTML=`<h3>Friend</h3><p class="friend-intro-line">I noticed something interesting. Would you like to see?</p><div class="friend-card"><div class="friend-thumb">${friendThumb(product)}</div><div><strong>${esc(product.name)}</strong><div class="friend-eyebrow">${esc(displayCat(product))}</div></div></div><p class="friend-note">${esc(FRIEND_MODE_COPY[mode])}</p><div class="friend-actions"><button class="primary" data-action="friend-open-suggestion" data-id="${esc(product.id)}">Take a look</button><button class="secondary" data-action="friend-next">Show me another</button><button class="secondary" data-action="friend-dismiss">Not right now</button></div>`;
 }
+// The panel lives inside a position:sticky header, so once that header is
+// pinned at the top of the viewport, scrolling the page can never reveal
+// more of the panel - it's pinned too. On a short/mobile viewport (and
+// worse once mobile Safari's dynamic toolbar shrinks the visible area
+// further) a tall panel can silently run off the bottom with no way to
+// reach it. This computes the real remaining space below the toggle button,
+// using visualViewport when available since it reflects the actual visible
+// viewport (toolbar and on-screen keyboard included), and caps the panel's
+// height so the rest scrolls internally instead of disappearing off-screen.
+function positionFriendPanel(){
+  const panel=document.getElementById('friendPanel'),wrap=panel?.closest('.friend-wrap');
+  if(!panel||!wrap||panel.hidden)return;
+  const viewportHeight=window.visualViewport?window.visualViewport.height:window.innerHeight;
+  const anchorBottom=wrap.getBoundingClientRect().bottom;
+  const margin=16;
+  const available=Math.max(160,Math.floor(viewportHeight-anchorBottom-margin));
+  panel.style.maxHeight=available+'px';
+}
+window.visualViewport?.addEventListener('resize',positionFriendPanel);
+window.addEventListener('resize',positionFriendPanel);
 function openFriend(){
   const panel=document.getElementById('friendPanel'),button=document.getElementById('friendToggle');
   if(!panel||!button)return;
   renderFriendPanel();
   panel.hidden=false;
   button.setAttribute('aria-expanded','true');
+  positionFriendPanel();
   panel.querySelector('button')?.focus();
 }
 // Closing (explicit button, outside click, or Escape) only hides the panel.
