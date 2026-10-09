@@ -89,6 +89,143 @@ function toggleFund(event){
   button.setAttribute('aria-expanded',String(opening));
 }
 function closeFund(){const p=document.getElementById('fundPanel'),b=document.getElementById('balanceBox');if(p&&!p.hidden){p.hidden=true;b?.setAttribute('aria-expanded','false')}}
+
+// Forage Friend (V1: "Just Wandering") — a lightweight, deterministic-testable
+// discovery guide built entirely on existing catalog metadata and session
+// state. No external service, no new purchasing flow, no fabricated history.
+// friendSeenIds/friendCurrent/friendSessionActive are in-memory only, like
+// page/selected/openGiftEdits: a "discovery session" starts on "I'm just
+// wandering" and survives dismiss/reopen for the rest of the page visit —
+// only an explicit restart or a page reload clears it.
+let friendSessionActive=false;
+let friendSeenIds=new Set();
+let friendCurrent=null;
+const FRIEND_MODE_ORDER=['unexpected','adjacent','change-of-scenery','rediscovery','wildcard'];
+const FRIEND_MODE_WEIGHTS={unexpected:0.4,adjacent:0.3,'change-of-scenery':0.2,rediscovery:0.1,wildcard:0};
+const FRIEND_MODE_COPY={
+  unexpected:"Ooh — this one's part of a limited batch. I don't see those every day.",
+  adjacent:"Since you've been circling that part of the market, I thought you might like this too.",
+  'change-of-scenery':"Completely different corner of the market. Fancy a change of scenery?",
+  rediscovery:"You tucked this one away a while back. Still curious about it?",
+  wildcard:"No particular reason — I just liked the look of this one."
+};
+function friendValidCandidate(p){
+  return !!(p&&typeof p==='object'
+    &&typeof p.id==='string'&&p.id
+    &&typeof p.name==='string'&&p.name
+    &&typeof p.desc==='string'&&p.desc
+    &&typeof p.cat==='string'&&p.cat
+    &&Number.isFinite(Number(p.price))&&Number(p.price)>0
+    &&Number(p.stock)>0);
+}
+// Categories the visitor has shown real interest in: wishlisted, carted,
+// ordered, or the category they're currently browsing. Never invented.
+function friendInteractedCategories(){
+  const ids=new Set([
+    ...state.wishlist,
+    ...state.cart.map(line=>line.id),
+    ...state.orders.flatMap(o=>o.items.map(line=>line.id))
+  ]);
+  const cats=new Set();
+  PRODUCTS.forEach(p=>{if(ids.has(p.id))cats.add(p.cat)});
+  if(state.filter&&state.filter!=='All')cats.add(state.filter);
+  return cats;
+}
+function friendCandidatePools(){
+  const base=PRODUCTS.filter(friendValidCandidate).filter(p=>!friendSeenIds.has(p.id));
+  const cats=friendInteractedCategories();
+  return {
+    unexpected:base.filter(p=>p.limited===true),
+    adjacent:cats.size?base.filter(p=>cats.has(p.cat)):[],
+    'change-of-scenery':cats.size?base.filter(p=>!cats.has(p.cat)):[],
+    rediscovery:base.filter(p=>state.wishlist.includes(p.id)),
+    wildcard:base
+  };
+}
+// Picks a mode (weighted, reallocating unavailable modes' weight to whichever
+// modes still have candidates) then a candidate from that mode's pool. Takes
+// an injectable rng (defaults to Math.random) so selection is deterministic
+// and testable without touching global randomness.
+function pickFriendSuggestion(rng){
+  rng=rng||Math.random;
+  const pools=friendCandidatePools();
+  const available=FRIEND_MODE_ORDER.filter(mode=>pools[mode].length>0);
+  if(!available.length)return null;
+  const weights=available.map(mode=>FRIEND_MODE_WEIGHTS[mode]);
+  const sum=weights.reduce((a,b)=>a+b,0);
+  const normalized=sum>0?weights.map(w=>w/sum):weights.map(()=>1/available.length);
+  let r=rng(),acc=0,chosenMode=available[available.length-1];
+  for(let i=0;i<available.length;i++){
+    acc+=normalized[i];
+    if(r<acc){chosenMode=available[i];break}
+  }
+  const pool=pools[chosenMode];
+  const idx=Math.min(pool.length-1,Math.floor(rng()*pool.length));
+  const product=pool[idx];
+  friendSeenIds.add(product.id);
+  return {mode:chosenMode,product};
+}
+function friendThumb(p){
+  return p.image?`<img src="${esc(p.image)}" alt="">`:`<span style="font-size:28px">${p.emoji}</span>`;
+}
+function renderFriendPanel(){
+  const panel=document.getElementById('friendPanel');
+  if(!panel)return;
+  if(!friendSessionActive){
+    panel.innerHTML=`<h3>Friend</h3><p class="friend-intro-line">Oh, lovely. No particular destination, then.</p><div class="friend-actions"><button class="primary" data-action="friend-start-wander">I'm just wandering</button><button class="secondary" data-action="friend-dismiss">Not today</button></div>`;
+    return;
+  }
+  if(!friendCurrent){
+    panel.innerHTML=`<h3>Friend</h3><p class="friend-intro-line">I think I've shown you everything I've got for now. Check back later?</p><div class="friend-actions"><button class="secondary" data-action="friend-start-wander">Start a new wander</button><button class="secondary" data-action="friend-dismiss">Alright</button></div>`;
+    return;
+  }
+  const{mode,product}=friendCurrent;
+  panel.innerHTML=`<h3>Friend</h3><p class="friend-intro-line">I noticed something interesting. Would you like to see?</p><div class="friend-card"><div class="friend-thumb">${friendThumb(product)}</div><div><strong>${esc(product.name)}</strong><div class="friend-eyebrow">${esc(displayCat(product))}</div></div></div><p class="friend-note">${esc(FRIEND_MODE_COPY[mode])}</p><div class="friend-actions"><button class="primary" data-action="friend-open-suggestion" data-id="${esc(product.id)}">Take a look</button><button class="secondary" data-action="friend-next">Show me another</button><button class="secondary" data-action="friend-dismiss">Not right now</button></div>`;
+}
+function openFriend(){
+  const panel=document.getElementById('friendPanel'),button=document.getElementById('friendToggle');
+  if(!panel||!button)return;
+  renderFriendPanel();
+  panel.hidden=false;
+  button.setAttribute('aria-expanded','true');
+  panel.querySelector('button')?.focus();
+}
+// Closing (explicit button, outside click, or Escape) only hides the panel.
+// It never touches page/filter/scroll state, so the visitor's browsing
+// context is left exactly as they left it, and it never resets the
+// wandering session: friendSessionActive/friendSeenIds/friendCurrent persist
+// so reopening Friend later in the same page visit resumes exactly where she
+// left off. A session only ends via friendStartWander() (explicit restart)
+// or a page reload (in-memory state is gone either way).
+function closeFriend(){
+  const panel=document.getElementById('friendPanel'),button=document.getElementById('friendToggle');
+  if(!panel||panel.hidden)return;
+  panel.hidden=true;
+  button?.setAttribute('aria-expanded','false');
+}
+function toggleFriend(event){
+  event?.stopPropagation();
+  const panel=document.getElementById('friendPanel');
+  if(!panel)return;
+  if(panel.hidden)openFriend();else closeFriend();
+}
+function friendStartWander(){
+  friendSessionActive=true;
+  friendSeenIds=new Set();
+  friendCurrent=pickFriendSuggestion();
+  renderFriendPanel();
+  document.getElementById('friendPanel')?.querySelector('button')?.focus();
+}
+function friendNext(){
+  friendCurrent=pickFriendSuggestion();
+  renderFriendPanel();
+  document.getElementById('friendPanel')?.querySelector('button')?.focus();
+}
+function friendOpenSuggestion(id){
+  closeFriend();
+  openProduct(id);
+}
+
 function renderHeader(){
   document.getElementById('balanceBox').textContent=money(state.balance);
   renderFundPanel();
@@ -490,6 +627,11 @@ const CLICK_ACTIONS={
   'page-next':()=>{state.pageNo++;save();renderProductResults();window.scrollTo({top:430,behavior:'smooth'})},
   'show-size-guide':()=>showSizeGuide(selected),
   'toggle-fund':(el,e)=>toggleFund(e),
+  'toggle-friend':(el,e)=>toggleFriend(e),
+  'friend-start-wander':()=>friendStartWander(),
+  'friend-next':()=>friendNext(),
+  'friend-dismiss':()=>closeFriend(),
+  'friend-open-suggestion':(el)=>friendOpenSuggestion(el.dataset.id),
   'close-size-modal':()=>document.getElementById('sizeModal')?.remove(),
   'close-modal-backdrop':(el,e)=>{if(e.target!==el)return;if(el.id==='giftModal')closeGiftModal();else el.remove()},
   'save-reading':(el)=>saveReading(el.dataset.id),
@@ -533,12 +675,20 @@ const CHANGE_ACTIONS={
   'gift-note':(el)=>{state.giftIdeas[Number(el.dataset.index)].note=el.value;save()}
 };
 document.addEventListener('click',e=>{
+  // Captured before dispatch: a handler below may replace the panel's own
+  // innerHTML (e.g. renderFriendPanel()), detaching e.target from the live
+  // DOM mid-event. closest() on a detached node can no longer find these
+  // ancestors, so re-checking e.target after dispatch would wrongly treat an
+  // in-panel click as "outside" and close the panel it just opened.
+  const insideFund=!!e.target.closest('.fund-wrap');
+  const insideFriend=!!e.target.closest('.friend-wrap');
   const el=e.target.closest('[data-action]');
   if(el){
     const handler=CLICK_ACTIONS[el.dataset.action];
     if(handler)handler(el,e);
   }
-  if(!e.target.closest('.fund-wrap'))closeFund();
+  if(!insideFund)closeFund();
+  if(!insideFriend)closeFriend();
 });
 document.addEventListener('change',e=>{
   const el=e.target.closest('[data-action]');
@@ -551,6 +701,7 @@ function focusableIn(container){
 }
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&!document.getElementById('fundPanel')?.hidden){closeFund();return}
+  if(e.key==='Escape'&&!document.getElementById('friendPanel')?.hidden){closeFriend();return}
   const modal=document.querySelector('.modalback');
   if(!modal)return;
   if(e.key==='Escape'){
