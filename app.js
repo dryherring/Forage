@@ -182,12 +182,57 @@ function renderFriendPanel(){
   const{mode,product}=friendCurrent;
   panel.innerHTML=`<h3>Friend</h3><p class="friend-intro-line">I noticed something interesting. Would you like to see?</p><div class="friend-card"><div class="friend-thumb">${friendThumb(product)}</div><div><strong>${esc(product.name)}</strong><div class="friend-eyebrow">${esc(displayCat(product))}</div></div></div><p class="friend-note">${esc(FRIEND_MODE_COPY[mode])}</p><div class="friend-actions"><button class="primary" data-action="friend-open-suggestion" data-id="${esc(product.id)}">Take a look</button><button class="secondary" data-action="friend-next">Show me another</button><button class="secondary" data-action="friend-dismiss">Not right now</button></div>`;
 }
+// The panel lives inside a position:sticky header, so once that header is
+// pinned at the top of the viewport, scrolling the page can never reveal
+// more of the panel - it's pinned too. Without a height cap, a tall panel
+// can run off the bottom of a short viewport with no way to reach the rest.
+//
+// The cap is computed from the visible space below the toggle button:
+// window.visualViewport.height, when available, so it tracks mobile
+// Safari's dynamic toolbar (the visible area shrinks/grows as it
+// collapses/expands) and the on-screen keyboard. On a real device the
+// visual viewport can also be offset from the layout viewport once the
+// page has scrolled (visualViewport.offsetTop) - getBoundingClientRect()
+// always reports layout-viewport coordinates, so that offset has to be
+// subtracted to get the anchor's position within what's actually visible.
+// A desktop-Chromium simulation never introduces this offset, which is why
+// an earlier version of this fix (omitting the offsetTop correction) could
+// pass every automated check here and still run off-screen on a real
+// iPhone, where the offset is routinely nonzero.
+function positionFriendPanel(){
+  const panel=document.getElementById('friendPanel'),wrap=panel?.closest('.friend-wrap');
+  if(!panel||!wrap||panel.hidden)return;
+  const vv=window.visualViewport;
+  const rect=wrap.getBoundingClientRect();
+  const viewportHeight=vv?vv.height:window.innerHeight;
+  const viewportOffsetTop=vv?vv.offsetTop:0;
+  const anchorBottomInVisualViewport=rect.bottom-viewportOffsetTop;
+  const margin=16;
+  const available=Math.max(160,Math.floor(viewportHeight-anchorBottomInVisualViewport-margin));
+  panel.style.maxHeight=available+'px';
+}
+let friendPositionRaf=null;
+function scheduleFriendReposition(){
+  if(friendPositionRaf)return;
+  friendPositionRaf=requestAnimationFrame(()=>{friendPositionRaf=null;positionFriendPanel()});
+}
+// resize covers the toolbar collapsing/expanding on most iOS versions;
+// scroll covers offsetTop changing independently of a resize event during
+// the toolbar's show/hide transition; orientationchange and the plain
+// window resize are defensive fallbacks for browsers without
+// visualViewport. All are cheap no-ops via positionFriendPanel()'s own
+// hidden-panel guard when Friend isn't open.
+window.visualViewport?.addEventListener('resize',scheduleFriendReposition);
+window.visualViewport?.addEventListener('scroll',scheduleFriendReposition);
+window.addEventListener('resize',scheduleFriendReposition);
+window.addEventListener('orientationchange',scheduleFriendReposition);
 function openFriend(){
   const panel=document.getElementById('friendPanel'),button=document.getElementById('friendToggle');
   if(!panel||!button)return;
   renderFriendPanel();
   panel.hidden=false;
   button.setAttribute('aria-expanded','true');
+  positionFriendPanel();
   panel.querySelector('button')?.focus();
 }
 // Closing (explicit button, outside click, or Escape) only hides the panel.

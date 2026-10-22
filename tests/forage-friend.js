@@ -332,6 +332,108 @@ async function run() {
     await page.setViewportSize({ width: 1280, height: 800 });
   });
 
+  await record('Short/realistic mobile viewport: the panel never runs off-screen and stays reachable', async () => {
+    // A full 844px-tall viewport (the previous mobile test) never reproduces
+    // this bug: it only shows up once the VISIBLE viewport is short, as on a
+    // real phone with Safari's dynamic toolbar expanded, a smaller device,
+    // or landscape orientation. 390x300 reliably forces the panel's natural
+    // content height past the available space below the header.
+    await page.setViewportSize({ width: 390, height: 300 });
+    await fresh();
+    await openFriendUI();
+    await startWanderUI();
+    await page.waitForTimeout(100);
+    const viewportHeight = 300;
+    const panelBox = await page.locator('#friendPanel').boundingBox();
+    assert(panelBox.y + panelBox.height <= viewportHeight + 1, `panel bottom edge stays within the ${viewportHeight}px viewport (got bottom=${panelBox.y + panelBox.height})`);
+    const isScrollable = await page.locator('#friendPanel').evaluate(el => el.scrollHeight > el.clientHeight);
+    assert(isScrollable, 'panel content exceeds its capped height, so it is internally scrollable (not just clipped)');
+    const lastButton = page.locator('.friend-actions button').last();
+    await lastButton.scrollIntoViewIfNeeded();
+    const buttonBox = await lastButton.boundingBox();
+    assert(buttonBox.y >= 0 && buttonBox.y + buttonBox.height <= viewportHeight + 1, 'the last action button is reachable within the viewport after scrolling inside the panel');
+    await lastButton.click();
+    await page.waitForTimeout(60);
+    assert(await page.locator('#friendPanel').getAttribute('hidden') !== null, 'the (scrolled-to) dismiss button is actually clickable, not just visible');
+    await page.setViewportSize({ width: 1280, height: 800 });
+  });
+
+  await record('The panel re-caps itself when the visible viewport shrinks while it is already open (Safari toolbar / keyboard)', async () => {
+    await page.setViewportSize({ width: 390, height: 800 });
+    await fresh();
+    await openFriendUI();
+    await startWanderUI();
+    await page.waitForTimeout(100);
+    const tallMaxHeight = await page.locator('#friendPanel').evaluate(el => parseFloat(el.style.maxHeight));
+    // Simulate Safari's toolbar expanding (or the keyboard opening), which
+    // shrinks window.innerHeight/visualViewport.height without a page
+    // navigation - the exact scenario a fixed-viewport test would miss.
+    await page.setViewportSize({ width: 390, height: 320 });
+    await page.evaluate(() => window.dispatchEvent(new Event('resize')));
+    await page.waitForTimeout(100);
+    const shortMaxHeight = await page.locator('#friendPanel').evaluate(el => parseFloat(el.style.maxHeight));
+    assert(shortMaxHeight < tallMaxHeight, `panel's max-height shrinks when the visible viewport shrinks while open (tall=${tallMaxHeight}, short=${shortMaxHeight})`);
+    const panelBox = await page.locator('#friendPanel').boundingBox();
+    assert(panelBox.y + panelBox.height <= 320 + 1, 'panel stays within the new, shorter viewport after re-capping');
+    await page.setViewportSize({ width: 1280, height: 800 });
+  });
+
+  await record('positionFriendPanel() correctly subtracts visualViewport.offsetTop (the actual real-iPhone bug an earlier fix missed)', async () => {
+    // Root cause: getBoundingClientRect() always reports LAYOUT-viewport
+    // coordinates, but on a real device the VISUAL viewport (what's
+    // actually on screen) can be offset from the layout viewport's origin
+    // once the page has scrolled - visualViewport.offsetTop. An earlier
+    // version of this fix compared the anchor's layout-viewport position
+    // directly against visualViewport.height, silently ignoring that
+    // offset. A desktop-Chromium simulation never introduces a nonzero
+    // offsetTop on its own, which is exactly why that version passed every
+    // automated check here yet still ran off-screen on an actual iPhone.
+    // This test injects the offset directly so the arithmetic itself is
+    // verified, independent of whether any particular viewport size
+    // happens to reproduce it.
+    await page.setViewportSize({ width: 390, height: 700 });
+    await fresh();
+    await openFriendUI();
+    await startWanderUI();
+    await page.waitForTimeout(100);
+    const result = await page.evaluate(() => {
+      const panel = document.getElementById('friendPanel');
+      const wrap = panel.closest('.friend-wrap');
+      const rect = wrap.getBoundingClientRect();
+      const mockHeight = 500, mockOffsetTop = 120, margin = 16;
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: mockHeight, width: 390, offsetTop: mockOffsetTop, offsetLeft: 0, addEventListener(){}, removeEventListener(){} }
+      });
+      positionFriendPanel();
+      const actualMaxHeight = parseFloat(panel.style.maxHeight);
+      const correctMaxHeight = Math.max(160, Math.floor(mockHeight - (rect.bottom - mockOffsetTop) - margin));
+      const offsetIgnoringMaxHeight = Math.max(160, Math.floor(mockHeight - rect.bottom - margin));
+      return { actualMaxHeight, correctMaxHeight, offsetIgnoringMaxHeight };
+    });
+    assert(result.actualMaxHeight === result.correctMaxHeight, `max-height matches the offsetTop-corrected formula (expected ${result.correctMaxHeight}, got ${result.actualMaxHeight})`);
+    assert(result.actualMaxHeight !== result.offsetIgnoringMaxHeight, `fixed behavior differs from the offsetTop-ignoring formula that caused the real-device bug (ignoring-offset would give ${result.offsetIgnoringMaxHeight}, fixed gives ${result.actualMaxHeight})`);
+  });
+
+  await record('Header and Friend panel CSS reference safe-area insets (structural check; cannot simulate a real notch/home-indicator value here)', async () => {
+    await fresh();
+    const declarations = await page.evaluate(() => {
+      const found = { headerTop: false, panelBottom: false };
+      for (const sheet of document.styleSheets) {
+        let rules;
+        try { rules = sheet.cssRules; } catch (e) { continue; }
+        for (const rule of rules) {
+          if (!rule.style) continue;
+          if (rule.selectorText === 'header' && /env\(safe-area-inset-top/.test(rule.style.paddingTop || '')) found.headerTop = true;
+          if (rule.selectorText === '.friend-panel' && /env\(safe-area-inset-bottom/.test(rule.style.paddingBottom || '')) found.panelBottom = true;
+        }
+      }
+      return found;
+    });
+    assert(declarations.headerTop, 'header reserves space for env(safe-area-inset-top), so the sticky header (and Friend\'s toggle inside it) never renders under a notch/Dynamic Island');
+    assert(declarations.panelBottom, 'Friend panel reserves space for env(safe-area-inset-bottom), so its lowest content clears the home-indicator area');
+  });
+
   await browser.close();
   server.close();
 
