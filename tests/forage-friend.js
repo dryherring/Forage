@@ -332,6 +332,184 @@ async function run() {
     await page.setViewportSize({ width: 1280, height: 800 });
   });
 
+  await record('Short/realistic mobile viewport: the panel never runs off-screen and stays reachable', async () => {
+    // A full 844px-tall viewport (the previous mobile test) never reproduces
+    // this bug: it only shows up once the VISIBLE viewport is short, as on a
+    // real phone with Safari's dynamic toolbar expanded, a smaller device,
+    // or landscape orientation. 390x300 reliably forces the panel's natural
+    // content height past the available space below the header.
+    await page.setViewportSize({ width: 390, height: 300 });
+    await fresh();
+    await openFriendUI();
+    await startWanderUI();
+    await page.waitForTimeout(100);
+    const viewportHeight = 300;
+    const panelBox = await page.locator('#friendPanel').boundingBox();
+    assert(panelBox.y + panelBox.height <= viewportHeight + 1, `panel bottom edge stays within the ${viewportHeight}px viewport (got bottom=${panelBox.y + panelBox.height})`);
+    const isScrollable = await page.locator('#friendPanel').evaluate(el => el.scrollHeight > el.clientHeight);
+    assert(isScrollable, 'panel content exceeds its capped height, so it is internally scrollable (not just clipped)');
+    const lastButton = page.locator('.friend-actions button').last();
+    await lastButton.scrollIntoViewIfNeeded();
+    const buttonBox = await lastButton.boundingBox();
+    assert(buttonBox.y >= 0 && buttonBox.y + buttonBox.height <= viewportHeight + 1, 'the last action button is reachable within the viewport after scrolling inside the panel');
+    await lastButton.click();
+    await page.waitForTimeout(60);
+    assert(await page.locator('#friendPanel').getAttribute('hidden') !== null, 'the (scrolled-to) dismiss button is actually clickable, not just visible');
+    await page.setViewportSize({ width: 1280, height: 800 });
+  });
+
+  await record('The panel re-caps itself when the visible viewport shrinks while it is already open (Safari toolbar / keyboard)', async () => {
+    await page.setViewportSize({ width: 390, height: 800 });
+    await fresh();
+    await openFriendUI();
+    await startWanderUI();
+    await page.waitForTimeout(100);
+    const tallMaxHeight = await page.locator('#friendPanel').evaluate(el => parseFloat(el.style.maxHeight));
+    // Simulate Safari's toolbar expanding (or the keyboard opening), which
+    // shrinks window.innerHeight/visualViewport.height without a page
+    // navigation - the exact scenario a fixed-viewport test would miss.
+    await page.setViewportSize({ width: 390, height: 320 });
+    await page.evaluate(() => window.dispatchEvent(new Event('resize')));
+    await page.waitForTimeout(100);
+    const shortMaxHeight = await page.locator('#friendPanel').evaluate(el => parseFloat(el.style.maxHeight));
+    assert(shortMaxHeight < tallMaxHeight, `panel's max-height shrinks when the visible viewport shrinks while open (tall=${tallMaxHeight}, short=${shortMaxHeight})`);
+    const panelBox = await page.locator('#friendPanel').boundingBox();
+    assert(panelBox.y + panelBox.height <= 320 + 1, 'panel stays within the new, shorter viewport after re-capping');
+    await page.setViewportSize({ width: 1280, height: 800 });
+  });
+
+  await record('positionFriendPanel() correctly subtracts visualViewport.offsetTop (the actual real-iPhone bug an earlier fix missed)', async () => {
+    // Root cause: getBoundingClientRect() always reports LAYOUT-viewport
+    // coordinates, but on a real device the VISUAL viewport (what's
+    // actually on screen) can be offset from the layout viewport's origin
+    // once the page has scrolled - visualViewport.offsetTop. An earlier
+    // version of this fix compared the anchor's layout-viewport position
+    // directly against visualViewport.height, silently ignoring that
+    // offset. A desktop-Chromium simulation never introduces a nonzero
+    // offsetTop on its own, which is exactly why that version passed every
+    // automated check here yet still ran off-screen on an actual iPhone.
+    // This test injects the offset directly so the arithmetic itself is
+    // verified, independent of whether any particular viewport size
+    // happens to reproduce it.
+    await page.setViewportSize({ width: 390, height: 700 });
+    await fresh();
+    await openFriendUI();
+    await startWanderUI();
+    await page.waitForTimeout(100);
+    const result = await page.evaluate(() => {
+      const panel = document.getElementById('friendPanel');
+      const wrap = panel.closest('.friend-wrap');
+      const rect = wrap.getBoundingClientRect();
+      const mockHeight = 500, mockOffsetTop = 120, margin = 16;
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: mockHeight, width: 390, offsetTop: mockOffsetTop, offsetLeft: 0, addEventListener(){}, removeEventListener(){} }
+      });
+      positionFriendPanel();
+      const actualMaxHeight = parseFloat(panel.style.maxHeight);
+      const correctMaxHeight = Math.max(160, Math.floor(mockHeight - (rect.bottom - mockOffsetTop) - margin));
+      const offsetIgnoringMaxHeight = Math.max(160, Math.floor(mockHeight - rect.bottom - margin));
+      return { actualMaxHeight, correctMaxHeight, offsetIgnoringMaxHeight };
+    });
+    assert(result.actualMaxHeight === result.correctMaxHeight, `max-height matches the offsetTop-corrected formula (expected ${result.correctMaxHeight}, got ${result.actualMaxHeight})`);
+    assert(result.actualMaxHeight !== result.offsetIgnoringMaxHeight, `fixed behavior differs from the offsetTop-ignoring formula that caused the real-device bug (ignoring-offset would give ${result.offsetIgnoringMaxHeight}, fixed gives ${result.actualMaxHeight})`);
+  });
+
+  await record('Header and Friend panel CSS reference safe-area insets (structural check; cannot simulate a real notch/home-indicator value here)', async () => {
+    await fresh();
+    const declarations = await page.evaluate(() => {
+      const found = { headerTop: false, panelBottom: false };
+      for (const sheet of document.styleSheets) {
+        let rules;
+        try { rules = sheet.cssRules; } catch (e) { continue; }
+        for (const rule of rules) {
+          if (!rule.style) continue;
+          if (rule.selectorText === 'header' && /env\(safe-area-inset-top/.test(rule.style.paddingTop || '')) found.headerTop = true;
+          if (rule.selectorText === '.friend-panel' && /env\(safe-area-inset-bottom/.test(rule.style.paddingBottom || '')) found.panelBottom = true;
+        }
+      }
+      return found;
+    });
+    assert(declarations.headerTop, 'header reserves space for env(safe-area-inset-top), so the sticky header (and Friend\'s toggle inside it) never renders under a notch/Dynamic Island');
+    assert(declarations.panelBottom, 'Friend panel reserves space for env(safe-area-inset-bottom), so its lowest content clears the home-indicator area');
+  });
+
+  await record('#nav is a sibling of .topbar, not nested inside it (guards the actual root cause of the real-device horizontal overflow)', async () => {
+    // The real bug: a missing closing </div> after .header-actions left
+    // #nav parsed as .topbar's third flex child. With justify-content:
+    // space-between and flex-wrap:nowrap, #nav then rendered as a
+    // continuation of the icon row instead of its own line below, pushing
+    // the whole header (and everything anchored to it, Friend's panel
+    // included) into page-level horizontal overflow. This never showed up
+    // in any viewport-size or visualViewport test because those all
+    // measure the panel's geometry correctly relative to its own anchor -
+    // the anchor itself was the thing in the wrong place. Asserting the DOM
+    // shape directly is the only check that actually catches a regression
+    // of this specific bug, regardless of what it visually looks like.
+    await fresh();
+    const structure = await page.evaluate(() => {
+      const nav = document.getElementById('nav');
+      const topbar = document.querySelector('.topbar');
+      return {
+        navIsInsideTopbar: topbar.contains(nav),
+        navParentTag: nav.parentElement.tagName,
+        topbarParentTag: topbar.parentElement.tagName,
+      };
+    });
+    assert(!structure.navIsInsideTopbar, `#nav must not be a descendant of .topbar (its parent is <${structure.navParentTag}>)`);
+    assert(structure.navParentTag === 'HEADER', `#nav's parent is <header>, the same element that directly contains .topbar (got <${structure.navParentTag}>)`);
+    assert(structure.topbarParentTag === 'HEADER', `.topbar's parent is <header> too, confirming nav and topbar are siblings (got <${structure.topbarParentTag}>)`);
+  });
+
+  await record('No page-level horizontal overflow at any tested width, with Friend open or closed (catches structural bugs that per-element geometry checks miss)', async () => {
+    const widths = [320, 360, 375, 390, 414, 430];
+    for (const w of widths) {
+      await page.setViewportSize({ width: w, height: 800 });
+      await fresh();
+      const beforeOpen = await page.evaluate(() => document.body.scrollWidth);
+      assert(beforeOpen <= w, `no horizontal overflow at ${w}px before opening Friend (body.scrollWidth=${beforeOpen})`);
+      await openFriendUI();
+      await startWanderUI();
+      await page.waitForTimeout(80);
+      const afterOpen = await page.evaluate(() => document.body.scrollWidth);
+      assert(afterOpen <= w, `no horizontal overflow at ${w}px with Friend's discovery card showing (body.scrollWidth=${afterOpen})`);
+      const panelBox = await page.locator('#friendPanel').boundingBox();
+      assert(panelBox.x >= -0.5, `panel's left edge is on screen at ${w}px (x=${panelBox.x})`);
+      assert(panelBox.x + panelBox.width <= w + 0.5, `panel's right edge is on screen at ${w}px (right=${panelBox.x + panelBox.width})`);
+    }
+    await page.setViewportSize({ width: 1280, height: 800 });
+  });
+
+  await record('positionFriendPanel() correctly subtracts visualViewport.offsetLeft (horizontal analog of the offsetTop fix, for pinch-zoom)', async () => {
+    // The dynamic toolbar only ever changes vertical space, so offsetTop is
+    // the practical real-world case; offsetLeft's equivalent is pinch-zoom,
+    // which shifts the visual viewport in both axes. Same reasoning as the
+    // offsetTop test: inject the offset directly and verify the formula,
+    // rather than trying to actually simulate zoom in a test browser.
+    await page.setViewportSize({ width: 390, height: 700 });
+    await fresh();
+    await openFriendUI();
+    await startWanderUI();
+    await page.waitForTimeout(100);
+    const result = await page.evaluate(() => {
+      const panel = document.getElementById('friendPanel');
+      const wrap = panel.closest('.friend-wrap');
+      const rect = wrap.getBoundingClientRect();
+      const mockWidth = 250, mockOffsetLeft = 60, margin = 16;
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 700, width: mockWidth, offsetTop: 0, offsetLeft: mockOffsetLeft, addEventListener(){}, removeEventListener(){} }
+      });
+      positionFriendPanel();
+      const actualMaxWidth = parseFloat(panel.style.maxWidth);
+      const correctMaxWidth = Math.max(200, Math.floor((rect.right - mockOffsetLeft) - margin));
+      const offsetIgnoringMaxWidth = Math.max(200, Math.floor(rect.right - margin));
+      return { actualMaxWidth, correctMaxWidth, offsetIgnoringMaxWidth };
+    });
+    assert(result.actualMaxWidth === result.correctMaxWidth, `max-width matches the offsetLeft-corrected formula (expected ${result.correctMaxWidth}, got ${result.actualMaxWidth})`);
+    assert(result.actualMaxWidth !== result.offsetIgnoringMaxWidth, `fixed behavior differs from the offsetLeft-ignoring formula (ignoring-offset would give ${result.offsetIgnoringMaxWidth}, fixed gives ${result.actualMaxWidth})`);
+  });
+
   await browser.close();
   server.close();
 
