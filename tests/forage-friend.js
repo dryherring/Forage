@@ -434,6 +434,82 @@ async function run() {
     assert(declarations.panelBottom, 'Friend panel reserves space for env(safe-area-inset-bottom), so its lowest content clears the home-indicator area');
   });
 
+  await record('#nav is a sibling of .topbar, not nested inside it (guards the actual root cause of the real-device horizontal overflow)', async () => {
+    // The real bug: a missing closing </div> after .header-actions left
+    // #nav parsed as .topbar's third flex child. With justify-content:
+    // space-between and flex-wrap:nowrap, #nav then rendered as a
+    // continuation of the icon row instead of its own line below, pushing
+    // the whole header (and everything anchored to it, Friend's panel
+    // included) into page-level horizontal overflow. This never showed up
+    // in any viewport-size or visualViewport test because those all
+    // measure the panel's geometry correctly relative to its own anchor -
+    // the anchor itself was the thing in the wrong place. Asserting the DOM
+    // shape directly is the only check that actually catches a regression
+    // of this specific bug, regardless of what it visually looks like.
+    await fresh();
+    const structure = await page.evaluate(() => {
+      const nav = document.getElementById('nav');
+      const topbar = document.querySelector('.topbar');
+      return {
+        navIsInsideTopbar: topbar.contains(nav),
+        navParentTag: nav.parentElement.tagName,
+        topbarParentTag: topbar.parentElement.tagName,
+      };
+    });
+    assert(!structure.navIsInsideTopbar, `#nav must not be a descendant of .topbar (its parent is <${structure.navParentTag}>)`);
+    assert(structure.navParentTag === 'HEADER', `#nav's parent is <header>, the same element that directly contains .topbar (got <${structure.navParentTag}>)`);
+    assert(structure.topbarParentTag === 'HEADER', `.topbar's parent is <header> too, confirming nav and topbar are siblings (got <${structure.topbarParentTag}>)`);
+  });
+
+  await record('No page-level horizontal overflow at any tested width, with Friend open or closed (catches structural bugs that per-element geometry checks miss)', async () => {
+    const widths = [320, 360, 375, 390, 414, 430];
+    for (const w of widths) {
+      await page.setViewportSize({ width: w, height: 800 });
+      await fresh();
+      const beforeOpen = await page.evaluate(() => document.body.scrollWidth);
+      assert(beforeOpen <= w, `no horizontal overflow at ${w}px before opening Friend (body.scrollWidth=${beforeOpen})`);
+      await openFriendUI();
+      await startWanderUI();
+      await page.waitForTimeout(80);
+      const afterOpen = await page.evaluate(() => document.body.scrollWidth);
+      assert(afterOpen <= w, `no horizontal overflow at ${w}px with Friend's discovery card showing (body.scrollWidth=${afterOpen})`);
+      const panelBox = await page.locator('#friendPanel').boundingBox();
+      assert(panelBox.x >= -0.5, `panel's left edge is on screen at ${w}px (x=${panelBox.x})`);
+      assert(panelBox.x + panelBox.width <= w + 0.5, `panel's right edge is on screen at ${w}px (right=${panelBox.x + panelBox.width})`);
+    }
+    await page.setViewportSize({ width: 1280, height: 800 });
+  });
+
+  await record('positionFriendPanel() correctly subtracts visualViewport.offsetLeft (horizontal analog of the offsetTop fix, for pinch-zoom)', async () => {
+    // The dynamic toolbar only ever changes vertical space, so offsetTop is
+    // the practical real-world case; offsetLeft's equivalent is pinch-zoom,
+    // which shifts the visual viewport in both axes. Same reasoning as the
+    // offsetTop test: inject the offset directly and verify the formula,
+    // rather than trying to actually simulate zoom in a test browser.
+    await page.setViewportSize({ width: 390, height: 700 });
+    await fresh();
+    await openFriendUI();
+    await startWanderUI();
+    await page.waitForTimeout(100);
+    const result = await page.evaluate(() => {
+      const panel = document.getElementById('friendPanel');
+      const wrap = panel.closest('.friend-wrap');
+      const rect = wrap.getBoundingClientRect();
+      const mockWidth = 250, mockOffsetLeft = 60, margin = 16;
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        value: { height: 700, width: mockWidth, offsetTop: 0, offsetLeft: mockOffsetLeft, addEventListener(){}, removeEventListener(){} }
+      });
+      positionFriendPanel();
+      const actualMaxWidth = parseFloat(panel.style.maxWidth);
+      const correctMaxWidth = Math.max(200, Math.floor((rect.right - mockOffsetLeft) - margin));
+      const offsetIgnoringMaxWidth = Math.max(200, Math.floor(rect.right - margin));
+      return { actualMaxWidth, correctMaxWidth, offsetIgnoringMaxWidth };
+    });
+    assert(result.actualMaxWidth === result.correctMaxWidth, `max-width matches the offsetLeft-corrected formula (expected ${result.correctMaxWidth}, got ${result.actualMaxWidth})`);
+    assert(result.actualMaxWidth !== result.offsetIgnoringMaxWidth, `fixed behavior differs from the offsetLeft-ignoring formula (ignoring-offset would give ${result.offsetIgnoringMaxWidth}, fixed gives ${result.actualMaxWidth})`);
+  });
+
   await browser.close();
   server.close();
 

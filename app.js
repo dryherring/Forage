@@ -206,10 +206,22 @@ function positionFriendPanel(){
   const rect=wrap.getBoundingClientRect();
   const viewportHeight=vv?vv.height:window.innerHeight;
   const viewportOffsetTop=vv?vv.offsetTop:0;
+  const viewportOffsetLeft=vv?vv.offsetLeft:0;
   const anchorBottomInVisualViewport=rect.bottom-viewportOffsetTop;
+  const anchorRightInVisualViewport=rect.right-viewportOffsetLeft;
   const margin=16;
-  const available=Math.max(160,Math.floor(viewportHeight-anchorBottomInVisualViewport-margin));
-  panel.style.maxHeight=available+'px';
+  const availableHeight=Math.max(160,Math.floor(viewportHeight-anchorBottomInVisualViewport-margin));
+  // The panel is right:0-anchored to its toggle button, so its right edge
+  // already tracks the anchor's real position - the horizontal risk is its
+  // own width pushing the LEFT edge past the visible area, which pinch-zoom
+  // can do even though the dynamic toolbar (the vertical case above) can't
+  // move horizontally. anchorRightInVisualViewport is exactly how much
+  // space exists between the visual viewport's own left edge and the
+  // anchor, so capping width to that (minus margin) keeps the left edge on
+  // screen regardless of zoom or horizontal visual-viewport offset.
+  const availableWidth=Math.max(200,Math.floor(anchorRightInVisualViewport-margin));
+  panel.style.maxHeight=availableHeight+'px';
+  panel.style.maxWidth=availableWidth+'px';
 }
 let friendPositionRaf=null;
 function scheduleFriendReposition(){
