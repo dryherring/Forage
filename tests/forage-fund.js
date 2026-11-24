@@ -73,15 +73,18 @@ async function run() {
   });
 
   await record('Fund panel shows correct Starting fund / Spent / Remaining figures for a seeded state', async () => {
+    const now = new Date();
+    const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     await fresh({
-      balance: 1200, spent: 1300, cart: [], wishlist: [], orders: [], purchases: 0,
+      balance: 1200, spent: 4300, monthlySpent: 800, fundMonth: monthKey, cart: [], wishlist: [], orders: [], purchases: 0,
       filter: 'All', query: '', sort: 'daily', pageNo: 1, readingList: [], giftIdeas: [],
     });
     await page.click('#balanceBox');
     const rows = await page.locator('#fundPanel .fund-row').allTextContents();
-    assert(rows.some(r => r.includes('Starting fund') && r.includes('2,500')), `Starting fund = max(2000, 1200+1300) = 2,500 (got ${JSON.stringify(rows)})`);
-    assert(rows.some(r => r.includes('Spent') && r.includes('1,300')), `Spent = 1,300 (got ${JSON.stringify(rows)})`);
+    assert(rows.some(r => r.includes('Starting fund') && r.includes('2,000')), `Starting fund is always the flat monthly allotment, 2,000 (got ${JSON.stringify(rows)})`);
+    assert(rows.some(r => r.includes('Spent') && r.includes('800')), `Spent shows this month's spending (monthlySpent=800), not lifetime spent (got ${JSON.stringify(rows)})`);
     assert(rows.some(r => r.includes('Remaining') && r.includes('1,200')), `Remaining = 1,200 (got ${JSON.stringify(rows)})`);
+    assert(rows.some(r => r.includes('Next refresh')), `panel shows a Next refresh row (got ${JSON.stringify(rows)})`);
     const amount = (await page.locator('#fundPanel .fund-amount').textContent()).trim();
     assert(amount.includes('1,200'), `big amount shows current balance, 1,200 (got "${amount}")`);
   });
@@ -113,7 +116,7 @@ async function run() {
 
   await record('Fund panel figures update correctly after a checkout', async () => {
     await fresh();
-    const before = await page.evaluate(() => ({ balance: state.balance, spent: state.spent }));
+    const before = await page.evaluate(() => ({ balance: state.balance, spent: state.spent, monthlySpent: state.monthlySpent }));
     await goNav(page, 'shop');
     const firstCard = page.locator('.card').first();
     await firstCard.click();
@@ -125,16 +128,17 @@ async function run() {
     await page.fill('#shipCity', 'Testville');
     await page.click('button[data-action="checkout"]');
     await page.waitForTimeout(150);
-    const after = await page.evaluate(() => ({ balance: state.balance, spent: state.spent }));
-    assert(after.spent > before.spent, `checkout increased state.spent (before ${before.spent}, after ${after.spent})`);
+    const after = await page.evaluate(() => ({ balance: state.balance, spent: state.spent, monthlySpent: state.monthlySpent }));
+    assert(after.spent > before.spent, `checkout increased lifetime state.spent (before ${before.spent}, after ${after.spent})`);
+    assert(after.monthlySpent > before.monthlySpent, `checkout increased state.monthlySpent (before ${before.monthlySpent}, after ${after.monthlySpent})`);
+    assert(after.spent - before.spent === after.monthlySpent - before.monthlySpent, 'lifetime spent and monthly spent increase by the same order total');
     assert(after.balance < before.balance, `checkout decreased state.balance (before ${before.balance}, after ${after.balance})`);
     await page.click('#balanceBox');
     const rows = await page.locator('#fundPanel .fund-row').allTextContents();
     const fmt = (n) => Number.isInteger(n) ? n.toLocaleString() : n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    assert(rows.some(r => r.includes('Spent') && r.includes(fmt(after.spent))), `panel's Spent row matches state.spent=${after.spent} (got ${JSON.stringify(rows)})`);
+    assert(rows.some(r => r.includes('Spent') && r.includes(fmt(after.monthlySpent))), `panel's Spent row matches state.monthlySpent=${after.monthlySpent}, not lifetime spent (got ${JSON.stringify(rows)})`);
     assert(rows.some(r => r.includes('Remaining') && r.includes(fmt(after.balance))), `panel's Remaining row matches state.balance=${after.balance} (got ${JSON.stringify(rows)})`);
-    const startingExpected = Math.max(2000, after.balance + after.spent);
-    assert(rows.some(r => r.includes('Starting fund') && r.includes(fmt(startingExpected))), `panel's Starting fund row matches max(2000, balance+spent)=${startingExpected} (got ${JSON.stringify(rows)})`);
+    assert(rows.some(r => r.includes('Starting fund') && r.includes('2,000')), `panel's Starting fund row is always the flat 2,000 monthly allotment (got ${JSON.stringify(rows)})`);
   });
 
   await record('Fund panel does not interfere with the gift modal\'s own Escape-to-close behavior', async () => {

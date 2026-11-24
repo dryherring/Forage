@@ -305,12 +305,10 @@ async function run() {
   });
 
   // --- Smoke: Stats ------------------------------------------------------------
-  await record('Stats navigation and fund reset remain intact', async () => {
+  await record('Stats navigation remains intact and no longer offers a manual fund reset', async () => {
     await goNav(page, 'stats');
     assert(await page.locator('h2:has-text("Forage stats")').count() === 1, 'Stats heading present');
-    await page.click('button[data-action="reset-funds"]');
-    await page.waitForTimeout(80);
-    assert((await page.locator('#balanceBox').textContent()).includes('2,000'), 'reset funds sets balance back to 2,000');
+    assert(await page.locator('button[data-action="reset-funds"]').count() === 0, 'manual reset-funds button has been removed');
     assert((await activeNavLabel(page)) === 'Stats', 'active pill is Stats');
   });
 
