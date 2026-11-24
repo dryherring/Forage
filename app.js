@@ -4,8 +4,10 @@ async function loadCatalog(){const r=await fetch('catalog.json',{cache:'no-store
 function forageStars(n){return'★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n))}
 function forageStock(p){if(p.stock<=3)return`Only ${p.stock} left today`;if(p.limited)return`Limited batch · ${p.stock} available`;if(p.stock<=8)return`${p.stock} available`;return'In stock'}
 function photo(p,big=false){const src=p.image||null;if(src)return `<div class="photo real-photo ${big?'big':''}"><img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy"></div>`;const rr=((p.seed%9)-4)*1.7;return `<div class="photo" style="--r:${rr}deg"><div class="product-object" style="font-size:${big?110:66}px">${p.emoji}</div><div class="photo-label">Photo coming to Forage · ${esc(p.cat)}</div></div>`}
-const DEFAULT_STATE={balance:2000,cart:[],wishlist:[],orders:[],purchases:0,spent:0,filter:'All',query:'',sort:'daily',pageNo:1,readingList:[],giftIdeas:[]};
+const DEFAULT_STATE={balance:2000,cart:[],wishlist:[],orders:[],purchases:0,spent:0,monthlySpent:0,fundMonth:null,filter:'All',query:'',sort:'daily',pageNo:1,readingList:[],giftIdeas:[]};
 const VALID_SORTS=['daily','rating','low','high'];
+const MONTHLY_FUND_AMOUNT=2000;
+const ORDER_STATUSES=['Processing','Shipped','Out for delivery','Delivered'];
 function sanitizeNumber(v,fallback){const n=Number(v);return Number.isFinite(n)?n:fallback}
 function sanitizeCart(raw){
   if(!Array.isArray(raw))return [];
@@ -16,7 +18,135 @@ function sanitizeCart(raw){
   }));
 }
 function sanitizeStringArray(raw){return Array.isArray(raw)?raw.filter(x=>typeof x==='string'):[]}
-function sanitizeOrders(raw){return Array.isArray(raw)?raw.filter(o=>o&&typeof o==='object').map(o=>({...o,items:Array.isArray(o.items)?o.items:[]})):[]}
+// Reconstructs a real, comparable delivery-target date for an order.
+// New orders (from checkout()) always carry a valid deliveryAt already.
+// Legacy orders placed before deliveryAt existed only have `delivery`, a
+// pre-formatted display string with no year (e.g. "Thursday, September
+// 19") - not reliably parseable on its own. We pair its month/day with the
+// order's own placed year, rolling forward a year if that would land
+// before the order was placed (handles orders placed near a year
+// boundary, e.g. placed in December with a January delivery estimate).
+// If nothing parses, fall back to the slowest standard shipping window
+// from the placed date so the order still resolves to a real date rather
+// than staying stuck.
+function deriveDeliveryAt(order){
+  if(typeof order.deliveryAt==='string'){
+    const existing=new Date(order.deliveryAt);
+    if(!isNaN(existing))return order.deliveryAt;
+  }
+  const placed=new Date(order.placed);
+  const placedValid=!isNaN(placed);
+  if(placedValid&&typeof order.delivery==='string'&&order.delivery){
+    const cleaned=order.delivery.replace(/^[A-Za-z]+,\s*/,'');
+    for(const yearOffset of [0,1]){
+      const candidate=new Date(`${cleaned}, ${placed.getFullYear()+yearOffset}`);
+      if(!isNaN(candidate)&&candidate.getTime()>=placed.getTime())return candidate.toISOString();
+    }
+  }
+  const fallback=placedValid?new Date(placed):new Date();
+  fallback.setDate(fallback.getDate()+5);
+  return fallback.toISOString();
+}
+function sanitizeOrders(raw){
+  return Array.isArray(raw)?raw.filter(o=>o&&typeof o==='object').map(o=>{
+    const base={...o,items:Array.isArray(o.items)?o.items:[]};
+    base.deliveryAt=deriveDeliveryAt(base);
+    if(!ORDER_STATUSES.includes(base.status))base.status='Processing';
+    return base;
+  }):[];
+}
+// Date-only comparison (ignores time-of-day) throughout, so a day boundary
+// reads the same way a person reads a date, and nothing flips mid-afternoon.
+function startOfLocalDay(date){const d=new Date(date);d.setHours(0,0,0,0);return d}
+function daysBetween(a,b){return Math.round((startOfLocalDay(b).getTime()-startOfLocalDay(a).getTime())/86400000)}
+// Status is derived purely from elapsed calendar days vs. the order's own
+// placed->deliveryAt window, split into even fractional thirds across the
+// four statuses. This scales correctly across Express (1 day), Standard (3
+// days) and Slow & scenic (5 days) windows without a separate stored
+// "shipping speed" field, and recomputes correctly no matter how long the
+// app stayed closed - there's no timer or polling involved, just today's
+// real date compared against the order's own dates.
+//
+// The result is ratcheted against whatever status is already stored so a
+// device clock moving backward (or briefly glitching) can never regress an
+// order from, say, Delivered back to Processing - only forward progress
+// is ever applied.
+function computeOrderStatus(order,now){
+  const placed=new Date(order.placed);
+  const target=new Date(order.deliveryAt);
+  const storedIndex=ORDER_STATUSES.indexOf(order.status);
+  if(isNaN(placed)||isNaN(target))return storedIndex>=0?order.status:'Processing';
+  const totalDays=Math.max(1,daysBetween(placed,target));
+  const elapsedDays=Math.max(0,daysBetween(placed,now));
+  const fraction=elapsedDays/totalDays;
+  let computedIndex;
+  if(fraction>=1)computedIndex=3;
+  else if(fraction>=0.66)computedIndex=2;
+  else if(fraction>=0.33)computedIndex=1;
+  else computedIndex=0;
+  const effectiveIndex=Math.max(computedIndex,storedIndex>=0?storedIndex:0);
+  return ORDER_STATUSES[effectiveIndex];
+}
+// Advances any order whose elapsed time now justifies a later status.
+// Idempotent: calling this repeatedly with the same (or an earlier) `now`
+// never changes anything further, since computeOrderStatus never regresses.
+function syncOrderStatuses(now){
+  now=now||new Date();
+  let changed=false;
+  state.orders.forEach(o=>{
+    const next=computeOrderStatus(o,now);
+    if(next!==o.status){o.status=next;changed=true;}
+  });
+  return changed;
+}
+function currentMonthKey(now){now=now||new Date();return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`}
+function startOfNextMonth(now){now=now||new Date();return new Date(now.getFullYear(),now.getMonth()+1,1)}
+function formatMonthDate(date){return date.toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})}
+// One-time migration for pre-existing installs that predate monthly fund
+// tracking (no fundMonth ever stored). Rather than silently resetting
+// whatever balance a returning user already has - which would look like
+// money appearing or vanishing for no reason - we just stamp the current
+// month as the baseline and reconstruct this month's spending from orders
+// already placed this calendar month, so "Spent" reads correctly from the
+// very first load under the new system. Normal monthly replenishment then
+// takes over from the next calendar month onward.
+function migrateFundState(now){
+  if(typeof state.fundMonth==='string')return false;
+  now=now||new Date();
+  const monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+  state.fundMonth=currentMonthKey(now);
+  state.monthlySpent=state.orders.reduce((sum,o)=>{
+    const placed=new Date(o.placed);
+    return (!isNaN(placed)&&placed.getTime()>=monthStart.getTime())?sum+Number(o.total||0):sum;
+  },0);
+  return true;
+}
+// Replenishes the fund to a flat MONTHLY_FUND_AMOUNT whenever the current
+// calendar month has moved past the last month the fund was set for. Flat,
+// not additive, so there's never rollover or accumulation. Guarded with a
+// string compare (not just !==) so a device clock that jumps backward can
+// never trigger a second replenishment for a month already paid out -
+// only a genuinely later month does.
+function syncFundMonth(now){
+  now=now||new Date();
+  if(typeof state.fundMonth!=='string'){state.fundMonth=currentMonthKey(now);return false}
+  const key=currentMonthKey(now);
+  if(key<=state.fundMonth)return false;
+  state.fundMonth=key;
+  state.balance=MONTHLY_FUND_AMOUNT;
+  state.monthlySpent=0;
+  return true;
+}
+// Single entry point for both startup and foreground-return reconciliation.
+// Pure w.r.t. repeated calls at the same `now` (idempotent): fund sync and
+// order-status sync are each idempotent on their own, so running both
+// again changes nothing further.
+function reconcileTimeState(now){
+  now=now||new Date();
+  const fundChanged=syncFundMonth(now);
+  const statusChanged=syncOrderStatuses(now);
+  return fundChanged||statusChanged;
+}
 function sanitizeProfile(p){
   const defaults={
     displayName:'Julz',
@@ -45,6 +175,8 @@ function loadState(){
     return {...DEFAULT_STATE,...safe,
       balance:sanitizeNumber(safe.balance,DEFAULT_STATE.balance),
       spent:sanitizeNumber(safe.spent,DEFAULT_STATE.spent),
+      monthlySpent:sanitizeNumber(safe.monthlySpent,DEFAULT_STATE.monthlySpent),
+      fundMonth:typeof safe.fundMonth==='string'?safe.fundMonth:null,
       purchases:sanitizeNumber(safe.purchases,DEFAULT_STATE.purchases),
       pageNo:Math.max(1,Math.floor(sanitizeNumber(safe.pageNo,DEFAULT_STATE.pageNo))),
       filter:typeof safe.filter==='string'&&CATS.includes(safe.filter)?safe.filter:DEFAULT_STATE.filter,
@@ -67,18 +199,16 @@ function save(){localStorage.setItem('forageV2State',JSON.stringify(state));rend
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function money(n){n=Number(n);const opts=Number.isInteger(n)?{}:{minimumFractionDigits:2,maximumFractionDigits:2};return 'Ƶ '+n.toLocaleString(undefined,opts)}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1700)}
-function deliveryDate(days=3){const d=new Date();d.setDate(d.getDate()+days);return d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})}
+function addDays(date,days){const d=new Date(date);d.setDate(d.getDate()+days);return d}
+function formatDeliveryDate(date){return date.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'})}
+function deliveryDate(days=3){return formatDeliveryDate(addDays(new Date(),days))}
 function daySeed(){const d=new Date();return Number(`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`)}
 function dailyScore(p){return ((p.seed*9301+daySeed()*49297)%233280)/233280}
-// Carried over from the prior production Fund popover: reconstructs a
-// "starting fund" figure since no startingBalance field is persisted.
-// Inherits the existing monthly-reset quirk (resetFunds() doesn't clear
-// state.spent) unchanged — flagged for later, not fixed here.
-function fundStartingAmount(){return Math.max(2000,Number(state.balance||0)+Number(state.spent||0))}
 function renderFundPanel(){
   const panel=document.getElementById('fundPanel');
   if(!panel)return;
-  panel.innerHTML=`<h3>Forage Fund</h3><p>Your fictional spending money for the hunt.</p><div class="fund-amount">${money(state.balance)}</div><div class="fund-row"><span>Starting fund</span><strong>${money(fundStartingAmount())}</strong></div><div class="fund-row"><span>Spent</span><strong>${money(state.spent)}</strong></div><div class="fund-row"><span>Remaining</span><strong>${money(state.balance)}</strong></div>`;
+  const next=formatMonthDate(startOfNextMonth());
+  panel.innerHTML=`<h3>Forage Fund</h3><p>Your fictional spending money for the hunt.</p><div class="fund-amount">${money(state.balance)}</div><div class="fund-row"><span>Starting fund</span><strong>${money(MONTHLY_FUND_AMOUNT)}</strong></div><div class="fund-row"><span>Spent</span><strong>${money(state.monthlySpent)}</strong></div><div class="fund-row"><span>Remaining</span><strong>${money(state.balance)}</strong></div><div class="fund-row"><span>Next refresh</span><strong>${next}</strong></div>`;
 }
 function toggleFund(event){
   event?.stopPropagation();
@@ -563,6 +693,7 @@ function toggleGift(){
   }
 }
 function checkout(){
+  if(reconcileTimeState())save();
   const validLines=state.cart.filter(line=>PRODUCTS.some(p=>p.id===line.id));
   const total=validLines.reduce((s,line)=>{const p=PRODUCTS.find(p=>p.id===line.id);return s+optionPrice(p,line.option)*line.qty;},0);
   if(!validLines.length)return;
@@ -579,10 +710,16 @@ function checkout(){
   if(!shippingAddress.recipient||!shippingAddress.line1||!shippingAddress.city){toast('Add a delivery name and address');return}
   const gift=!!document.getElementById('giftToggle')?.checked;
   const paymentId=document.getElementById('payMethod')?.value||null;
-  const order={id:'FG-'+Math.random().toString(36).slice(2,8).toUpperCase(),items:[...validLines],total,placed:new Date().toISOString(),delivery:deliveryDate(days),status:'Processing',shippingAddress,gift,giftMessage:gift?(document.getElementById('giftMessage')?.value||''):'' ,paymentId};
-  state.balance-=total;state.spent+=total;state.purchases+=validLines.reduce((s,x)=>s+x.qty,0);state.orders.unshift(order);state.cart=[];save();page='orders';render();toast('Order placed ✦');
+  const deliveryTarget=addDays(new Date(),days);
+  const order={id:'FG-'+Math.random().toString(36).slice(2,8).toUpperCase(),items:[...validLines],total,placed:new Date().toISOString(),delivery:formatDeliveryDate(deliveryTarget),deliveryAt:deliveryTarget.toISOString(),status:'Processing',shippingAddress,gift,giftMessage:gift?(document.getElementById('giftMessage')?.value||''):'' ,paymentId};
+  state.balance-=total;state.spent+=total;state.monthlySpent+=total;state.purchases+=validLines.reduce((s,x)=>s+x.qty,0);state.orders.unshift(order);state.cart=[];save();page='orders';render();toast('Order placed ✦');
 }
-function renderOrders(){return `<div class="section-head"><div><h2>Orders</h2><p>The anticipation shelf.</p></div></div>${state.orders.length?state.orders.map(o=>`<div class="order"><div class="miniart">📦</div><div><strong>${esc(o.id)}</strong><div style="color:var(--muted);margin-top:4px">${o.items.map(line=>{const p=PRODUCTS.find(p=>p.id===line.id);return p?`${esc(p.name)}${line.option?` (${esc(line.option)})`:''} ×${line.qty}`:''}).filter(Boolean).join(', ')}</div><div class="eyebrow" style="margin-top:7px">${esc(o.status)} · Estimated ${esc(o.delivery)}</div></div><strong>${money(o.total)}</strong></div>`).join(''):`<div class="empty">No orders yet.</div>`}`}
+function orderDateLabel(o){
+  const target=new Date(o.deliveryAt);
+  const dateText=esc(!isNaN(target)?formatDeliveryDate(target):o.delivery);
+  return o.status==='Delivered'?`Delivered ${dateText}`:`Estimated ${dateText}`;
+}
+function renderOrders(){return `<div class="section-head"><div><h2>Orders</h2><p>The anticipation shelf.</p></div></div>${state.orders.length?state.orders.map(o=>`<div class="order"><div class="miniart">📦</div><div><strong>${esc(o.id)}</strong><div style="color:var(--muted);margin-top:4px">${o.items.map(line=>{const p=PRODUCTS.find(p=>p.id===line.id);return p?`${esc(p.name)}${line.option?` (${esc(line.option)})`:''} ×${line.qty}`:''}).filter(Boolean).join(', ')}</div><div class="eyebrow" style="margin-top:7px">${esc(o.status)} · ${orderDateLabel(o)}</div></div><strong>${money(o.total)}</strong></div>`).join(''):`<div class="empty">No orders yet.</div>`}`}
 
 function saveProfile(){
   state.profile.displayName=document.getElementById('profileName').value.trim()||'Forager';
@@ -639,8 +776,7 @@ function renderProfile(){
   </div>`;
 }
 
-function resetFunds(){state.balance=2000;save();render();toast('Monthly forage funds refreshed')}
-function renderStats(){return `<div class="section-head"><div><h2>Forage stats</h2><p>Quietly tracking your fictional collecting habits.</p></div></div><div class="statgrid"><div class="stat"><span class="eyebrow">Available</span><strong>${money(state.balance)}</strong>Current forage fund</div><div class="stat"><span class="eyebrow">Acquired</span><strong>${state.purchases}</strong>Items purchased</div><div class="stat"><span class="eyebrow">Spent</span><strong>${money(state.spent)}</strong>Fictional currency</div><div class="stat"><span class="eyebrow">Market</span><strong>${PRODUCTS.length.toLocaleString()}</strong>Unique finds</div></div><div class="summary"><h3 style="margin-top:0">Monthly reset</h3><p style="color:var(--muted)">Need a fresh hunt? Refill your imaginary account.</p><button class="secondary" data-action="reset-funds">Refresh to Ƶ 2,000</button></div>`}
+function renderStats(){return `<div class="section-head"><div><h2>Forage stats</h2><p>Quietly tracking your fictional collecting habits.</p></div></div><div class="statgrid"><div class="stat"><span class="eyebrow">Available</span><strong>${money(state.balance)}</strong>Current forage fund</div><div class="stat"><span class="eyebrow">Acquired</span><strong>${state.purchases}</strong>Items purchased</div><div class="stat"><span class="eyebrow">Spent</span><strong>${money(state.spent)}</strong>Lifetime fictional currency</div><div class="stat"><span class="eyebrow">Market</span><strong>${PRODUCTS.length.toLocaleString()}</strong>Unique finds</div></div><div class="summary"><h3 style="margin-top:0">Monthly reset</h3><p style="color:var(--muted)">Your forage fund refreshes automatically to Ƶ 2,000 on the first of each month — no rollover, no manual reset. See the Forage Fund panel for the exact next date.</p></div>`}
 
 function goHome(){
   selected=null;
@@ -702,8 +838,7 @@ const CLICK_ACTIONS={
   'save-profile':()=>saveProfile(),
   'add-payment-method':()=>addPaymentMethod(),
   'set-default-payment':(el)=>setDefaultPayment(el.dataset.id),
-  'remove-payment':(el)=>removePayment(el.dataset.id),
-  'reset-funds':()=>resetFunds()
+  'remove-payment':(el)=>removePayment(el.dataset.id)
 };
 const CHANGE_ACTIONS={
   'toggle-gift':()=>toggleGift(),
@@ -774,4 +909,32 @@ document.addEventListener('keydown',e=>{
     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
   }
 });
+// Reconciliation when Forage returns to the foreground (tab switch, app
+// switcher, PWA resume). Always safe to re-sync fund/order state and save -
+// reconcileTimeState()/syncFundMonth()/syncOrderStatuses() are idempotent.
+// But a full render() rebuilds the current page's DOM from scratch, which
+// would silently discard anything typed into the in-progress checkout form
+// on the Cart page (recipient/address fields aren't written to `state`
+// until checkout() runs). So on Cart we only refresh the header/fund
+// panel, never the page body itself.
+function handleForegroundReconcile(){
+  const changed=reconcileTimeState();
+  if(changed)save();
+  if(page==='cart')renderHeader();
+  else render();
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')handleForegroundReconcile()});
+window.addEventListener('focus',handleForegroundReconcile);
+
+// Always persist once at startup, not just when a status/fund actually
+// changes: sanitizeOrders()/migrateFundState() may have derived data (a
+// legacy order's deliveryAt, a freshly-migrated fundMonth/monthlySpent)
+// that isn't itself an "overdue order" or "new month" change, and that
+// derived data should still be promoted from "recomputed every load" to
+// "stored", exactly like a freshly-placed order's deliveryAt already is.
+// Placed at the very end of the script, after every top-level let/const
+// binding it touches (page, selected, etc. via render()) is initialized.
+migrateFundState();
+reconcileTimeState();
+save();
 loadCatalog().then(()=>render()).catch(err=>{document.getElementById('main').innerHTML=`<div class="empty"><strong>Forage couldn't load its catalog.</strong><br>${err.message}</div>`});
