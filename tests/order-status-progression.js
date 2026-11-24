@@ -77,6 +77,21 @@ async function run() {
   const page = await browser.newPage();
 
   async function fresh(seed) {
+    // Re-syncs the browser's clock to the real current time on every call,
+    // undoing any freeze left behind by a prior freshAt() in this same
+    // page/browser context - otherwise a later fresh() would silently run
+    // against a stale mocked "now" instead of the real wall clock.
+    await page.clock.setFixedTime(new Date());
+    await page.goto(BASE + '/index.html', { waitUntil: 'networkidle' });
+    await page.evaluate((s) => localStorage.setItem('forageV2State', JSON.stringify(s)), seed);
+    await page.reload({ waitUntil: 'networkidle' });
+    await page.waitForSelector('.card');
+  }
+  // For sub-day (hour-level) assertions, where relying on the real wall
+  // clock would be imprecise: mocks the browser's Date via Playwright's
+  // clock API before the app's own startup code runs.
+  async function freshAt(fixedTime, seed) {
+    await page.clock.setFixedTime(fixedTime);
     await page.goto(BASE + '/index.html', { waitUntil: 'networkidle' });
     await page.evaluate((s) => localStorage.setItem('forageV2State', JSON.stringify(s)), seed);
     await page.reload({ waitUntil: 'networkidle' });
@@ -117,16 +132,29 @@ async function run() {
     assert(!text.includes('estimated'), 'a Delivered order shows a Delivered date, not an Estimated one');
   });
 
-  await record('Express (1-day) orders jump straight from Processing to Delivered with no intermediate status', async () => {
-    const placedToday = new Date();
-    const deliverToday = new Date(placedToday); deliverToday.setDate(deliverToday.getDate() + 1);
-    await fresh(baseState([baseOrder({ placed: placedToday.toISOString(), deliveryAt: deliverToday.toISOString(), status: 'Processing' })]));
-    assert((await orderEyebrowText()).includes('processing'), 'day 0 of a 1-day order reads Processing');
+  await record('Express (1-day) orders progress through all four statuses at hour-level milestones, not just Processing/Delivered', async () => {
+    const placed = new Date('2026-05-01T08:00:00');
+    const deliveryAt = new Date('2026-05-02T08:00:00'); // exactly 24h later - the promised delivery date
+    const order = baseOrder({ placed: placed.toISOString(), deliveryAt: deliveryAt.toISOString(), status: 'Processing' });
 
-    const placedYesterday = daysAgo(1);
-    const deliverToday2 = new Date(placedYesterday); deliverToday2.setDate(deliverToday2.getDate() + 1);
-    await fresh(baseState([baseOrder({ placed: placedYesterday.toISOString(), deliveryAt: deliverToday2.toISOString(), status: 'Processing' })]));
-    assert((await orderEyebrowText()).includes('delivered'), 'day 1 of a 1-day order reads Delivered');
+    async function statusAtHour(hoursElapsed) {
+      const now = new Date(placed.getTime() + hoursElapsed * 3600000);
+      await freshAt(now, baseState([order]));
+      return orderEyebrowText();
+    }
+    assert((await statusAtHour(2)).includes('processing'), '2h into a 24h Express window reads Processing');
+    assert((await statusAtHour(10)).includes('shipped'), '10h in (>33%) reads Shipped, not stuck on Processing');
+    assert((await statusAtHour(20)).includes('out for delivery'), '20h in (>66%) reads Out for delivery');
+    assert((await statusAtHour(24)).includes('delivered'), '24h in, right at the promised deliveryAt, reads Delivered');
+  });
+
+  await record('An Express order\'s promised deliveryAt is unaffected by hour-level status milestones', async () => {
+    const placed = new Date('2026-05-10T08:00:00');
+    const deliveryAt = new Date('2026-05-11T08:00:00');
+    const order = baseOrder({ placed: placed.toISOString(), deliveryAt: deliveryAt.toISOString(), status: 'Processing' });
+    await freshAt(new Date(placed.getTime() + 10 * 3600000), baseState([order]));
+    const stored = await page.evaluate(() => state.orders[0].deliveryAt);
+    assert(stored === deliveryAt.toISOString(), `deliveryAt is never altered by status progression (got ${stored})`);
   });
 
   await record('Slow & scenic (5-day) orders progress through all four statuses across the window', async () => {
@@ -156,6 +184,33 @@ async function run() {
     const deliveryAt = await page.evaluate(() => state.orders[0].deliveryAt);
     assert(new Date(deliveryAt).getFullYear() === placed.getFullYear() + 1, `derived deliveryAt rolls into ${placed.getFullYear() + 1} (got ${deliveryAt})`);
     assert(new Date(deliveryAt).getTime() >= placed.getTime(), 'derived deliveryAt is on or after the order was placed');
+  });
+
+  await record('Legacy reconstruction compares calendar dates, not raw timestamps: a same-day candidate ordered late in the day is not wrongly rolled into next year', async () => {
+    // Placed late at night; the legacy display string is for the SAME calendar day, which parses
+    // to local midnight - earlier than `placed` by raw timestamp, even though it's the same date.
+    const placed = new Date(); placed.setHours(23, 0, 0, 0);
+    await fresh(baseState([baseOrder({ placed: placed.toISOString(), delivery: legacyDeliveryString(placed), status: 'Processing' })]));
+    const deliveryAt = await page.evaluate(() => state.orders[0].deliveryAt);
+    const resolved = new Date(deliveryAt);
+    assert(resolved.getFullYear() === placed.getFullYear() && resolved.getMonth() === placed.getMonth() && resolved.getDate() === placed.getDate(),
+      `a same-calendar-day candidate resolves to that same day, not rolled forward a year just because midnight < placed's time-of-day (placed ${placed.toISOString()}, got ${deliveryAt})`);
+  });
+
+  await record('An implausibly distant reconstructed date (corrupted legacy data) is rejected and falls back safely, rather than trusted literally', async () => {
+    const placed = new Date('2026-01-05T09:00:00'); // every real shipping option is 1-5 days; "December 20" the same year is ~349 days out
+    await fresh(baseState([baseOrder({ placed: placed.toISOString(), delivery: 'Sunday, December 20', status: 'Processing' })]));
+    const deliveryAt = await page.evaluate(() => state.orders[0].deliveryAt);
+    const daysOut = Math.round((new Date(deliveryAt) - placed) / 86400000);
+    assert(daysOut >= 0 && daysOut <= 10, `an implausible ~349-day-out candidate is rejected in favor of the safe near-term fallback, not trusted literally (got ${daysOut} days out)`);
+  });
+
+  await record('A non-English legacy delivery string (locale limitation) does not crash and falls back safely', async () => {
+    const placed = new Date('2026-02-01T09:00:00');
+    await fresh(baseState([baseOrder({ placed: placed.toISOString(), delivery: 'jeudi, 3 janvier', status: 'Processing' })]));
+    assert(await page.locator('.empty:has-text("hit a snag")').count() === 0, 'a non-English (unparseable) legacy date string does not crash the app');
+    const deliveryAt = await page.evaluate(() => state.orders[0].deliveryAt);
+    assert(!isNaN(new Date(deliveryAt).getTime()), 'a real, valid deliveryAt is still produced via the safe fallback');
   });
 
   await record("A persisted legacy order's migrated deliveryAt and status are actually saved back to localStorage", async () => {

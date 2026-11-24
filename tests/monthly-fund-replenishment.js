@@ -72,17 +72,27 @@ async function run() {
   }
   const getState = () => page.evaluate(() => JSON.parse(localStorage.getItem('forageV2State')));
 
-  await record('A pre-existing install with no fundMonth migrates safely: balance is left untouched, fundMonth is stamped, and monthlySpent is reconstructed from this month\'s orders only', async () => {
+  await record('A pre-existing install with no fundMonth migrates safely: balance is corrected to max(0, 2000 - monthlySpent), fundMonth is stamped, and monthlySpent is reconstructed from this month\'s orders only (both lower and upper bound)', async () => {
     const now = new Date('2026-06-15T10:00:00');
     const thisMonthOrder = { id: 'FG-THISMO', items: [], total: 300, placed: new Date('2026-06-02T09:00:00').toISOString(), delivery: 'x', deliveryAt: new Date('2026-06-05T09:00:00').toISOString(), status: 'Processing', shippingAddress: {}, gift: false, giftMessage: '', paymentId: 'pm1' };
     const lastMonthOrder = { id: 'FG-LASTMO', items: [], total: 9999, placed: new Date('2026-05-20T09:00:00').toISOString(), delivery: 'x', deliveryAt: new Date('2026-05-23T09:00:00').toISOString(), status: 'Delivered', shippingAddress: {}, gift: false, giftMessage: '', paymentId: 'pm1' };
-    await freshAt(now, baseState({ balance: 750, spent: 10299, monthlySpent: 0, fundMonth: null, orders: [thisMonthOrder, lastMonthOrder] }));
+    const nextMonthOrder = { id: 'FG-NEXTMO', items: [], total: 77777, placed: new Date('2026-07-01T00:00:01').toISOString(), delivery: 'x', deliveryAt: new Date('2026-07-04T00:00:01').toISOString(), status: 'Processing', shippingAddress: {}, gift: false, giftMessage: '', paymentId: 'pm1' };
+    await freshAt(now, baseState({ balance: 750, spent: 10299, monthlySpent: 0, fundMonth: null, orders: [thisMonthOrder, lastMonthOrder, nextMonthOrder] }));
     const s = await getState();
     assert(s.fundMonth === '2026-06', `fundMonth stamped to the current month (got ${s.fundMonth})`);
-    assert(s.balance === 750, `balance is left exactly as-is on first migration, not reset (got ${s.balance})`);
-    assert(s.monthlySpent === 300, `monthlySpent reconstructed only from this month's order total (got ${s.monthlySpent})`);
+    assert(s.monthlySpent === 300, `monthlySpent reconstructed only from this month's order total, excluding both last month's and (via the upper bound) next month's orders (got ${s.monthlySpent})`);
+    assert(s.balance === 1700, `balance is corrected to max(0, 2000 - 300) = 1,700, not left at the old buggy 750 (got ${s.balance})`);
     assert(s.spent === 10299, 'lifetime spent is untouched by migration');
-    assert(s.orders.length === 2, 'both orders are preserved through migration');
+    assert(s.orders.length === 3, 'all orders are preserved through migration');
+  });
+
+  await record('Migration floors the corrected balance at 0 when this month\'s reconstructed spending already exceeds the monthly allotment', async () => {
+    const now = new Date('2026-06-15T10:00:00');
+    const bigOrder = { id: 'FG-BIG', items: [], total: 2600, placed: new Date('2026-06-03T09:00:00').toISOString(), delivery: 'x', deliveryAt: new Date('2026-06-06T09:00:00').toISOString(), status: 'Processing', shippingAddress: {}, gift: false, giftMessage: '', paymentId: 'pm1' };
+    await freshAt(now, baseState({ balance: 0, spent: 2600, monthlySpent: 0, fundMonth: null, orders: [bigOrder] }));
+    const s = await getState();
+    assert(s.monthlySpent === 2600, `monthlySpent reflects the full order total (got ${s.monthlySpent})`);
+    assert(s.balance === 0, `balance floors at 0 rather than going negative (max(0, 2000-2600)=0, got ${s.balance})`);
   });
 
   await record('A user returning after the calendar month has turned over is replenished to a flat 2,000, with monthlySpent reset (no rollover of leftover funds)', async () => {

@@ -26,9 +26,35 @@ function sanitizeStringArray(raw){return Array.isArray(raw)?raw.filter(x=>typeof
 // order's own placed year, rolling forward a year if that would land
 // before the order was placed (handles orders placed near a year
 // boundary, e.g. placed in December with a January delivery estimate).
-// If nothing parses, fall back to the slowest standard shipping window
-// from the placed date so the order still resolves to a real date rather
-// than staying stuck.
+//
+// Calendar-date comparison, not raw timestamps: a candidate parses to
+// local midnight (it's a date-only string with a year spliced in), while
+// `placed` carries a real time-of-day. Comparing raw getTime() values
+// would wrongly reject a same-day candidate whenever the order was placed
+// any time after midnight - daysBetween() (itself date-only) is used for
+// both the ordering check and the sanity bound below, so only calendar
+// dates are ever compared, never the specific time of day.
+//
+// Reconstructed dates are sanity-bounded to LEGACY_WINDOW_MAX_DAYS after
+// placed. Every shipping option Forage has ever offered resolves within
+// days, not weeks, so a `delivery` string that technically parses but
+// lands implausibly far out (corrupted data, a parsing fluke on a
+// malformed string) is treated the same as one that doesn't parse at all
+// - falling through to the safe fallback below - rather than trusted
+// literally.
+//
+// Known limitation: `delivery` strings were generated via
+// toLocaleDateString(undefined, ...), i.e. in whatever locale the browser
+// that originally placed the order was running in. The regex below only
+// strips a Latin-alphabet weekday prefix, and the Date constructor's
+// string parsing only reliably understands English month names - so a
+// legacy order placed in a non-English locale (e.g. a French "jeudi 3
+// janvier") fails to parse here. That's handled safely (isNaN(candidate)
+// below falls through to the generic fallback rather than crashing or
+// silently misreading the date), but the original display date cannot be
+// recovered in that case; there is no general fix for this without
+// knowing the original locale, which was never recorded.
+const LEGACY_WINDOW_MAX_DAYS=30;
 function deriveDeliveryAt(order){
   if(typeof order.deliveryAt==='string'){
     const existing=new Date(order.deliveryAt);
@@ -40,7 +66,9 @@ function deriveDeliveryAt(order){
     const cleaned=order.delivery.replace(/^[A-Za-z]+,\s*/,'');
     for(const yearOffset of [0,1]){
       const candidate=new Date(`${cleaned}, ${placed.getFullYear()+yearOffset}`);
-      if(!isNaN(candidate)&&candidate.getTime()>=placed.getTime())return candidate.toISOString();
+      if(isNaN(candidate))continue;
+      const daysOut=daysBetween(placed,candidate);
+      if(daysOut>=0&&daysOut<=LEGACY_WINDOW_MAX_DAYS)return candidate.toISOString();
     }
   }
   const fallback=placedValid?new Date(placed):new Date();
@@ -59,26 +87,46 @@ function sanitizeOrders(raw){
 // reads the same way a person reads a date, and nothing flips mid-afternoon.
 function startOfLocalDay(date){const d=new Date(date);d.setHours(0,0,0,0);return d}
 function daysBetween(a,b){return Math.round((startOfLocalDay(b).getTime()-startOfLocalDay(a).getTime())/86400000)}
-// Status is derived purely from elapsed calendar days vs. the order's own
+// Status is derived purely from elapsed time vs. the order's own
 // placed->deliveryAt window, split into even fractional thirds across the
-// four statuses. This scales correctly across Express (1 day), Standard (3
-// days) and Slow & scenic (5 days) windows without a separate stored
-// "shipping speed" field, and recomputes correctly no matter how long the
-// app stayed closed - there's no timer or polling involved, just today's
-// real date compared against the order's own dates.
+// four statuses, without a separate stored "shipping speed" field, and
+// recomputes correctly no matter how long the app stayed closed - there's
+// no timer or polling involved, just the real clock compared against the
+// order's own dates.
+//
+// Standard (3 days) and Slow & scenic (5 days) windows are measured in
+// whole calendar days (daysBetween, date-only), so status only ever moves
+// at a day boundary, matching how a person reads a delivery date. Express
+// (1 day) only has a single calendar day to work with, so day-level
+// granularity would only ever produce Processing or Delivered - skipping
+// Shipped and Out for delivery entirely. SUB_DAY_WINDOW_MS detects any
+// order whose whole placed->deliveryAt window is short enough that this
+// would happen (in practice, only Express) and measures elapsed time in
+// hours instead, so it still reaches all four statuses within that one
+// day while arriving exactly at the promised deliveryAt - unchanged by
+// this distinction, since only the status ladder leading up to it does.
 //
 // The result is ratcheted against whatever status is already stored so a
 // device clock moving backward (or briefly glitching) can never regress an
 // order from, say, Delivered back to Processing - only forward progress
-// is ever applied.
+// is ever applied. (A clock jumping forward is not guarded against here:
+// see the limitation noted on reconcileTimeState().)
+const SUB_DAY_WINDOW_MS=36*60*60*1000;
 function computeOrderStatus(order,now){
   const placed=new Date(order.placed);
   const target=new Date(order.deliveryAt);
   const storedIndex=ORDER_STATUSES.indexOf(order.status);
   if(isNaN(placed)||isNaN(target))return storedIndex>=0?order.status:'Processing';
-  const totalDays=Math.max(1,daysBetween(placed,target));
-  const elapsedDays=Math.max(0,daysBetween(placed,now));
-  const fraction=elapsedDays/totalDays;
+  const totalMs=target.getTime()-placed.getTime();
+  let fraction;
+  if(totalMs>0&&totalMs<=SUB_DAY_WINDOW_MS){
+    const elapsedMs=Math.max(0,now.getTime()-placed.getTime());
+    fraction=elapsedMs/totalMs;
+  }else{
+    const totalDays=Math.max(1,daysBetween(placed,target));
+    const elapsedDays=Math.max(0,daysBetween(placed,now));
+    fraction=elapsedDays/totalDays;
+  }
   let computedIndex;
   if(fraction>=1)computedIndex=3;
   else if(fraction>=0.66)computedIndex=2;
@@ -103,22 +151,31 @@ function currentMonthKey(now){now=now||new Date();return `${now.getFullYear()}-$
 function startOfNextMonth(now){now=now||new Date();return new Date(now.getFullYear(),now.getMonth()+1,1)}
 function formatMonthDate(date){return date.toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})}
 // One-time migration for pre-existing installs that predate monthly fund
-// tracking (no fundMonth ever stored). Rather than silently resetting
-// whatever balance a returning user already has - which would look like
-// money appearing or vanishing for no reason - we just stamp the current
-// month as the baseline and reconstruct this month's spending from orders
-// already placed this calendar month, so "Spent" reads correctly from the
-// very first load under the new system. Normal monthly replenishment then
-// takes over from the next calendar month onward.
+// tracking (no fundMonth ever stored). Their current balance is a legacy
+// artifact of the old unrestricted-manual-reset system, not a trustworthy
+// "this month's remaining fund" figure - so rather than carrying it
+// forward as-is, we reconstruct this month's spending from orders already
+// placed this calendar month (bounded on both ends: on/after the 1st of
+// this month, strictly before the 1st of next month, so an order dated
+// outside this month - by clock skew or any other anomaly - is never
+// miscounted) and set the migrated balance to max(0, MONTHLY_FUND_AMOUNT -
+// monthlySpent): what the balance would be if replenishment had been
+// working correctly all along. This corrects the accumulated effect of
+// the bug immediately, on this very load, rather than waiting for the
+// next calendar month's natural replenishment. Lifetime `spent` and every
+// other field (orders, cart, wishlist, profile, ...) are left untouched.
 function migrateFundState(now){
   if(typeof state.fundMonth==='string')return false;
   now=now||new Date();
   const monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+  const monthEnd=startOfNextMonth(now);
   state.fundMonth=currentMonthKey(now);
   state.monthlySpent=state.orders.reduce((sum,o)=>{
     const placed=new Date(o.placed);
-    return (!isNaN(placed)&&placed.getTime()>=monthStart.getTime())?sum+Number(o.total||0):sum;
+    const inThisMonth=!isNaN(placed)&&placed.getTime()>=monthStart.getTime()&&placed.getTime()<monthEnd.getTime();
+    return inThisMonth?sum+Number(o.total||0):sum;
   },0);
+  state.balance=Math.max(0,MONTHLY_FUND_AMOUNT-state.monthlySpent);
   return true;
 }
 // Replenishes the fund to a flat MONTHLY_FUND_AMOUNT whenever the current
@@ -141,6 +198,18 @@ function syncFundMonth(now){
 // Pure w.r.t. repeated calls at the same `now` (idempotent): fund sync and
 // order-status sync are each idempotent on their own, so running both
 // again changes nothing further.
+//
+// Known limitation: everything here trusts the device clock. The
+// ratchets in syncFundMonth()/computeOrderStatus() only guard against the
+// clock moving *backward* (so an earlier glitch can't double-replenish
+// the fund or regress an order's status once it has corrected itself).
+// An accidental *forward* jump - a device clock temporarily wrong, then
+// corrected - is indistinguishable from real elapsed time: it can
+// trigger a genuine, un-reversed fund replenishment or order delivery a
+// touch early. There's no reliable client-only fix for this (it would
+// need a trusted external time source, i.e. a backend), and one isn't
+// warranted for a fictional shopping app - this is accepted as a known,
+// low-stakes limitation rather than something to engineer around.
 function reconcileTimeState(now){
   now=now||new Date();
   const fundChanged=syncFundMonth(now);
@@ -909,18 +978,26 @@ document.addEventListener('keydown',e=>{
     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
   }
 });
+// Pages with uncommitted form input that a full render() would silently
+// discard by rebuilding the DOM from `state` before the visitor has saved
+// their edits: the Cart page's checkout form (shipping fields aren't
+// written to `state` until checkout() runs) and the Profile page's own
+// form (saveProfile() is likewise only called on an explicit click).
+const RECONCILE_UNSAFE_PAGES=new Set(['cart','profile']);
 // Reconciliation when Forage returns to the foreground (tab switch, app
-// switcher, PWA resume). Always safe to re-sync fund/order state and save -
-// reconcileTimeState()/syncFundMonth()/syncOrderStatuses() are idempotent.
-// But a full render() rebuilds the current page's DOM from scratch, which
-// would silently discard anything typed into the in-progress checkout form
-// on the Cart page (recipient/address fields aren't written to `state`
-// until checkout() runs). So on Cart we only refresh the header/fund
-// panel, never the page body itself.
+// switcher, PWA resume). reconcileTimeState() is idempotent, so calling it
+// here is always safe - but acting on its result is only worth doing when
+// it actually changed something. If nothing changed, there's nothing new
+// to show, so we skip touching the DOM entirely rather than re-rendering
+// for no reason. When something did change, a full render() rebuilds the
+// current page's DOM from scratch, which is exactly what we must NOT do
+// on a page with unsaved form input (see RECONCILE_UNSAFE_PAGES above) -
+// there, only the header/fund panel are refreshed, never the form itself.
 function handleForegroundReconcile(){
   const changed=reconcileTimeState();
-  if(changed)save();
-  if(page==='cart')renderHeader();
+  if(!changed)return;
+  save();
+  if(RECONCILE_UNSAFE_PAGES.has(page))renderHeader();
   else render();
 }
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')handleForegroundReconcile()});

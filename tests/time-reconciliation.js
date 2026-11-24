@@ -135,6 +135,39 @@ async function run() {
     assert(headerBalance.includes('2,000'), 'the header balance pill reflects the reconciled balance even while the form is untouched');
   });
 
+  await record('Returning to the foreground never disrupts unsaved Profile edits either, even when reconciliation has real changes to apply', async () => {
+    const placed = new Date('2026-08-01T09:00:00');
+    const order = { id: 'FG-PROFILE', items: [], total: 10, placed: placed.toISOString(), delivery: 'x', deliveryAt: new Date('2026-08-04T09:00:00').toISOString(), status: 'Processing', shippingAddress: {}, gift: false, giftMessage: '', paymentId: 'pm1' };
+    await freshAt(new Date('2026-08-02T09:00:00'), baseState({ balance: 2000, monthlySpent: 0, fundMonth: '2026-08', orders: [order] }));
+    await goNav(page, 'profile');
+    await page.fill('#profileName', 'Mid Edit Forager');
+    await page.fill('#profileCity', 'Half-Typed City');
+
+    await sendToBackground(page);
+    await page.clock.setFixedTime(new Date('2026-09-15T09:00:00')); // crosses the order's delivery date and a month boundary
+    await returnToForeground(page);
+    await page.waitForTimeout(80);
+
+    assert(await page.locator('#profileName').inputValue() === 'Mid Edit Forager', 'unsaved display name untouched by reconciliation');
+    assert(await page.locator('#profileCity').inputValue() === 'Half-Typed City', 'unsaved city field untouched by reconciliation');
+    const s = await page.evaluate(() => state);
+    assert(s.fundMonth === '2026-09' && s.balance === 2000, 'the fund still genuinely replenished in the background');
+    assert(s.orders[0].status === 'Delivered', 'the order still genuinely progressed in the background');
+  });
+
+  await record('Foreground reconciliation does nothing to the DOM at all when nothing has changed', async () => {
+    await freshAt(new Date('2026-10-20T09:00:00'), baseState({ balance: 2000, monthlySpent: 0, fundMonth: '2026-10' }));
+    await goNav(page, 'orders');
+    // A sentinel only survives if #main's innerHTML is never rebuilt. render() always
+    // replaces it wholesale, so this proves whether a render actually happened.
+    await page.evaluate(() => { const s = document.createElement('div'); s.id = 'no-render-sentinel'; document.getElementById('main').appendChild(s); });
+    await sendToBackground(page);
+    // No clock change at all - nothing for reconciliation to do.
+    await returnToForeground(page);
+    await page.waitForTimeout(80);
+    assert(await page.locator('#no-render-sentinel').count() === 1, 'the sentinel survives: no unnecessary render() ran when reconciliation found nothing to change');
+  });
+
   await record('Reconciliation is idempotent: calling it twice back-to-back with no time elapsed changes nothing the second time', async () => {
     await freshAt(new Date('2026-08-15T09:00:00'), baseState({ balance: 2000, monthlySpent: 0, fundMonth: '2026-08' }));
     const first = await page.evaluate(() => reconcileTimeState());
